@@ -11,15 +11,13 @@ public class BaseApi {
     private final String code;
     private final String message;
     private final String exception;
-    private final String microservice;
 
     @Builder
-    public BaseApi(HttpStatus httpStatus, String code, String message, String exception, String microservice) {
+    public BaseApi(HttpStatus httpStatus, String code, String message, String exception) {
         this.httpStatus = httpStatus;
         this.code = code;
         this.message = message;
         this.exception = exception;
-        this.microservice = microservice;
     }
 
     public BaseApi(BaseApi baseApi) {
@@ -27,6 +25,5 @@ public class BaseApi {
         this.code = baseApi.getCode();
         this.message = baseApi.getMessage();
         this.exception = baseApi.getException();
-        this.microservice = baseApi.getMicroservice();
     }
 }
