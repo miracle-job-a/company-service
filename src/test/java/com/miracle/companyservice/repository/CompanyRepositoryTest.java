@@ -49,7 +49,4 @@ class CompanyRepositoryTest {
         assertThat(result.getPhoto()).isEqualTo(company.getPhoto());
         assertThat(result.getIntroduction()).isEqualTo(company.getIntroduction());
     }
-
-
-
 }
