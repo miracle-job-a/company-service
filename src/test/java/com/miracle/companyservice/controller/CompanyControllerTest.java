@@ -1,9 +1,8 @@
 package com.miracle.companyservice.controller;
 
 import com.google.gson.Gson;
-import com.miracle.companyservice.dto.api.BaseApi;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.service.CompanyService;
+import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.service.CompanyServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,6 +32,7 @@ class CompanyControllerTest {
     @Test
     @DisplayName("기업 회원가입 테스트 - 컨트롤러")
     void signUpCompany() throws Exception {
+
         CompanySignUpRequestDto companySignUpRequestDto = CompanySignUpRequestDto.builder()
                 .name("오라클코리아")
                 .email("austin@oracle.com")
@@ -47,9 +47,8 @@ class CompanyControllerTest {
                 .build();
 
         given(companyService.signUpCompany(companySignUpRequestDto))
-                .willReturn(BaseApi.builder()
+                .willReturn(SuccessApiResponse.builder()
                         .httpStatus(HttpStatus.OK)
-                        .code("200_1")
                         .message("회원가입 성공")
                         .build());
 
@@ -61,7 +60,9 @@ class CompanyControllerTest {
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.exception").doesNotExist())
+                .andExpect(jsonPath("$.httpStatus").value("OK"))
+                .andExpect(jsonPath("$.message").value("회원가입 성공"))
+                .andExpect(jsonPath("$.data").doesNotExist())
                 .andDo(print())
                 .andReturn();
     }
