@@ -1,8 +1,8 @@
 package com.miracle.companyservice.service;
 
-import com.miracle.companyservice.dto.api.BaseApi;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.response.ApiResponse;
 
 public interface CompanyService {
-    public BaseApi signUpCompany(CompanySignUpRequestDto companySignUpRequestDto);
+    public ApiResponse signUpCompany(CompanySignUpRequestDto companySignUpRequestDto);
 }
