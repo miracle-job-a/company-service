@@ -31,7 +31,7 @@ public class CompanyServiceImpl implements CompanyService{
 
         Company save = companyRepository.save(new Company(companySignUpRequestDto));
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK)
+                    .httpStatus(HttpStatus.OK.value())
                     .message("회원가입 성공")
                     .build();
     }
