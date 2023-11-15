@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
+
+    //Optional<Company> findByEmail(String email);
+    Boolean existsByEmail(String email);
 }
