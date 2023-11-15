@@ -45,7 +45,7 @@ public class CompanySignUpRequestDto {
     @Size(min = 1, max = 255, message = "400_8:주소 값이 너무 짧거나, 깁니다.")
     private final String address;
 
-    @NotBlank(message = "400_9:기업소개 값이 없습니다..")
+    @NotBlank(message = "400_9:기업소개 값이 없습니다.")
     private final String introduction;
 
     @Min(value = 1, message = "400_10:재직인원이 0이하 입니다.")
