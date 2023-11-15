@@ -31,7 +31,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = UnauthorizedTokenException.class)
-    public ApiResponse unauthorizedTokenHandle(RuntimeException e, HttpRequest request) {
+    public ApiResponse unauthorizedTokenHandle(UnauthorizedTokenException e, HttpRequest request) {
         log.info("[ExceptionController] uri: {}, method: {}, methodValue: {}",request.getURI(), request.getMethod(),request.getMethodValue());
         log.info(e.getMessage());
 
@@ -48,6 +48,8 @@ public class ExceptionController {
         log.info(e.getMessage());
         FieldError error = bindingResult.getFieldError();
         String[] split = error.getDefaultMessage().split(":");
+        System.out.println(split[0]);
+        System.out.println(split[1]);
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .code(split[0])
