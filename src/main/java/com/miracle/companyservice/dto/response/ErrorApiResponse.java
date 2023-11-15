@@ -11,7 +11,7 @@ public class ErrorApiResponse extends ApiResponse {
     private final String exception;
 
     @Builder
-    public ErrorApiResponse(HttpStatus httpStatus, String message, String code, String exception) {
+    public ErrorApiResponse(int httpStatus, String message, String code, String exception) {
         super(httpStatus, message);
         this.code = code;
         this.exception = exception;

@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ApiResponse {
 
-    private final HttpStatus httpStatus;
+    private final int httpStatus;
     private final String message;
 
-    public ApiResponse(HttpStatus httpStatus, String message) {
+    public ApiResponse(int httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }

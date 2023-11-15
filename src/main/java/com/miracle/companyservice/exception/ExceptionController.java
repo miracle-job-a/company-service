@@ -21,7 +21,7 @@ public class ExceptionController {
         log.info(e.getMessage());
 
         return ErrorApiResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .code("500")
                 .message("서버에 문제가 생겼습니다. 다시 시도해주세요.")
                 .exception(e.toString())
@@ -34,8 +34,8 @@ public class ExceptionController {
         log.info(e.getMessage());
 
         return ErrorApiResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                .code("400_1")
+                .httpStatus(HttpStatus.UNAUTHORIZED.value())
+                .code("401")
                 .message("토큰 값이 일치하지 않습니다.")
                 .exception(e.toString())
                 .build();
@@ -46,11 +46,10 @@ public class ExceptionController {
         log.info(e.getMessage());
 
         return ErrorApiResponse.builder()
-                .httpStatus(HttpStatus.BAD_REQUEST)
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .code("400_2")
                 .message("회원정보 형식이 맞지 않거나 존재하지 않습니다.")
                 .exception(e.toString())
                 .build();
     }
-
 }

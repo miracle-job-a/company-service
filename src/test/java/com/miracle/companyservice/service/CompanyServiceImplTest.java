@@ -52,7 +52,7 @@ class CompanyServiceImplTest {
         Company company = new Company(companySignUpRequestDto);
 
         ApiResponse result = SuccessApiResponse.builder()
-                .httpStatus(HttpStatus.OK)
+                .httpStatus(HttpStatus.OK.value())
                 .message("회원가입 성공")
                 .build();
 

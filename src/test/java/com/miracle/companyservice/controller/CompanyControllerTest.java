@@ -54,7 +54,7 @@ class CompanyControllerTest {
 
         given(companyService.signUpCompany(companySignUpRequestDto))
                 .willReturn(SuccessApiResponse.builder()
-                        .httpStatus(HttpStatus.OK)
+                        .httpStatus(HttpStatus.OK.value())
                         .message("회원가입 성공")
                         .build());
 
@@ -74,7 +74,7 @@ class CompanyControllerTest {
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.httpStatus").value("OK"))
+                .andExpect(jsonPath("$.httpStatus").value("200"))
                 .andExpect(jsonPath("$.message").value("회원가입 성공"))
                 .andExpect(jsonPath("$.data").doesNotExist())
                 .andDo(print())
@@ -102,8 +102,8 @@ class CompanyControllerTest {
 
         given(companyService.signUpCompany(companySignUpRequestDto))
                 .willReturn(ErrorApiResponse.builder()
-                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .code("400_1")
+                        .httpStatus(HttpStatus.UNAUTHORIZED.value())
+                        .code("401")
                         .message("토큰 값이 일치하지 않습니다.")
                         .exception("[UnauthorizedTokenException]: 토큰 값이 일치하지 않습니다.")
                         .build());
@@ -124,8 +124,8 @@ class CompanyControllerTest {
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.httpStatus").value("INTERNAL_SERVER_ERROR"))
-                .andExpect(jsonPath("$.code").value("400_1"))
+                .andExpect(jsonPath("$.httpStatus").value("401"))
+                .andExpect(jsonPath("$.code").value("401"))
                 .andExpect(jsonPath("$.message").value("토큰 값이 일치하지 않습니다."))
                 .andExpect(jsonPath("$.exception").value("[UnauthorizedTokenException]: 토큰 값이 일치하지 않습니다."))
                 .andExpect(jsonPath("$.data").doesNotExist())
