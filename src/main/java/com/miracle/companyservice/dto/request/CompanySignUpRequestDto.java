@@ -1,16 +1,13 @@
 package com.miracle.companyservice.dto.request;
 
-import com.miracle.companyservice.validation.Bno;
-import com.sun.istack.NotNull;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
+@EqualsAndHashCode
 public class CompanySignUpRequestDto {
     
     @NotBlank
@@ -26,12 +23,12 @@ public class CompanySignUpRequestDto {
     @Size(min = 1, max = 50)
     private final String photo;
 
-    @NotBlank
+
     private final int password;
 
     @NotBlank
     @Size(min = 1, max = 50)
-    @Bno
+    @Pattern(regexp = "\\d{3}[-]\\d{2}[-]\\d{5}")
     private final String bno;
 
     @NotBlank
@@ -49,7 +46,6 @@ public class CompanySignUpRequestDto {
     @NotBlank
     private final String introduction;
 
-    @NotBlank
     @Min(value = 1)
     private final int employeeNum;
 
