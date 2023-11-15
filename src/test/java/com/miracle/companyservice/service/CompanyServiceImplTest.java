@@ -1,7 +1,8 @@
 package com.miracle.companyservice.service;
 
-import com.miracle.companyservice.dto.api.BaseApi;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.response.ApiResponse;
+import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.repository.CompanyRepository;
 import org.assertj.core.api.Assertions;
@@ -50,18 +51,16 @@ class CompanyServiceImplTest {
 
         Company company = new Company(companySignUpRequestDto);
 
-        BaseApi result = BaseApi.builder()
+        ApiResponse result = SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .code("200_1")
                 .message("회원가입 성공")
                 .build();
 
         Mockito.when(companyRepository.save(company)).thenReturn(company);
-        BaseApi baseApi = companyService.signUpCompany(companySignUpRequestDto);
+        ApiResponse successApiResponse = companyService.signUpCompany(companySignUpRequestDto);
 
-        Assertions.assertThat(baseApi.getHttpStatus()).isEqualTo(result.getHttpStatus());
-        Assertions.assertThat(baseApi.getCode()).isEqualTo(result.getCode());
-        Assertions.assertThat(baseApi.getMessage()).isEqualTo(result.getMessage());
+        Assertions.assertThat(successApiResponse.getHttpStatus()).isEqualTo(result.getHttpStatus());
+        Assertions.assertThat(successApiResponse.getMessage()).isEqualTo(result.getMessage());
 
         verify(companyRepository).save(any());
     }
