@@ -1,5 +1,7 @@
 package com.miracle.companyservice.entity;
 
+import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -50,6 +52,7 @@ public class Company extends BaseEntity {
     private int employeeNum;
     private boolean approveStatus;
 
+    @Builder
     public Company(Long id, String email, String bno, int password, String name, String photo,
                    String ceoName, String sector, String address, String addressDetail, String introduction,
                    List<CompanyFaq> faqList, int employeeNum, boolean approveStatus) {
@@ -66,5 +69,18 @@ public class Company extends BaseEntity {
         this.faqList = faqList;
         this.employeeNum = employeeNum;
         this.approveStatus = approveStatus;
+    }
+
+    public Company(CompanySignUpRequestDto companySignUpRequestDto) {
+        this.email = companySignUpRequestDto.getEmail();
+        this.bno = companySignUpRequestDto.getBno();
+        this.password = companySignUpRequestDto.getPassword();
+        this.name = companySignUpRequestDto.getName();
+        this.photo = companySignUpRequestDto.getPhoto();
+        this.ceoName = companySignUpRequestDto.getCeoName();
+        this.sector = companySignUpRequestDto.getSector();
+        this.address = companySignUpRequestDto.getAddress();
+        this.introduction = companySignUpRequestDto.getIntroduction();
+        this.employeeNum = companySignUpRequestDto.getEmployeeNum();
     }
 }
