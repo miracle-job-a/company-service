@@ -52,5 +52,4 @@ public class ExceptionController {
                 .exception(e.toString())
                 .build();
     }
-
 }
