@@ -53,13 +53,13 @@ public class Company extends BaseEntity {
     private boolean approveStatus;
 
     @Builder
-    public Company(Long id, String email, String bno, int password, String name, String photo,
+    public Company(Long id, String email, String bno, String password, String name, String photo,
                    String ceoName, String sector, String address, String addressDetail, String introduction,
                    List<CompanyFaq> faqList, int employeeNum, boolean approveStatus) {
         this.id = id;
         this.email = email;
         this.bno = bno;
-        this.password = password;
+        this.password = password.hashCode();
         this.name = name;
         this.photo = photo;
         this.ceoName = ceoName;
@@ -74,7 +74,7 @@ public class Company extends BaseEntity {
     public Company(CompanySignUpRequestDto companySignUpRequestDto) {
         this.email = companySignUpRequestDto.getEmail();
         this.bno = companySignUpRequestDto.getBno();
-        this.password = companySignUpRequestDto.getPassword();
+        this.password = companySignUpRequestDto.getPassword().hashCode();
         this.name = companySignUpRequestDto.getName();
         this.photo = companySignUpRequestDto.getPhoto();
         this.ceoName = companySignUpRequestDto.getCeoName();
