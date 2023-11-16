@@ -1,6 +1,8 @@
 package com.miracle.companyservice.controller;
 
 import com.google.gson.Gson;
+import com.miracle.companyservice.dto.request.CompanyCheckBnoRequestDto;
+import com.miracle.companyservice.dto.request.CompanyCheckEmailRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,12 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CompanyController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 class CompanyControllerTest {
 
     @Autowired
@@ -34,7 +39,69 @@ class CompanyControllerTest {
     CompanyServiceImpl companyService;
 
     @Test
-    @DisplayName("기업 회원가입 테스트 - 컨트롤러")
+    @DisplayName("이메일 중복 확인 성공 테스트")
+    void checkEmail() throws Exception {
+        String email = "austin@oracle.com";
+        Gson gson = new Gson();
+        String content = gson.toJson(new CompanyCheckEmailRequestDto(email));
+        System.out.println(content);
+
+
+        SuccessApiResponse<Object> givenResponse = SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("사용가능한 이메일입니다.")
+                .data(Boolean.TRUE)
+                .build();
+
+        given(companyService.checkEmailDuplicated(email)).willReturn(givenResponse);
+
+        mockMvc.perform(
+                post("/v1/company/email")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatus").value(givenResponse.getHttpStatus()))
+                .andExpect(jsonPath("$.message").value(givenResponse.getMessage()))
+                .andExpect(jsonPath("$.data").value(givenResponse.getData()))
+                .andDo(print())
+                .andReturn();
+
+        verify(companyService).checkEmailDuplicated(email);
+    }
+
+    @Test
+    @DisplayName("사업자 번호 중복 확인 성공 테스트")
+    void checkBno() throws Exception {
+        String bno = "111-22-33333";
+        Gson gson = new Gson();
+        String content = gson.toJson(new CompanyCheckBnoRequestDto(bno));
+
+        SuccessApiResponse<Object> givenResponse = SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("가입 가능한 사업자 번호입니다.")
+                .data(Boolean.TRUE)
+                .build();
+
+        given(companyService.checkBnoStatus(bno)).willReturn(givenResponse);
+
+        mockMvc.perform(
+                        post("/v1/company/bno")
+                                .content(content)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatus").value(givenResponse.getHttpStatus()))
+                .andExpect(jsonPath("$.message").value(givenResponse.getMessage()))
+                .andExpect(jsonPath("$.data").value(givenResponse.getData()))
+                .andDo(print())
+                .andReturn();
+
+        verify(companyService).checkBnoStatus(bno);
+    }
+
+
+
+    @Test
+    @DisplayName("기업 회원가입 성공 테스트")
     void signUpCompany() throws Exception {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -82,7 +149,7 @@ class CompanyControllerTest {
     }
 
     @Test
-    @DisplayName("기업 회원가입 테스트 실패 - 컨트롤러")
+    @DisplayName("토큰 불일치 예외 테스트")
     void signUpCompanyFail() throws Exception {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -105,7 +172,7 @@ class CompanyControllerTest {
                         .httpStatus(HttpStatus.UNAUTHORIZED.value())
                         .code("401")
                         .message("토큰 값이 일치하지 않습니다.")
-                        .exception("[UnauthorizedTokenException]: 토큰 값이 일치하지 않습니다.")
+                        .exception("UnauthorizedTokenException")
                         .build());
 
         String privateKey = "TkwkdsladkdlrhdnjfrmqdhodlfjgrpaksgdlwnjTdjdy";
@@ -127,7 +194,7 @@ class CompanyControllerTest {
                 .andExpect(jsonPath("$.httpStatus").value("401"))
                 .andExpect(jsonPath("$.code").value("401"))
                 .andExpect(jsonPath("$.message").value("토큰 값이 일치하지 않습니다."))
-                .andExpect(jsonPath("$.exception").value("[UnauthorizedTokenException]: 토큰 값이 일치하지 않습니다."))
+                .andExpect(jsonPath("$.exception").value("UnauthorizedTokenException"))
                 .andExpect(jsonPath("$.data").doesNotExist())
                 .andDo(print())
                 .andReturn();
