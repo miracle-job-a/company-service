@@ -4,7 +4,9 @@ spring:
     username: ${DB_username}
     password: ${DB_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   jpa:
     hibernate:
       ddl-auto: validate

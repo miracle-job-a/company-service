@@ -25,7 +25,7 @@ class CompanyRepositoryTest {
         CompanySignUpRequestDto companySignUpRequestDto = CompanySignUpRequestDto.builder()
                 .name("오라클코리아")
                 .email("austinTEST@oracle.com")
-                .password(1234)
+                .password("password")
                 .bno("999-13-14444")
                 .ceoName("오스틴 강")
                 .address("서울 서초구 효령로 335")
