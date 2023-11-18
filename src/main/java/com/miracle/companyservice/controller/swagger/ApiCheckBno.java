@@ -29,6 +29,9 @@ import java.lang.annotation.Target;
                                                 name = "실패 / 미존재 사업자 번호",
                                                 value = "{\"httpStatus\": 200, \"message\": \"존재하지 않는 사업자 번호입니다.\", \"data\": false }"),
                                         @ExampleObject(
+                                                name = "실패 / 만료된 사업자 번호",
+                                                value = "{\"httpStatus\": 200, \"message\": \"만료된 사업자 번호입니다.\", \"data\": false }"),
+                                        @ExampleObject(
                                                 name = "실패 / 중복된 사업자 번호",
                                                 value = "{\"httpStatus\": 200, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }")},
                                 schema = @Schema(implementation = SuccessApiResponse.class)
@@ -39,8 +42,8 @@ import java.lang.annotation.Target;
                                 mediaType = "application/json",
                                 examples = {
                                         @ExampleObject(
-                                        name = "사업자 번호 값 없음",
-                                        value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                                name = "사업자 번호 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
                                                 name = "사업자 번호 형식 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자 번호 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"
