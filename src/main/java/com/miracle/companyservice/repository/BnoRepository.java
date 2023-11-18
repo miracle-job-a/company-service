@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface BnoRepository extends JpaRepository<Bno, Long> {
 
     @Query("SELECT b.status FROM Bno b WHERE b.bno = :Bno")
-    Boolean findStatusByIsTrue(String Bno);
+    Boolean findStatusByBnoIsTrue(String Bno);
     Boolean existsByBno(String Bno);
 }
 
