@@ -2,10 +2,9 @@ package com.miracle.companyservice.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
-public class SuccessApiResponse<T> extends ApiResponse {
+public class SuccessApiResponse<T> extends CommonApiResponse {
 
     private final T data;
 
