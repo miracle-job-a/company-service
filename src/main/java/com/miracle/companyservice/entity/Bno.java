@@ -17,4 +17,15 @@ public class Bno extends BaseEntity{
 
     @Column(nullable = false)
     private Boolean status;
+
+    public Bno(String bno, Boolean status) {
+        this.bno = bno;
+        this.status = status;
+    }
+
+    public Bno(Long id, String bno, Boolean status) {
+        this.id = id;
+        this.bno = bno;
+        this.status = status;
+    }
 }
