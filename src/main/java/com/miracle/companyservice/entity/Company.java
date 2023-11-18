@@ -4,6 +4,7 @@ import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 public class Company extends BaseEntity {
 
     @Id
