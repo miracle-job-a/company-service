@@ -1,6 +1,7 @@
 package com.miracle.companyservice.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.validation.constraints.Email;
@@ -9,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
+@EqualsAndHashCode
 public class CompanyLoginRequestDto {
 
     @Schema(
