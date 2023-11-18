@@ -1,13 +1,18 @@
 package com.miracle.companyservice.controller;
 
 
+import com.miracle.companyservice.controller.swagger.ApiCheckBno;
+import com.miracle.companyservice.controller.swagger.ApiCheckEmail;
+import com.miracle.companyservice.controller.swagger.ApiLogin;
+import com.miracle.companyservice.controller.swagger.ApiSignUp;
 import com.miracle.companyservice.dto.request.CompanyCheckBnoRequestDto;
 import com.miracle.companyservice.dto.request.CompanyCheckEmailRequestDto;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.response.ApiResponse;
+import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
+
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,24 +32,30 @@ public class CompanyController {
         this.companyService = companyServiceImpl;
     }
 
+
+    @ApiCheckEmail
     @PostMapping("/email")
-    public ApiResponse checkEmail(@Valid @RequestBody CompanyCheckEmailRequestDto companyCheckEmailRequestDto) {
+    public CommonApiResponse checkEmail(@Valid @RequestBody CompanyCheckEmailRequestDto companyCheckEmailRequestDto) {
         return companyService.checkEmailDuplicated(companyCheckEmailRequestDto.getEmail());
     }
 
+    @ApiCheckBno
     @PostMapping("/bno")
-    public ApiResponse checkBno(@Valid @RequestBody CompanyCheckBnoRequestDto companyCheckBnoRequestDto) {
+    public CommonApiResponse checkBno(@Valid @RequestBody CompanyCheckBnoRequestDto companyCheckBnoRequestDto) {
         return companyService.checkBnoStatus(companyCheckBnoRequestDto.getBno());
     }
 
+    @ApiSignUp
     @PostMapping("/signup")
-    public ApiResponse signUpCompany(@Valid @RequestBody CompanySignUpRequestDto companySignUpRequestDto) {
+    public CommonApiResponse signUpCompany(@Valid @RequestBody CompanySignUpRequestDto companySignUpRequestDto) {
         return companyService.signUpCompany(companySignUpRequestDto);
     }
 
+    @ApiLogin
     @PostMapping("/login")
-    public ApiResponse loginCompany(@Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto) {
+    public CommonApiResponse loginCompany(@Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto) {
         return companyService.loginCompany(companyLoginRequestDto);
     }
+
 
 }
