@@ -71,10 +71,10 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-        if (!bnoRepository.findStatusByIsTrue(company.get().getBno())) {
+        if (!bnoRepository.findStatusByBnoIsTrue(company.get().getBno())) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.OK.value())
-                    .message("사업자 번호가 만료되었습니다.")
+                    .message("만료된 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -92,6 +92,13 @@ public class CompanyServiceImpl implements CompanyService {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.OK.value())
                     .message("존재하지 않는 사업자 번호입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (!bnoRepository.findStatusByBnoIsTrue(bno)) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("만료된 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
