@@ -60,13 +60,14 @@ public class CompanyController {
     @PostMapping("/login")
     public CommonApiResponse loginCompany(@Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto) {
         return companyService.loginCompany(companyLoginRequestDto);
+    }
+
     /**
      * Register post form api response.
      * @param session the session
-     * @return the api response
+     * @return the common api response
      * @author wjdals3936
      */
-
     @PostMapping("/post/common-data")
     public CommonApiResponse registerPostForm(HttpSession session){
         Long companyId = (Long) session.getAttribute("companyId");

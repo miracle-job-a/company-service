@@ -2,7 +2,6 @@ package com.miracle.companyservice.service;
 
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.response.ApiResponse;
 import com.miracle.companyservice.dto.response.CompanyFaqDto;
 import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;

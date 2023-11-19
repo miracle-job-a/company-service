@@ -4,6 +4,7 @@ package com.miracle.companyservice.exception;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.validation.BindingResult;

@@ -23,8 +23,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByEmailAndPassword(String email, int password);
 
     Boolean existsByBno(String bno);
-}
-
 
     /**
      * Find company byid post common data response dto.

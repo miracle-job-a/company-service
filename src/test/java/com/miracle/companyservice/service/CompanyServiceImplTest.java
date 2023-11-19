@@ -241,7 +241,7 @@ class CompanyServiceImplTest {
                 .id(33L)
                 .name("오라클코리아")
                 .email("austin@oracle.com")
-                .password(1234)
+                .password("123456!")
                 .bno("111-13-14444")
                 .ceoName("오스틴 강")
                 .address("서울 서초구 효령로 335")
