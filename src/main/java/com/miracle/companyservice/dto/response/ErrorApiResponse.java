@@ -2,10 +2,9 @@ package com.miracle.companyservice.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
-public class ErrorApiResponse extends ApiResponse {
+public class ErrorApiResponse extends CommonApiResponse {
 
     private final String code;
     private final String exception;
