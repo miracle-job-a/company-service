@@ -9,20 +9,34 @@ public interface CompanyService {
     /**
      * @author kade
      * @param companySignUpRequestDto
-     * @return ApiResponse
-     * 기업회원의 회원가입 요청을 처리하는 메서드, 아이디 / 사업자번호 중복일 경우 에러가 발생한다.
+     * @return CommonApiResponse
+     * 기업회원의 회원가입 요청을 처리하는 메서드
+     *
      */
     CommonApiResponse signUpCompany(CompanySignUpRequestDto companySignUpRequestDto);
 
     /**
      * @author kade
      * @param companyLoginRequestDto
-     * @return ApiResponse
-     * @data
+     * @return CommonApiResponse
+     * 기업회원의 로그인 요청을 처리하는 메서드
      */
     CommonApiResponse loginCompany(CompanyLoginRequestDto companyLoginRequestDto);
 
+    /**
+     * @author kade
+     * @param email
+     * @return CommonApiResponse
+     * 기업회원 가입 시, 이메일 중복여부 요청 처리하는 메서드
+     */
     CommonApiResponse checkEmailDuplicated (String email);
+
+    /**
+     * @author kade
+     * @param bno
+     * @return CommonApiResponse
+     * 기업회원 가입 시, 사업자 번호 확인 요청 처리하는 메서드
+     */
     CommonApiResponse checkBnoStatus(String bno);
 
 
