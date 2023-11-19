@@ -2,8 +2,11 @@ package com.miracle.companyservice.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor
@@ -19,4 +22,13 @@ public class CompanyFaq extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    public CompanyFaq(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+    }
 }

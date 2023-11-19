@@ -1,9 +1,10 @@
 package com.miracle.companyservice.exception;
 
 
-import com.miracle.companyservice.dto.response.ApiResponse;
+import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.validation.BindingResult;
@@ -31,7 +32,7 @@ public class ExceptionController {
      *
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ApiResponse notValidHandle(MethodArgumentNotValidException e) {
+    public CommonApiResponse notValidHandle(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         log.info("[notValidHandle] : " + e.getMessage());
         FieldError error = bindingResult.getFieldError();
@@ -49,7 +50,7 @@ public class ExceptionController {
      * 401_1 토큰 인증
      */
     @ExceptionHandler(value = UnauthorizedTokenException.class)
-    public ApiResponse unauthorizedTokenHandle(UnauthorizedTokenException e) {
+    public CommonApiResponse unauthorizedTokenHandle(UnauthorizedTokenException e) {
         log.info("[unauthorizedTokenHandle] : " + e.getMessage());
 
         return ErrorApiResponse.builder()
@@ -65,7 +66,7 @@ public class ExceptionController {
      * 500 서버에러
      */
     @ExceptionHandler(value = RuntimeException.class)
-    public ApiResponse runtimeHandle(RuntimeException e) {
+    public CommonApiResponse runtimeHandle(RuntimeException e) {
         log.info("[runtimeHandle] : " + e.getMessage());
 
         return ErrorApiResponse.builder()
@@ -73,6 +74,27 @@ public class ExceptionController {
                 .code("500")
                 .message("서버에 문제가 생겼습니다. 다시 시도해주세요.")
                 .exception("RuntimeException")
+                .build();
+    }
+
+    /**
+     * Illegal argument exception handle api response.
+     *
+     * @param e       the e
+     * @param request the request
+     * @return the api response
+     * @author wjdals3936
+     */
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpRequest request) {
+        log.info("[ExceptionController] uri: {}, method: {}, methodValue: {}", request.getURI(), request.getMethod(), request.getMethodValue());
+        log.info(e.getMessage());
+
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .code("400")
+                .message("잘못된 요청입니다.")
+                .exception(e.toString())
                 .build();
     }
 }

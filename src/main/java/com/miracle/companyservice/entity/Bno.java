@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class Bno {
+public class Bno extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,5 +16,16 @@ public class Bno {
     private String bno;
 
     @Column(nullable = false)
-    private boolean status;
+    private Boolean status;
+
+    public Bno(String bno, Boolean status) {
+        this.bno = bno;
+        this.status = status;
+    }
+
+    public Bno(Long id, String bno, Boolean status) {
+        this.id = id;
+        this.bno = bno;
+        this.status = status;
+    }
 }

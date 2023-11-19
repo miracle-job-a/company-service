@@ -2,26 +2,50 @@ package com.miracle.companyservice.service;
 
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.response.ApiResponse;
+import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
+import com.miracle.companyservice.dto.response.CommonApiResponse;
 
 public interface CompanyService {
     /**
      * @author kade
      * @param companySignUpRequestDto
-     * @return ApiResponse
-     * 기업회원의 회원가입 요청을 처리하는 메서드, 아이디 / 사업자번호 중복일 경우 에러가 발생한다.
+     * @return CommonApiResponse
+     * 기업회원의 회원가입 요청을 처리하는 메서드
+     *
      */
-    ApiResponse signUpCompany(CompanySignUpRequestDto companySignUpRequestDto);
+    CommonApiResponse signUpCompany(CompanySignUpRequestDto companySignUpRequestDto);
 
     /**
      * @author kade
      * @param companyLoginRequestDto
-     * @return ApiResponse
-     * @data
+     * @return CommonApiResponse
+     * 기업회원의 로그인 요청을 처리하는 메서드
      */
-    ApiResponse loginCompany(CompanyLoginRequestDto companyLoginRequestDto);
+    CommonApiResponse loginCompany(CompanyLoginRequestDto companyLoginRequestDto);
 
-    ApiResponse checkEmailDuplicated (String email);
-    ApiResponse checkBnoStatus(String bno);
+    /**
+     * @author kade
+     * @param email
+     * @return CommonApiResponse
+     * 기업회원 가입 시, 이메일 중복여부 요청 처리하는 메서드
+     */
+    CommonApiResponse checkEmailDuplicated (String email);
+
+    /**
+     * @author kade
+     * @param bno
+     * @return CommonApiResponse
+     * 기업회원 가입 시, 사업자 번호 확인 요청 처리하는 메서드
+     */
+    CommonApiResponse checkBnoStatus(String bno);
+
+
+    /**
+     * Gets company faqs by company id.
+     * @param companyId the company id
+     * @return the company faqs by company id
+     * @author wjdals3936
+     */
+    public PostCommonDataResponseDto getCompanyFaqsByCompanyId(Long companyId);
 
 }
