@@ -6,6 +6,7 @@ import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.repository.BnoRepository;
+import com.miracle.companyservice.repository.CompanyFaqRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,12 +28,13 @@ import static org.mockito.Mockito.verify;
 class CompanyServiceImplTest {
 
     private final CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+    private final CompanyFaqRepository companyFaqRepository = Mockito.mock(CompanyFaqRepository.class);
     private final BnoRepository bnoRepository = Mockito.mock(BnoRepository.class);
     private CompanyServiceImpl companyService;
 
     @BeforeEach
     public void setUpTest() {
-        companyService = new CompanyServiceImpl(companyRepository, bnoRepository);
+        companyService = new CompanyServiceImpl(companyRepository, companyFaqRepository, bnoRepository);
     }
 
     @Test
