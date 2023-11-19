@@ -53,7 +53,7 @@ public class CompanyController {
      * @return the api response
      * @author wjdals3936
      */
-    @PostMapping("/post/registration-form")
+    @PostMapping("/post/common-data")
     public ApiResponse registerPostForm(HttpSession session){
         Long companyId = (Long) session.getAttribute("companyId");
         log.debug("companyId: "+ companyId);
