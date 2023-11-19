@@ -17,12 +17,8 @@ import com.miracle.companyservice.service.CompanyServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -36,7 +32,6 @@ public class CompanyController {
     public CompanyController(CompanyServiceImpl companyServiceImpl) {
         this.companyService = companyServiceImpl;
     }
-
 
     @ApiCheckEmail
     @PostMapping("/email")
@@ -62,19 +57,17 @@ public class CompanyController {
         return companyService.loginCompany(companyLoginRequestDto);
     }
 
+
     /**
-     * Register post form api response.
-     * @param session the session
+     * Post common data common api response.
+     *
+     * @param companyId the company id
      * @return the common api response
      * @author wjdals3936
      */
-    @PostMapping("/post/common-data")
-    public CommonApiResponse registerPostForm(HttpSession session){
-        Long companyId = (Long) session.getAttribute("companyId");
-        log.debug("companyId: "+ companyId);
-//        Long companyId = 4L; // 테스트용 코드
-        PostCommonDataResponseDto responseDto = companyService.getCompanyFaqsByCompanyId(companyId);
-        System.out.println("========responseDto=========> " + responseDto);
-        return new SuccessApiResponse<>(HttpStatus.OK.value(), "SUCCESS", responseDto);
+    @PostMapping("{companyId}/post/common-data")
+    public CommonApiResponse PostCommonData(@PathVariable Long companyId){
+        log.debug("companyId : {} ", companyId);
+        return companyService.getCompanyFaqsByCompanyId(companyId);
     }
 }
