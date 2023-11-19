@@ -1,6 +1,7 @@
 package com.miracle.companyservice.entity;
 
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,7 +57,7 @@ public class Company extends BaseEntity {
 
     @Builder
     public Company(Long id, String email, String bno, String password, String name, String photo,
-                   String ceoName, String sector, String address, String addressDetail, String introduction,
+                   String ceoName, String sector, String address, String introduction,
                    List<CompanyFaq> faqList, int employeeNum, boolean approveStatus) {
         this.id = id;
         this.email = email;

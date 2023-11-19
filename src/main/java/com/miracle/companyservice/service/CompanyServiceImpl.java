@@ -2,10 +2,14 @@ package com.miracle.companyservice.service;
 
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.response.CompanyFaqDto;
+import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.entity.Company;
 
+import com.miracle.companyservice.entity.CompanyFaq;
+import com.miracle.companyservice.repository.CompanyFaqRepository;
 import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,19 +17,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final CompanyFaqRepository companyFaqRepository;
     private final BnoRepository bnoRepository;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, BnoRepository bnoRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository) {
         this.companyRepository = companyRepository;
+        this.companyFaqRepository = companyFaqRepository;
         this.bnoRepository = bnoRepository;
     }
 
@@ -114,6 +121,30 @@ public class CompanyServiceImpl implements CompanyService {
                 .message("가입 가능한 사업자 번호입니다.")
                 .data(Boolean.TRUE)
                 .build();
+    }
+
+    @Override
+    public PostCommonDataResponseDto getCompanyFaqsByCompanyId(Long companyId){
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + companyId));
+        System.out.println("======company==> "+company);
+
+        List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
+        System.out.println("======fags ====> "+faqs);
+
+        List<CompanyFaqDto> faqList = faqs.stream()
+                .map(CompanyFaqDto::new)
+                .collect(Collectors.toList());
+        System.out.println("======faqList======>" + faqList);
+
+        return new PostCommonDataResponseDto(
+                company.getName(),
+                company.getCeoName(),
+                company.getPhoto(),
+                company.getEmployeeNum(),
+                company.getAddress(),
+                company.getIntroduction(),
+                faqList);
     }
 }
 

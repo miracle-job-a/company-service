@@ -4,6 +4,7 @@ package com.miracle.companyservice.exception;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.validation.BindingResult;
@@ -73,6 +74,27 @@ public class ExceptionController {
                 .code("500")
                 .message("서버에 문제가 생겼습니다. 다시 시도해주세요.")
                 .exception("RuntimeException")
+                .build();
+    }
+
+    /**
+     * Illegal argument exception handle api response.
+     *
+     * @param e       the e
+     * @param request the request
+     * @return the api response
+     * @author wjdals3936
+     */
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpRequest request) {
+        log.info("[ExceptionController] uri: {}, method: {}, methodValue: {}", request.getURI(), request.getMethod(), request.getMethodValue());
+        log.info(e.getMessage());
+
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .code("400")
+                .message("잘못된 요청입니다.")
+                .exception(e.toString())
                 .build();
     }
 }
