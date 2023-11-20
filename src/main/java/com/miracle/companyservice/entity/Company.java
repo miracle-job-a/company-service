@@ -86,4 +86,6 @@ public class Company extends BaseEntity {
         this.introduction = companySignUpRequestDto.getIntroduction();
         this.employeeNum = companySignUpRequestDto.getEmployeeNum();
     }
+
+
 }

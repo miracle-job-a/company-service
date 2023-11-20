@@ -159,27 +159,35 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PostCommonDataResponseDto getCompanyFaqsByCompanyId(Long companyId){
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + companyId));
-        System.out.println("======company==> "+company);
+    public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId){
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("기업 정보가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        log.info("company : {}", company);
 
         List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
-        System.out.println("======fags ====> "+faqs);
+        log.info("faqs : {}",faqs);
 
         List<CompanyFaqDto> faqList = faqs.stream()
                 .map(CompanyFaqDto::new)
                 .collect(Collectors.toList());
-        System.out.println("======faqList======>" + faqList);
+        log.info("faqList : {}",faqList);
 
-        return new PostCommonDataResponseDto(
-                company.getName(),
-                company.getCeoName(),
-                company.getPhoto(),
-                company.getEmployeeNum(),
-                company.getAddress(),
-                company.getIntroduction(),
+        PostCommonDataResponseDto responseDto = new PostCommonDataResponseDto(
+                company.get(),
                 faqList);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("SUCCESS")
+                .data(responseDto)
+                .build();
     }
 }
 

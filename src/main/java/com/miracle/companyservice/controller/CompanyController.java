@@ -75,18 +75,14 @@ public class CompanyController {
     }
 
     /**
-     * Register post form api response.
-     * @param session the session
+     * Post common data common api response.
+     * @param companyId the company id
      * @return the common api response
      * @author wjdals3936
      */
-    @PostMapping("/post/common-data")
-    public CommonApiResponse registerPostForm(HttpSession session){
-        Long companyId = (Long) session.getAttribute("companyId");
-        log.debug("companyId: "+ companyId);
-//        Long companyId = 4L; // 테스트용 코드
-        PostCommonDataResponseDto responseDto = companyService.getCompanyFaqsByCompanyId(companyId);
-        System.out.println("========responseDto=========> " + responseDto);
-        return new SuccessApiResponse<>(HttpStatus.OK.value(), "SUCCESS", responseDto);
+    @PostMapping("{companyId}/post/common-data")
+    public CommonApiResponse PostCommonData(@PathVariable Long companyId){
+        log.debug("companyId : {} ", companyId);
+        return companyService.getCompanyFaqsByCompanyId(companyId);
     }
 }
