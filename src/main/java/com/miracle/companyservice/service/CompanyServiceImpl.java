@@ -2,23 +2,21 @@ package com.miracle.companyservice.service;
 
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.response.CompanyFaqDto;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
-import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.dto.response.SuccessApiResponse;
+import com.miracle.companyservice.dto.response.*;
 import com.miracle.companyservice.entity.Company;
 
 import com.miracle.companyservice.entity.CompanyFaq;
+import com.miracle.companyservice.entity.Post;
 import com.miracle.companyservice.repository.CompanyFaqRepository;
 import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
+import com.miracle.companyservice.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -28,19 +26,21 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final CompanyFaqRepository companyFaqRepository;
     private final BnoRepository bnoRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository) {
         this.companyRepository = companyRepository;
         this.companyFaqRepository = companyFaqRepository;
         this.bnoRepository = bnoRepository;
+        this.postRepository = postRepository;
     }
 
     public CommonApiResponse checkEmailDuplicated (String email) {
         log.info("email : {}", email);
         if (companyRepository.existsByEmail(email)) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("중복된 이메일입니다.")
                     .data(Boolean.FALSE)
                     .build();
@@ -54,10 +54,19 @@ public class CompanyServiceImpl implements CompanyService {
 
     public CommonApiResponse signUpCompany(CompanySignUpRequestDto companySignUpRequestDto) {
         log.info("companySignUpRequestDto : {}", companySignUpRequestDto);
+        if (companyRepository.existsByEmail(companySignUpRequestDto.getEmail())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("중복된 이메일입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+
+        }
         companyRepository.save(new Company(companySignUpRequestDto));
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("회원가입 성공")
+                .data(Boolean.TRUE)
                 .build();
     }
 
@@ -65,7 +74,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("email : {}, password : {}", companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
         if (!companyRepository.existsByEmail(companyLoginRequestDto.getEmail())) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("이메일 또는 비밀번호가 일치하지 않습니다.")
                     .data(Boolean.FALSE)
                     .build();
@@ -73,45 +82,45 @@ public class CompanyServiceImpl implements CompanyService {
         Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("이메일 또는 비밀번호가 일치하지 않습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
         if (!bnoRepository.findStatusByBnoIsTrue(company.get().getBno())) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("만료된 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
+
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("로그인 성공")
-                .data(company.get().getId())
+                .data(new CompanyLoginResponseDto(company.get().getId(), company.get().getEmail(), company.get().getBno()))
                 .build();
     }
-
 
     public CommonApiResponse checkBnoStatus(String bno) {
         log.info("bno : {}", bno);
         if (!bnoRepository.existsByBno(bno)) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("존재하지 않는 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
         if (!bnoRepository.findStatusByBnoIsTrue(bno)) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("만료된 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
         if (companyRepository.existsByBno(bno)) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("이미 가입된 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
@@ -120,6 +129,32 @@ public class CompanyServiceImpl implements CompanyService {
                 .httpStatus(HttpStatus.OK.value())
                 .message("가입 가능한 사업자 번호입니다.")
                 .data(Boolean.TRUE)
+                .build();
+    }
+
+    public CommonApiResponse postForMainPage() {
+        List<Post> newestResult = postRepository.findTop3ByOrderByModifiedAtDesc();
+        List<MainPagePostsResponseDto> newest = new ArrayList<>();
+        newestResult.iterator().forEachRemaining( (Post p) -> {
+            String photo = companyRepository.findPhotoById(p.getCompanyId());
+            newest.add(new MainPagePostsResponseDto(p, photo));
+        });
+
+        List<Post> deadlineResult = postRepository.findTop3ByOrderByEndDateAsc();
+        List<MainPagePostsResponseDto> deadline = new ArrayList<>();
+        deadlineResult.iterator().forEachRemaining((Post p) -> {
+            String photo = companyRepository.findPhotoById(p.getCompanyId());
+            deadline.add(new MainPagePostsResponseDto(p, photo));
+        });
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("newest", newest);
+        data.put("deadline", deadline);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("최신 공고, 마감임박 공고 조회 성공")
+                .data(data)
                 .build();
     }
 
