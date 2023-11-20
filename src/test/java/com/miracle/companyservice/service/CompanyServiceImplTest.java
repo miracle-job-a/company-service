@@ -8,6 +8,7 @@ import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyFaqRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
+import com.miracle.companyservice.repository.PostRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -30,11 +32,12 @@ class CompanyServiceImplTest {
     private final CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
     private final CompanyFaqRepository companyFaqRepository = Mockito.mock(CompanyFaqRepository.class);
     private final BnoRepository bnoRepository = Mockito.mock(BnoRepository.class);
+    private final PostRepository postRepository = Mockito.mock(PostRepository.class);
     private CompanyServiceImpl companyService;
 
     @BeforeEach
     public void setUpTest() {
-        companyService = new CompanyServiceImpl(companyRepository, companyFaqRepository, bnoRepository);
+        companyService = new CompanyServiceImpl(companyRepository, companyFaqRepository, bnoRepository, postRepository);
     }
 
     @Test

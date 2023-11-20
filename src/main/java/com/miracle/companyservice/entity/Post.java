@@ -1,5 +1,6 @@
 package com.miracle.companyservice.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -81,6 +82,7 @@ public class Post extends BaseEntity {
     @Column(name = "stack_id")
     private Set<Long> stackIdSet = new HashSet<>();
 
+    @Builder
     public Post(Long id, Long companyId,
                 PostType postType, String title,
                 LocalDateTime endDate, String tool,

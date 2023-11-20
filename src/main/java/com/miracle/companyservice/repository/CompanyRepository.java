@@ -1,10 +1,7 @@
 package com.miracle.companyservice.repository;
 
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

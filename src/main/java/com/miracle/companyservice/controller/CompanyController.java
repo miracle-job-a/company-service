@@ -5,18 +5,12 @@ import com.miracle.companyservice.controller.swagger.ApiCheckBno;
 import com.miracle.companyservice.controller.swagger.ApiCheckEmail;
 import com.miracle.companyservice.controller.swagger.ApiLogin;
 import com.miracle.companyservice.controller.swagger.ApiSignUp;
-import com.miracle.companyservice.dto.request.CompanyCheckBnoRequestDto;
-import com.miracle.companyservice.dto.request.CompanyCheckEmailRequestDto;
-import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
-import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
-import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -69,5 +63,11 @@ public class CompanyController {
     public CommonApiResponse PostCommonData(@PathVariable Long companyId){
         log.debug("companyId : {} ", companyId);
         return companyService.getCompanyFaqsByCompanyId(companyId);
+    }
+
+    @PostMapping("post/registration")
+    public CommonApiResponse PostRegistration(@RequestBody PostRequestDto postRequestDto){
+        log.info("postRequestDto: {}", postRequestDto);
+        return companyService.savePost(postRequestDto);
     }
 }
