@@ -112,7 +112,7 @@ class CompanyRepositoryTest {
                 .name("오라클코리아")
                 .email("austinTEST@oracle.com")
                 .password("123456!")
-                .bno("111-22-33333")
+                .bno("999-99-33333")
                 .ceoName("오스틴강")
                 .address("서울 서초구 효령로 335")
                 .employeeNum(3000)
@@ -123,7 +123,7 @@ class CompanyRepositoryTest {
         Company givenCompany = new Company(companySignUpRequestDto);
         Company givenResult = companyRepository.save(givenCompany);
 
-        String bno = "111-22-33333";
+        String bno = "999-99-33333";
 
         Boolean exists = companyRepository.existsByBno(bno);
 

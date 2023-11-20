@@ -24,15 +24,16 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     Boolean existsByBno(String bno);
 
+    @Query("SELECT c.photo FROM Company c WHERE c.id = :companyId")
+    String findPhotoById(Long companyId);
+
     /**
      * Find company byid post common data response dto.
      * @param companyId the company id
      * @return the post common data response dto
      * @author wjdals3936
      */
-    @Query("SELECT c.name, c.ceoName, c.photo, c.employeeNum, c.address, c.introduction, c.faqList " +
-            "FROM Company c WHERE c.id = :companyId")
-    PostCommonDataResponseDto findCompanyByid(@Param("companyId") Long companyId);
+    Optional<Company> findById(Long companyId);
 
 
 

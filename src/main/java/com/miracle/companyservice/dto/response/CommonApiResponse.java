@@ -1,8 +1,10 @@
 package com.miracle.companyservice.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
+@Schema (subTypes = {SuccessApiResponse.class, ErrorApiResponse.class})
 public class CommonApiResponse {
 
     private final int httpStatus;

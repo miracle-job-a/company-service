@@ -1,5 +1,6 @@
 package com.miracle.companyservice.dto.response;
 
+import com.miracle.companyservice.entity.Company;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -9,8 +10,6 @@ import java.util.List;
 @Getter
 @ToString
 public class PostCommonDataResponseDto{
-
-    public static PostCommonDataResponseDto fromObjectArray;
     private final String name;
     private final String ceoName;
     private final String photo;
@@ -19,24 +18,13 @@ public class PostCommonDataResponseDto{
     private final String introduction;
     private final List<CompanyFaqDto> faqList;
 
-    /**
-     * Instantiates a new Post common data response dto.
-     * @param name         the name
-     * @param ceoName      the ceo name
-     * @param photo        the photo
-     * @param employeeNum  the employee num
-     * @param address      the address
-     * @param introduction the introduction
-     * @param faqList      the faq list
-     * @author wjdals3936
-     */
-    public PostCommonDataResponseDto(String name, String ceoName, String photo, int employeeNum, String address, String introduction, List<CompanyFaqDto> faqList) {
-        this.name = name;
-        this.ceoName = ceoName;
-        this.photo = photo;
-        this.employeeNum = employeeNum;
-        this.address = address;
-        this.introduction = introduction;
+    public PostCommonDataResponseDto(Company company, List<CompanyFaqDto> faqList) {
+        this.name = company.getName();
+        this.ceoName = company.getCeoName();
+        this.photo = company.getPhoto();
+        this.employeeNum = company.getEmployeeNum();
+        this.address = company.getAddress();
+        this.introduction = company.getIntroduction();
         this.faqList = faqList;
     }
 }
