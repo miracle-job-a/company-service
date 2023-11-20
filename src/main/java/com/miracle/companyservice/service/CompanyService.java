@@ -45,7 +45,8 @@ public interface CompanyService {
      * @param companyId the company id
      * @return the company faqs by company id
      * @author wjdals3936
+     * 공고 생성 및 상세 조회 시, 해당 기업 정보, FAQ 데이터를 반환하는 메서드
      */
-    public PostCommonDataResponseDto getCompanyFaqsByCompanyId(Long companyId);
+    public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId);
 
 }
