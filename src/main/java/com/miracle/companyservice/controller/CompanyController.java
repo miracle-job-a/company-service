@@ -14,11 +14,14 @@ import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -33,34 +36,46 @@ public class CompanyController {
         this.companyService = companyServiceImpl;
     }
 
+
     @ApiCheckEmail
     @PostMapping("/email")
-    public CommonApiResponse checkEmail(@Valid @RequestBody CompanyCheckEmailRequestDto companyCheckEmailRequestDto) {
-        return companyService.checkEmailDuplicated(companyCheckEmailRequestDto.getEmail());
+    public CommonApiResponse checkEmail(@Valid @RequestBody CompanyCheckEmailRequestDto companyCheckEmailRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkEmailDuplicated(companyCheckEmailRequestDto.getEmail());
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
     }
 
     @ApiCheckBno
     @PostMapping("/bno")
-    public CommonApiResponse checkBno(@Valid @RequestBody CompanyCheckBnoRequestDto companyCheckBnoRequestDto) {
-        return companyService.checkBnoStatus(companyCheckBnoRequestDto.getBno());
+    public CommonApiResponse checkBno(@Valid @RequestBody CompanyCheckBnoRequestDto companyCheckBnoRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkBnoStatus(companyCheckBnoRequestDto.getBno());
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
     }
 
     @ApiSignUp
     @PostMapping("/signup")
-    public CommonApiResponse signUpCompany(@Valid @RequestBody CompanySignUpRequestDto companySignUpRequestDto) {
-        return companyService.signUpCompany(companySignUpRequestDto);
+    public CommonApiResponse signUpCompany(@Valid @RequestBody CompanySignUpRequestDto companySignUpRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.signUpCompany(companySignUpRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
     }
 
     @ApiLogin
     @PostMapping("/login")
-    public CommonApiResponse loginCompany(@Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto) {
-        return companyService.loginCompany(companyLoginRequestDto);
+    public CommonApiResponse loginCompany(@Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.loginCompany(companyLoginRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
     }
 
+    @GetMapping("/post/main")
+    public CommonApiResponse postForMainPage() {
+        return companyService.postForMainPage();
+    }
 
     /**
      * Post common data common api response.
-     *
      * @param companyId the company id
      * @return the common api response
      * @author wjdals3936

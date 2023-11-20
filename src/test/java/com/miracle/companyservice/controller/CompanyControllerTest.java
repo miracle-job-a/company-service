@@ -53,8 +53,6 @@ class CompanyControllerTest {
         String email = "austin@oracle.com";
         Gson gson = new Gson();
         String content = gson.toJson(new CompanyCheckEmailRequestDto(email));
-        System.out.println(content);
-
 
         SuccessApiResponse<Object> givenResponse = SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
@@ -223,7 +221,7 @@ class CompanyControllerTest {
                         post("/v1/company/signup")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.httpStatus").value("401"))
                 .andExpect(jsonPath("$.code").value("401"))
                 .andExpect(jsonPath("$.message").value("토큰 값이 일치하지 않습니다."))

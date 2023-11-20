@@ -2,6 +2,7 @@ package com.miracle.companyservice.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 public class Post extends BaseEntity {
 
     @Id
@@ -57,7 +59,8 @@ public class Post extends BaseEntity {
     private String notice;
 
     private int career;
-    private boolean status;
+    private boolean closed;
+    private boolean deleted;
     private LocalDateTime testStartDate;
     private LocalDateTime testEndDate;
 
@@ -88,7 +91,7 @@ public class Post extends BaseEntity {
                 String qualification, String benefit,
                 String specialSkill, String process,
                 String notice,int career,
-                boolean status,
+                boolean closed, boolean deleted,
                 LocalDateTime testStartDate, LocalDateTime testEndDate,
                 List<Question> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet) {
         this.id = id;
@@ -106,7 +109,8 @@ public class Post extends BaseEntity {
         this.process = process;
         this.notice = notice;
         this.career = career;
-        this.status = status;
+        this.closed = closed;
+        this.deleted = deleted;
         this.testStartDate = testStartDate;
         this.testEndDate = testEndDate;
         this.questionList = questionList;
