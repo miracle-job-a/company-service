@@ -39,6 +39,17 @@ public interface CompanyService {
      */
     CommonApiResponse checkBnoStatus(String bno);
 
+    /**
+     * @author kade
+     * @return
+     * 게스트, 유저 메인페이지에 노출될 최근 공고 3건, 마감임박 공고 3건 반환하는 메서드
+     */
+    CommonApiResponse postForMainPage();
+
+
+
+
+
 
     /**
      * Gets company faqs by company id.
