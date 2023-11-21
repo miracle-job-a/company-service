@@ -3,6 +3,7 @@ package com.miracle.companyservice.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.*;
 
 @Getter
 @NoArgsConstructor
+@ToString
 @Entity
 public class Post extends BaseEntity {
 
@@ -58,12 +60,14 @@ public class Post extends BaseEntity {
     private String notice;
 
     private int career;
-    private boolean status;
+    private boolean closed;
+    private boolean deleted;
     private LocalDateTime testStartDate;
     private LocalDateTime testEndDate;
 
-    @OneToMany
-    @JoinColumn(name = "post_id")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+//    @JoinColumn(name = "post_id")
+//    @OneToMany(cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
     @ElementCollection
@@ -90,9 +94,9 @@ public class Post extends BaseEntity {
                 String qualification, String benefit,
                 String specialSkill, String process,
                 String notice,int career,
-                boolean status,
+                boolean closed, boolean deleted,
                 LocalDateTime testStartDate, LocalDateTime testEndDate,
-                List<Question> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet) {
+                Set<Long> jobIdSet, Set<Long> stackIdSet) {
         this.id = id;
         this.companyId = companyId;
         this.postType = postType;
@@ -108,11 +112,17 @@ public class Post extends BaseEntity {
         this.process = process;
         this.notice = notice;
         this.career = career;
-        this.status = status;
+        this.closed = closed;
+        this.deleted = deleted;
         this.testStartDate = testStartDate;
         this.testEndDate = testEndDate;
-        this.questionList = questionList;
         this.jobIdSet = jobIdSet;
         this.stackIdSet = stackIdSet;
     }
+
+/*    public void addAll(Collection<Question> collection) {
+        questionList.addAll(collection);
+        questionList.stream()
+                .forEach(q -> q.setId(this.id));
+    }*/
 }

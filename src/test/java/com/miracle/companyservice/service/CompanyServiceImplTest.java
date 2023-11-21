@@ -5,10 +5,7 @@ import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.entity.Company;
-import com.miracle.companyservice.repository.BnoRepository;
-import com.miracle.companyservice.repository.CompanyFaqRepository;
-import com.miracle.companyservice.repository.CompanyRepository;
-import com.miracle.companyservice.repository.PostRepository;
+import com.miracle.companyservice.repository.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,11 +30,12 @@ class CompanyServiceImplTest {
     private final CompanyFaqRepository companyFaqRepository = Mockito.mock(CompanyFaqRepository.class);
     private final BnoRepository bnoRepository = Mockito.mock(BnoRepository.class);
     private final PostRepository postRepository = Mockito.mock(PostRepository.class);
+    private final QuestionRepository questionRepository = Mockito.mock(QuestionRepository.class);
     private CompanyServiceImpl companyService;
 
     @BeforeEach
     public void setUpTest() {
-        companyService = new CompanyServiceImpl(companyRepository, companyFaqRepository, bnoRepository, postRepository);
+        companyService = new CompanyServiceImpl(companyRepository, companyFaqRepository, bnoRepository, postRepository, questionRepository);
     }
 
     @Test

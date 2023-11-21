@@ -1,6 +1,7 @@
 package com.miracle.companyservice.dto.response;
 
 import com.miracle.companyservice.entity.Company;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -18,6 +19,7 @@ public class PostCommonDataResponseDto{
     private final String introduction;
     private final List<CompanyFaqDto> faqList;
 
+    @Builder
     public PostCommonDataResponseDto(Company company, List<CompanyFaqDto> faqList) {
         this.name = company.getName();
         this.ceoName = company.getCeoName();

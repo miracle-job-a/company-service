@@ -1,12 +1,12 @@
 package com.miracle.companyservice.dto.request;
 
 import com.miracle.companyservice.entity.PostType;
-import com.miracle.companyservice.entity.Question;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -27,9 +27,13 @@ public class PostRequestDto {
     private String notice;
     private String specialSkill;
     private String workAddress;
-    private List<Question> questionList;
+    private List<QuestionDto> questionList = new ArrayList<>();
+//    private List<String> questionList = new ArrayList<>();
     private Set<Long> jobIdSet;
     private Set<Long> stackIdSet;
+
+    public PostRequestDto() {
+    }
 
     @Builder
     public PostRequestDto(Long companyId, PostType postType,
@@ -38,7 +42,9 @@ public class PostRequestDto {
                           String qualification, String benefit,
                           String specialSkill, String process,
                           String notice, int career,
-                          List<Question> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet) {
+                          List<QuestionDto> questionList,
+                          // List<String> questionList,
+                          Set<Long> jobIdSet, Set<Long> stackIdSet) {
         this.companyId = companyId;
         this.postType = postType;
         this.title = title;
