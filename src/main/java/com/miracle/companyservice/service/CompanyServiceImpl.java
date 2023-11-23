@@ -13,8 +13,10 @@ import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -132,15 +134,16 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+
     public CommonApiResponse postForMainPage() {
-        List<Post> newestResult = postRepository.findTop3ByOrderByModifiedAtDesc();
+        List<Post> newestResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByModifiedAtDesc(PageRequest.of(0,3));
         List<MainPagePostsResponseDto> newest = new ArrayList<>();
         newestResult.iterator().forEachRemaining( (Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
             newest.add(new MainPagePostsResponseDto(p, photo));
         });
 
-        List<Post> deadlineResult = postRepository.findTop3ByOrderByEndDateAsc();
+        List<Post> deadlineResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByEndDateAsc(PageRequest.of(0,3));
         List<MainPagePostsResponseDto> deadline = new ArrayList<>();
         deadlineResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
