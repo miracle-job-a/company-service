@@ -59,13 +59,24 @@ import java.lang.annotation.Target;
                                         @ExampleObject(
                                                 name = "회원 인증 실패",
                                                 value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"회원 인증에 실패하여 정보를 요청할 수 없습니다.\", \"data\": \"false\" }"),
-
                                         @ExampleObject(
                                                 name = "회원 정보에 빈 값이 있음",
                                                 value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"회원 정보에 빈 값이 있어 인증을 할 수 없습니다.\", \"data\": \"false\" }"),
                                 },
-                        schema = @Schema(implementation = ErrorApiResponse.class)
+                        schema = @Schema(implementation = SuccessApiResponse.class)
                 )),
+                @ApiResponse(responseCode = "403",
+                        description = "권한 없음",
+                        content = @Content(
+                                mediaType = "application/json",
+                                examples = {
+                                        @ExampleObject(
+                                                name = "접근 권한 없음",
+                                                value = "{\"httpStatus\": 403, \"code\": \"403\", \"message\": \"접근 권한이 없습니다.\", \"data\": \"false\" }"),
+
+                                },
+                                schema = @Schema(implementation = SuccessApiResponse.class)
+                        )),
                 @ApiResponse(responseCode = "500",
                         description = "서버 에러",
                         content = @Content(
