@@ -29,6 +29,9 @@ public class ExceptionController {
      * 400_8 유효성검사 - address
      * 400_9 유효성검사 - introduction
      * 400_10 유효성검사 - employeeNum
+     * 400_11 유효성검사 - id
+     * 400_12 유효성검사 - question(faq)
+     * 400_13 유효성검사 - answer(faq)
      *
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
