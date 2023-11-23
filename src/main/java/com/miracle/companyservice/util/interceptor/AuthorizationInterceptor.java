@@ -49,13 +49,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     }
 
     private void sendFailResponse(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json;charset=UTF-8");
 
         PrintWriter writer = response.getWriter();
         writer.write(new ObjectMapper().writeValueAsString(
                 SuccessApiResponse.builder()
-                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .httpStatus(HttpStatus.UNAUTHORIZED.value())
                         .message("회원 인증에 실패하여, 정보를 요청할 수 없습니다.")
                         .data(Boolean.FALSE)
                         .build()
@@ -64,13 +64,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     }
 
     private void sendFailResponseByHeader(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json;charset=UTF-8");
 
         PrintWriter writer = response.getWriter();
         writer.write(new ObjectMapper().writeValueAsString(
                 SuccessApiResponse.builder()
-                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .httpStatus(HttpStatus.UNAUTHORIZED.value())
                         .message("회원 인증 정보에 빈 값이 있습니다.")
                         .data(Boolean.FALSE)
                         .build()
