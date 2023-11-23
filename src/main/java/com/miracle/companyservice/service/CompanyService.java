@@ -77,4 +77,5 @@ public interface CompanyService {
      */
     public CommonApiResponse savePost(PostRequestDto postRequestDto);
 
+//    public CommonApiResponse findPostById(Long postId);
 }

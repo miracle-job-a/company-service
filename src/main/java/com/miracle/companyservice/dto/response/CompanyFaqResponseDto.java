@@ -7,17 +7,19 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class CompanyFaqDto {
+public class CompanyFaqResponseDto {
+    private final Long id;
     private final String question;
     private final String answer;
 
-    @Builder
-    public CompanyFaqDto(String question, String answer) {
+    public CompanyFaqResponseDto(Long id, String question, String answer) {
+        this.id = id;
         this.question = question;
         this.answer = answer;
     }
 
-    public CompanyFaqDto(CompanyFaq companyFaq) {
+    public CompanyFaqResponseDto(CompanyFaq companyFaq) {
+        this.id = companyFaq.getId();
         this.question = companyFaq.getQuestion();
         this.answer = companyFaq.getAnswer();
     }

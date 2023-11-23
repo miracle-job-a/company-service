@@ -3,9 +3,9 @@ package com.miracle.companyservice.service;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;
-import com.miracle.companyservice.dto.request.QuestionDto;
+import com.miracle.companyservice.dto.request.QuestionRequestDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.dto.response.CompanyFaqDto;
+import com.miracle.companyservice.dto.response.CompanyFaqResponseDto;
 import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.dto.response.*;
@@ -18,15 +18,12 @@ import com.miracle.companyservice.repository.CompanyFaqRepository;
 import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
-import com.miracle.companyservice.entity.Post;
-import com.miracle.companyservice.entity.Question;
 import com.miracle.companyservice.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -200,8 +197,8 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
         log.info("faqs : {}",faqs);
 
-        List<CompanyFaqDto> faqList = faqs.stream()
-                .map(CompanyFaqDto::new)
+        List<CompanyFaqResponseDto> faqList = faqs.stream()
+                .map(companyFaq -> new CompanyFaqResponseDto(companyFaq))
                 .collect(Collectors.toList());
         log.info("faqList : {}",faqList);
 
@@ -219,7 +216,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse savePost(PostRequestDto postRequestDto){
 
-        List<QuestionDto> questions = postRequestDto.getQuestionList();
+        List<QuestionRequestDto> questions = postRequestDto.getQuestionList();
         log.info("questions : {}",questions);
 
         Post post = Post.builder()
@@ -255,12 +252,10 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
 
-        Long postId = post.getId();
-
         List<Question> questionList = questions.stream()
-                .map(questionDto -> Question.builder()
+                .map(questionRequestDto -> Question.builder()
                         .post(savedPost)
-                        .question(questionDto.getQuestion())
+                        .question(questionRequestDto.getQuestion())
                         .build())
                 .collect(Collectors.toList());
         log.info("questionList : {}",questionList);
@@ -280,5 +275,35 @@ public class CompanyServiceImpl implements CompanyService {
                 .message("공고가 성공적으로 등록되었습니다.")
                 .build();
     }
+
+    /*public CommonApiResponse findPostById(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+        if (post.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .message("공고 정보가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        log.info("post : {}", post);
+
+        List<Question> questions = questionRepository.findByPostId(postId);
+        log.info("questions : {}", questions);
+
+        List<QuestionResponseDto> questionList = questions.stream()
+                .map(QuestionResponseDto::new)
+                .collect(Collectors.toList());
+        log.info("questionList : {}", questionList);
+
+        PostResponseDto responseDto = new PostResponseDto(
+                post.get(),
+                questionList);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("SUCCESS")
+                .data(responseDto)
+                .build();
+    }*/
 }
 

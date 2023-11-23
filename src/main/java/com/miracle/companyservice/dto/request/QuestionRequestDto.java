@@ -1,18 +1,14 @@
 package com.miracle.companyservice.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
-public class QuestionDto {
-    private String question;
+public class QuestionRequestDto {
+    private final String question;
 
-    public QuestionDto() {
-    }
-
-    public QuestionDto(String question) {
+    public QuestionRequestDto(String question) {
         this.question = question;
     }
 }
