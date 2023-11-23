@@ -80,10 +80,17 @@ public interface CompanyService {
     /**
      * @author kade
      * @param companyId
-     * 해당 기업의 전체 FAQ를 조회하는 메서
+     * 해당 기업의 전체 FAQ를 조회하는 메서드
      */
     CommonApiResponse getFaq(Long companyId);
 
+    /**
+     * @author kade
+     * @param companyId
+     * @param postId
+     * 공고의 자기소개서 질문을 반환하는 메서드
+     */
+    CommonApiResponse returnQuestions(Long companyId, Long postId);
 
     /**
      * Gets company faqs by company id.
