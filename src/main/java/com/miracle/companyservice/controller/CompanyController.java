@@ -68,17 +68,16 @@ public class CompanyController {
     }
 
     @ApiAddFaq
-    @PostMapping("/faq")
-    public CommonApiResponse addFaq(@RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
+    @PostMapping("/{companyId}/faq")
+    public CommonApiResponse addFaq(@PathVariable Long companyId, @RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.addFaq(companyFaqRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiDeleteFaq
-    @DeleteMapping("/faq/{faqId}")
-    public CommonApiResponse deleteFaq(@PathVariable Long faqId, HttpServletRequest request, HttpServletResponse response) {
-        Long companyId = Long.valueOf(request.getHeader("id"));
+    @DeleteMapping("/{companyId}/faq/{faqId}")
+    public CommonApiResponse deleteFaq(@PathVariable Long companyId, @PathVariable Long faqId, HttpServletRequest request, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.deleteFaq(companyId, faqId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;

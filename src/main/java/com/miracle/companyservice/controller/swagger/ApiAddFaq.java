@@ -74,6 +74,18 @@ import java.lang.annotation.Target;
                                 },
                         schema = @Schema(implementation = ErrorApiResponse.class)
                 )),
+                @ApiResponse(responseCode = "403",
+                        description = "권한 없음",
+                        content = @Content(
+                                mediaType = "application/json",
+                                examples = {
+                                        @ExampleObject(
+                                                name = "접근 권한 없음",
+                                                value = "{\"httpStatus\": 403, \"code\": \"403\", \"message\": \"접근 권한이 없습니다.\", \"data\": \"false\" }"),
+
+                                },
+                                schema = @Schema(implementation = SuccessApiResponse.class)
+                        )),
                 @ApiResponse(responseCode = "500",
                         description = "서버 에러",
                         content = @Content(
