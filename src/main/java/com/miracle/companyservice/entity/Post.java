@@ -1,9 +1,7 @@
 package com.miracle.companyservice.entity;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +9,6 @@ import java.util.*;
 
 @Getter
 @NoArgsConstructor
-@ToString
 @Entity
 public class Post extends BaseEntity {
 
@@ -60,14 +57,12 @@ public class Post extends BaseEntity {
     private String notice;
 
     private int career;
-    private boolean closed;
-    private boolean deleted;
+    private boolean status;
     private LocalDateTime testStartDate;
     private LocalDateTime testEndDate;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    @JoinColumn(name = "post_id")
-//    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "post_id")
     private List<Question> questionList = new ArrayList<>();
 
     @ElementCollection
@@ -86,7 +81,6 @@ public class Post extends BaseEntity {
     @Column(name = "stack_id")
     private Set<Long> stackIdSet = new HashSet<>();
 
-    @Builder
     public Post(Long id, Long companyId,
                 PostType postType, String title,
                 LocalDateTime endDate, String tool,
@@ -94,9 +88,9 @@ public class Post extends BaseEntity {
                 String qualification, String benefit,
                 String specialSkill, String process,
                 String notice,int career,
-                boolean closed, boolean deleted,
+                boolean status,
                 LocalDateTime testStartDate, LocalDateTime testEndDate,
-                Set<Long> jobIdSet, Set<Long> stackIdSet) {
+                List<Question> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet) {
         this.id = id;
         this.companyId = companyId;
         this.postType = postType;
@@ -112,17 +106,11 @@ public class Post extends BaseEntity {
         this.process = process;
         this.notice = notice;
         this.career = career;
-        this.closed = closed;
-        this.deleted = deleted;
+        this.status = status;
         this.testStartDate = testStartDate;
         this.testEndDate = testEndDate;
+        this.questionList = questionList;
         this.jobIdSet = jobIdSet;
         this.stackIdSet = stackIdSet;
     }
-
-/*    public void addAll(Collection<Question> collection) {
-        questionList.addAll(collection);
-        questionList.stream()
-                .forEach(q -> q.setId(this.id));
-    }*/
 }
