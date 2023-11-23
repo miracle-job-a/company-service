@@ -38,6 +38,10 @@ public class CompanyServiceImpl implements CompanyService {
         this.postRepository = postRepository;
     }
 
+    public Boolean companyValidation(Long id, String email, String bno) {
+        return companyRepository.existsByIdAndEmailAndBno(id, email, bno);
+    }
+
     public CommonApiResponse checkEmailDuplicated (String email) {
         log.info("email : {}", email);
         if (companyRepository.existsByEmail(email)) {
@@ -89,6 +93,14 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
+        if (!bnoRepository.existsByBno(company.get().getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 사업자 번호입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
         if (!bnoRepository.findStatusByBnoIsTrue(company.get().getBno())) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -96,11 +108,11 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-
+        CompanyLoginResponseDto responseDto = new CompanyLoginResponseDto(company.get().getId(), company.get().getEmail(), company.get().getBno());
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("로그인 성공")
-                .data(new CompanyLoginResponseDto(company.get().getId(), company.get().getEmail(), company.get().getBno()))
+                .data(responseDto)
                 .build();
     }
 
@@ -133,7 +145,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(Boolean.TRUE)
                 .build();
     }
-
 
     public CommonApiResponse postForMainPage() {
         List<Post> newestResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByModifiedAtDesc(PageRequest.of(0,3));
