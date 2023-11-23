@@ -54,4 +54,26 @@ public class PostRequestDto {
         this.testStartDate = testStartDate;
         this.testEndDate = testEndDate;
     }
+
+    public PostRequestDto() {
+        this.companyId = null;
+        this.postType = null;
+        this.title = null;
+        this.career = 0;
+        this.endDate = null;
+        this.mainTask = null;
+        this.workCondition = null;
+        this.qualification = null;
+        this.tool = null;
+        this.benefit = null;
+        this.process = null;
+        this.notice = null;
+        this.specialSkill = null;
+        this.workAddress = null;
+        this.questionList = null;
+        this.jobIdSet = null;
+        this.stackIdSet = null;
+        this.testStartDate = null;
+        this.testEndDate = null;
+    }
 }

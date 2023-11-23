@@ -10,9 +10,12 @@ import lombok.ToString;
 public class QuestionResponseDto {
     private final String question;
 
-    @Builder
     public QuestionResponseDto(String question) {
         this.question = question;
+    }
+
+    public QuestionResponseDto(Question question){
+        this.question = question.getQuestion();
     }
 
 }

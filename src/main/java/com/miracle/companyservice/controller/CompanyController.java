@@ -97,10 +97,10 @@ public class CompanyController {
         return commonApiResponse;
     }
 
-/*    @PostMapping("/post/{postId}/detail")
+    @PostMapping("/post/{postId}/detail")
     public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.findPostById(postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
-    }*/
+    }
 }

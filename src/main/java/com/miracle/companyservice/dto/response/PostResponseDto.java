@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class PostResponseDto{
 
     private final PostType postType;
     private final String title;
-    private final LocalDateTime endDate;
+    private final String endDate;
     private final String tool;
     private final String workAddress;
     private final String mainTask;
@@ -31,14 +32,14 @@ public class PostResponseDto{
     private final Set<Long> jobIdSet;
     private final Set<Long> stackIdSet;
     private final List<QuestionResponseDto> questionList;
-    private final LocalDateTime TestStartDate;
-    private final LocalDateTime TestEndDate;
+    private final String testStartDate;
+    private final String testEndDate;
 
     @Builder
     public PostResponseDto(Post post, List<QuestionResponseDto> questionList){
         this.postType = post.getPostType();
         this.title = post.getTitle();
-        this.endDate = post.getEndDate();
+        this.endDate = formatDate(post.getEndDate(), "yyyy-MM-dd");
         this.tool = post.getTool();
         this.workAddress = post.getWorkAddress();
         this.mainTask = post.getMainTask();
@@ -53,7 +54,11 @@ public class PostResponseDto{
         this.jobIdSet = post.getJobIdSet();
         this.stackIdSet = post.getStackIdSet();
         this.questionList = questionList;
-        TestStartDate = post.getTestStartDate();
-        TestEndDate = post.getTestEndDate();
+        this.testStartDate = formatDate(post.getTestStartDate(), "yyyy-MM-dd'T'HH:mm:ss");
+        this.testEndDate = formatDate(post.getTestEndDate(), "yyyy-MM-dd'T'HH:mm:ss");
+    }
+
+    private String formatDate(LocalDateTime date, String format) {
+        return date.format(DateTimeFormatter.ofPattern(format));
     }
 }

@@ -276,7 +276,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-    /*public CommonApiResponse findPostById(Long postId) {
+    @Override
+    public CommonApiResponse findPostById(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()
@@ -304,6 +305,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .message("SUCCESS")
                 .data(responseDto)
                 .build();
-    }*/
+    }
 }
 
