@@ -1,16 +1,15 @@
 package com.miracle.companyservice.controller;
 
 
-import com.miracle.companyservice.controller.swagger.ApiCheckBno;
-import com.miracle.companyservice.controller.swagger.ApiCheckEmail;
-import com.miracle.companyservice.controller.swagger.ApiLogin;
-import com.miracle.companyservice.controller.swagger.ApiSignUp;
+
+import com.miracle.companyservice.controller.swagger.*;
 import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -60,9 +59,27 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiPostMain
     @GetMapping("/post/main")
-    public CommonApiResponse postForMainPage() {
+    public CommonApiResponse postForMainPage(HttpServletResponse response) {
+        response.setStatus(HttpStatus.OK.value());
         return companyService.postForMainPage();
+    }
+
+    @ApiAddFaq
+    @PostMapping("/faq/add")
+    public CommonApiResponse addFaq(@RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.addFaq(companyFaqRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiDeleteFaq
+    @DeleteMapping("/faq/{faqId}")
+    public CommonApiResponse deleteFaq(@PathVariable Long faqId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.deleteFaq(faqId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.miracle.companyservice.service;
 
+import com.miracle.companyservice.dto.request.CompanyFaqRequestDto;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;
@@ -10,7 +11,15 @@ import com.miracle.companyservice.dto.response.CommonApiResponse;
  */
 public interface CompanyService {
 
+    /**
+     * @author kae
+     * @param id
+     * @param email
+     * @param bno
+     * 기업 회원 정보를 인증하는 메서드 -> 인터셉터에서 사용한다.
+     */
     public Boolean companyValidation(Long id, String email, String bno);
+
     /**
      * Sign up company common api response.
      *
@@ -54,8 +63,19 @@ public interface CompanyService {
      */
     CommonApiResponse postForMainPage();
 
+    /**
+     * @author kade
+     * @param companyFaqRequestDto
+     * FAQ를 등록하는 메서드
+     */
+    CommonApiResponse addFaq(CompanyFaqRequestDto companyFaqRequestDto);
 
-
+    /**
+     * @author kade
+     * @param faqId
+     * FAQ를 삭제하는 메서드
+     */
+    CommonApiResponse deleteFaq(Long faqId);
 
 
 

@@ -1,10 +1,6 @@
 package com.miracle.companyservice.repository;
 
-import com.miracle.companyservice.dto.response.CompanyFaqDto;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
-import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.entity.CompanyFaq;
-import com.miracle.companyservice.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +15,11 @@ public interface CompanyFaqRepository extends JpaRepository<CompanyFaq, Long> {
      * @author wjdals3936
      */
     List<CompanyFaq> findByCompanyId(Long companyId);
+
+    /**
+     * @author kade
+     * @param companyId
+     * 기업아이디에 해당하는 FAQ의 개수를 반환하는 메서드
+     */
+    Long countByCompanyId(Long companyId);
 }

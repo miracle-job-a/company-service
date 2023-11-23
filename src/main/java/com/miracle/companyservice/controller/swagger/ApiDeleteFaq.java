@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "사업자 번호 확인", description = "사업자 번호 중복과 만료 여부를 조회하여 반환합니다.",
+@Operation(summary = "FAQ 삭제", description = "FAQ를 삭제합니다.",
         responses = {
                 @ApiResponse(responseCode = "200",
                         description = "정상 요청",
@@ -25,7 +25,8 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "성공",
-                                                value = "{\"httpStatus\": 200, \"message\": \"가입 가능한 사업자 번호입니다.\", \"data\": true }"),
+                                                value = "{\"httpStatus\": 200, \"message\": \"FAQ 삭제 성공\", \"data\": true }")
+
                                 },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
                         )),
@@ -35,21 +36,16 @@ import java.lang.annotation.Target;
                                 mediaType = "application/json",
                                 examples = {
                                         @ExampleObject(
-                                                name = "실패 / 미존재 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 사업자 번호입니다.\", \"data\": false }"),
-                                        @ExampleObject(
-                                                name = "실패 / 만료된 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"만료된 사업자 번호입니다.\", \"data\": false }"),
-                                        @ExampleObject(
-                                                name = "실패 / 중복된 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }"),
+                                                name = "실패 / 미존재 FAQ",
+                                                value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 faqId 입니다.\", \"data\": false }"),
 
                                         @ExampleObject(
-                                                name = "유효성 / 사업자 번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                                name = "실패 / 10개 초과",
+                                                value = "{\"httpStatus\": 400, \"message\": \"FAQ는 10개를 넘을 수 없습니다.\", \"data\": false }"),
+
                                         @ExampleObject(
-                                                name = "유효성 /사업자 번호 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자 번호 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }")
+                                                name = "실패 / FAQ 아이디 오류 ",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\":companyId 값이 0보다 작습니다. \".\", \"data\": \"false\" }"),
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
@@ -58,12 +54,20 @@ import java.lang.annotation.Target;
                         description = "비정상 요청",
                         content = @Content(
                                 mediaType = "application/json",
-                                examples = @ExampleObject(
-                                        name = "토큰 인증 실패",
-                                        value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"토큰 값이 일치하지 않습니다.\", \"exception\": \"UnauthorizedTokenException\" }"
-                                ),
-                                schema = @Schema(implementation = ErrorApiResponse.class)
-                        )),
+                                examples = {
+                                        @ExampleObject(
+                                                name = "토큰 인증 실패",
+                                                value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"토큰 값이 일치하지 않습니다.\", \"exception\": \"UnauthorizedTokenException\" }"),
+                                        @ExampleObject(
+                                                name = "회원 인증 실패",
+                                                value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"회원 인증에 실패하여 정보를 요청할 수 없습니다.\", \"data\": \"false\" }"),
+
+                                        @ExampleObject(
+                                                name = "회원 정보에 빈 값이 있음",
+                                                value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"회원 정보에 빈 값이 있어 인증을 할 수 없습니다.\", \"data\": \"false\" }"),
+                                },
+                        schema = @Schema(implementation = ErrorApiResponse.class)
+                )),
                 @ApiResponse(responseCode = "500",
                         description = "서버 에러",
                         content = @Content(
@@ -75,5 +79,5 @@ import java.lang.annotation.Target;
                                 schema = @Schema(implementation = ErrorApiResponse.class)
                         )),
         })
-public @interface ApiCheckBno {
+public @interface ApiDeleteFaq {
 }
