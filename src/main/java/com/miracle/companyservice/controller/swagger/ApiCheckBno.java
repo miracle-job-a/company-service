@@ -49,8 +49,7 @@ import java.lang.annotation.Target;
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
                                                 name = "유효성 /사업자 번호 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자 번호 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"
-                                        )
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자 번호 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }")
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
