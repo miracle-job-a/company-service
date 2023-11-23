@@ -75,8 +75,14 @@ public interface CompanyService {
      * @param faqId
      * FAQ를 삭제하는 메서드
      */
-    CommonApiResponse deleteFaq(Long faqId);
+    CommonApiResponse deleteFaq(Long compnayId, Long faqId);
 
+    /**
+     * @author kade
+     * @param companyId
+     * 해당 기업의 전체 FAQ를 조회하는 메서
+     */
+    CommonApiResponse getFaq(Long companyId);
 
 
     /**

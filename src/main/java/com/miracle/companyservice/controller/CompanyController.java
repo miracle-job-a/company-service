@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -60,14 +61,14 @@ public class CompanyController {
     }
 
     @ApiPostMain
-    @GetMapping("/post/main")
+    @GetMapping("/main")
     public CommonApiResponse postForMainPage(HttpServletResponse response) {
         response.setStatus(HttpStatus.OK.value());
         return companyService.postForMainPage();
     }
 
     @ApiAddFaq
-    @PostMapping("/faq/add")
+    @PostMapping("/faq")
     public CommonApiResponse addFaq(@RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.addFaq(companyFaqRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
@@ -76,8 +77,17 @@ public class CompanyController {
 
     @ApiDeleteFaq
     @DeleteMapping("/faq/{faqId}")
-    public CommonApiResponse deleteFaq(@PathVariable Long faqId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.deleteFaq(faqId);
+    public CommonApiResponse deleteFaq(@PathVariable Long faqId, HttpServletRequest request, HttpServletResponse response) {
+        Long companyId = Long.valueOf(request.getHeader("id"));
+        CommonApiResponse commonApiResponse = companyService.deleteFaq(companyId, faqId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetFaq
+    @GetMapping("/{companyId}/faq")
+    public CommonApiResponse getFaq(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getFaq(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
@@ -90,7 +100,7 @@ public class CompanyController {
      * @return the common api response
      * @author wjdals3936
      */
-    @PostMapping("{companyId}/company-faq")
+    @GetMapping("{companyId}/company-faq")
     public CommonApiResponse findCompanyFaq(@PathVariable Long companyId, HttpServletResponse response) {
         log.debug("companyId : {} ", companyId);
         CommonApiResponse commonApiResponse = companyService.getCompanyFaqsByCompanyId(companyId);

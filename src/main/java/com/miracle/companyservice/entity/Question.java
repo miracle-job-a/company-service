@@ -1,6 +1,5 @@
 package com.miracle.companyservice.entity;
 
-import com.miracle.companyservice.dto.request.QuestionDto;
 import lombok.*;
 
 import javax.persistence.*;
