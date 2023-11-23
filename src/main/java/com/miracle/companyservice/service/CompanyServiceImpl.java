@@ -4,9 +4,9 @@ import com.miracle.companyservice.dto.request.CompanyFaqRequestDto;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;
-import com.miracle.companyservice.dto.request.QuestionDto;
+import com.miracle.companyservice.dto.request.QuestionRequestDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.dto.response.CompanyFaqDto;
+import com.miracle.companyservice.dto.response.CompanyFaqResponseDto;
 import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.dto.response.*;
@@ -19,8 +19,6 @@ import com.miracle.companyservice.repository.CompanyFaqRepository;
 import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
-import com.miracle.companyservice.entity.Post;
-import com.miracle.companyservice.entity.Question;
 import com.miracle.companyservice.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,11 +208,11 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-    public CommonApiResponse deleteFaq(Long faqId) {
-        if (faqId == null || faqId <= 0) {
+    public CommonApiResponse deleteFaq(Long companyId, Long faqId) {
+        if (faqId == null || faqId<= 0) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("companyId 값이 0보다 작습니다.")
+                    .message("faq 값이 0보다 작습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -225,11 +223,44 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
+        if (!companyFaqRepository.existsByCompanyIdAndId(companyId, faqId)) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId와 삭제하려는 faq의 compnayId가 일치하지 않습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
         companyFaqRepository.deleteById(faqId);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("FAQ 삭제 성공")
                 .data(Boolean.TRUE)
+                .build();
+    }
+
+    public CommonApiResponse getFaq(Long companyId) {
+        if (companyId == null || companyId <= 0) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId 값이 0보다 작습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if(!companyRepository.existsById(companyId)){
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 companyId 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        List<CompanyFaq> faqList = companyFaqRepository.findByCompanyId(companyId);
+        List<CompanyFaqResponseDto> faqDtoList = new ArrayList<>();
+
+        faqList.iterator().forEachRemaining((CompanyFaq c) -> faqDtoList.add(new CompanyFaqResponseDto(c.getId(), c.getQuestion(), c.getAnswer())));
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("FAQ 조회 성공")
+                .data(faqDtoList)
                 .build();
     }
 
@@ -249,8 +280,8 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
         log.info("faqs : {}",faqs);
 
-        List<CompanyFaqDto> faqList = faqs.stream()
-                .map(CompanyFaqDto::new)
+        List<CompanyFaqResponseDto> faqList = faqs.stream()
+                .map(CompanyFaqResponseDto::new)
                 .collect(Collectors.toList());
         log.info("faqList : {}",faqList);
 
@@ -268,7 +299,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse savePost(PostRequestDto postRequestDto){
 
-        List<QuestionDto> questions = postRequestDto.getQuestionList();
+        List<QuestionRequestDto> questions = postRequestDto.getQuestionList();
         log.info("questions : {}",questions);
 
         Post post = Post.builder()
@@ -307,9 +338,9 @@ public class CompanyServiceImpl implements CompanyService {
         Long postId = post.getId();
 
         List<Question> questionList = questions.stream()
-                .map(questionDto -> Question.builder()
+                .map(questionRequestDto -> Question.builder()
                         .post(savedPost)
-                        .question(questionDto.getQuestion())
+                        .question(questionRequestDto.getQuestion())
                         .build())
                 .collect(Collectors.toList());
         log.info("questionList : {}",questionList);
