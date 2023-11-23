@@ -2,15 +2,25 @@ package com.miracle.companyservice.service;
 
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.request.PostRequestDto;
+import com.miracle.companyservice.dto.request.QuestionDto;
+import com.miracle.companyservice.dto.response.CommonApiResponse;
+import com.miracle.companyservice.dto.response.CompanyFaqDto;
+import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
+import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.dto.response.*;
 import com.miracle.companyservice.entity.Company;
 
 import com.miracle.companyservice.entity.CompanyFaq;
 import com.miracle.companyservice.entity.Post;
+import com.miracle.companyservice.entity.Question;
 import com.miracle.companyservice.repository.CompanyFaqRepository;
 import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
+import com.miracle.companyservice.entity.Post;
+import com.miracle.companyservice.entity.Question;
+import com.miracle.companyservice.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,13 +39,15 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyFaqRepository companyFaqRepository;
     private final BnoRepository bnoRepository;
     private final PostRepository postRepository;
+    private final QuestionRepository questionRepository;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository, QuestionRepository questionRepository) {
         this.companyRepository = companyRepository;
         this.companyFaqRepository = companyFaqRepository;
         this.bnoRepository = bnoRepository;
         this.postRepository = postRepository;
+        this.questionRepository = questionRepository;
     }
 
     public Boolean companyValidation(Long id, String email, String bno) {
@@ -177,7 +189,7 @@ public class CompanyServiceImpl implements CompanyService {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.NOT_FOUND.value())
                     .message("기업 정보가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
@@ -201,6 +213,71 @@ public class CompanyServiceImpl implements CompanyService {
                 .httpStatus(HttpStatus.OK.value())
                 .message("SUCCESS")
                 .data(responseDto)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse savePost(PostRequestDto postRequestDto){
+
+        List<QuestionDto> questions = postRequestDto.getQuestionList();
+        log.info("questions : {}",questions);
+
+        Post post = Post.builder()
+                .companyId(postRequestDto.getCompanyId())
+                .postType(postRequestDto.getPostType())
+                .title(postRequestDto.getTitle())
+                .endDate(postRequestDto.getEndDate())
+                .tool(postRequestDto.getTool())
+                .workAddress(postRequestDto.getWorkAddress())
+                .mainTask(postRequestDto.getMainTask())
+                .workCondition(postRequestDto.getWorkCondition())
+                .qualification(postRequestDto.getQualification())
+                .benefit(postRequestDto.getBenefit())
+                .specialSkill(postRequestDto.getSpecialSkill())
+                .process(postRequestDto.getProcess())
+                .notice(postRequestDto.getNotice())
+                .career(postRequestDto.getCareer())
+                .jobIdSet(postRequestDto.getJobIdSet())
+                .stackIdSet(postRequestDto.getStackIdSet())
+                .testStartDate(postRequestDto.getTestStartDate())
+                .testEndDate(postRequestDto.getTestEndDate())
+                .build();
+        log.info("post : {}",post);
+
+        Post savedPost = postRepository.save(post);
+        log.info("savedPost : {}",savedPost);
+        log.info("savedPost.getId() : {}",savedPost.getId());
+
+        if (savedPost == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고 등록에 실패하였습니다.")
+                    .build();
+        }
+
+        Long postId = post.getId();
+
+        List<Question> questionList = questions.stream()
+                .map(questionDto -> Question.builder()
+                        .post(savedPost)
+                        .question(questionDto.getQuestion())
+                        .build())
+                .collect(Collectors.toList());
+        log.info("questionList : {}",questionList);
+
+        List<Question> savedQuestions = questionRepository.saveAll(questionList);
+        log.info("savedQuestions : {}",savedQuestions);
+
+        if (savedQuestions.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("질문 등록에 실패하였습니다.")
+                    .build();
+        }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고가 성공적으로 등록되었습니다.")
                 .build();
     }
 }

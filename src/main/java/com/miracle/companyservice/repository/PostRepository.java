@@ -1,5 +1,6 @@
 package com.miracle.companyservice.repository;
 
+import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.entity.Post;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
