@@ -1,5 +1,6 @@
 package com.miracle.companyservice.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,5 +31,12 @@ public class CompanyFaq extends BaseEntity {
     public CompanyFaq(String question, String answer) {
         this.question = question;
         this.answer = answer;
+    }
+
+    @Builder
+    public CompanyFaq(String question, String answer, Company company) {
+        this.question = question;
+        this.answer = answer;
+        this.company = company;
     }
 }
