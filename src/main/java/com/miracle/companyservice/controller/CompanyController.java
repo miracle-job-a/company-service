@@ -1,7 +1,5 @@
 package com.miracle.companyservice.controller;
 
-
-
 import com.miracle.companyservice.controller.swagger.*;
 import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
@@ -99,7 +97,7 @@ public class CompanyController {
      * @return the common api response
      * @author wjdals3936
      */
-    @GetMapping("{companyId}/company-faq")
+    @GetMapping("/{companyId}/basic-info")
     public CommonApiResponse findCompanyFaq(@PathVariable Long companyId, HttpServletResponse response) {
         log.debug("companyId : {} ", companyId);
         CommonApiResponse commonApiResponse = companyService.getCompanyFaqsByCompanyId(companyId);
@@ -115,7 +113,7 @@ public class CompanyController {
      * @return the common api response
      * @author wjdals3936
      */
-    @PostMapping("post/register")
+    @PostMapping("/post")
     public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
         log.info("postRequestDto: {}", postRequestDto);
         CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
@@ -123,11 +121,10 @@ public class CompanyController {
         return commonApiResponse;
     }
 
-/*    @PostMapping("post/detail")
-    public CommonApiResponse getPost(HttpServletResponse response){
-        log.info("postRequestDto: {}", postRequestDto);
-        CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
+    @PostMapping("/post/{postId}/detail")
+    public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findPostById(postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
-    }*/
+    }
 }

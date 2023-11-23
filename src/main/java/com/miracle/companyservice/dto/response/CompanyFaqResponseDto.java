@@ -8,13 +8,11 @@ import lombok.ToString;
 @Getter
 @ToString
 public class CompanyFaqResponseDto {
-
-    private final long id;
+    private final Long id;
     private final String question;
     private final String answer;
 
-    @Builder
-    public CompanyFaqResponseDto(long id, String question, String answer) {
+    public CompanyFaqResponseDto(Long id, String question, String answer) {
         this.id = id;
         this.question = question;
         this.answer = answer;

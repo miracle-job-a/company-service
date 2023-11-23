@@ -30,6 +30,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         excludePath.add(baseUrl + "/signup");
         excludePath.add(baseUrl + "/login");
         excludePath.add(baseUrl + "/post/main");
+        excludePath.add(baseUrl + "/{companyId}/basic-info");
+        excludePath.add(baseUrl + "/post/{postId}/detail");
         registry.addInterceptor(authorizationInterceptor)
                 .excludePathPatterns(excludePath);
     }*/

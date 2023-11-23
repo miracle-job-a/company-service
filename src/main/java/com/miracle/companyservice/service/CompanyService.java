@@ -6,9 +6,6 @@ import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 
-/**
- * The interface Company service.
- */
 public interface CompanyService {
 
     /**
@@ -84,7 +81,6 @@ public interface CompanyService {
      */
     CommonApiResponse getFaq(Long companyId);
 
-
     /**
      * Gets company faqs by company id.
      *
@@ -103,4 +99,5 @@ public interface CompanyService {
      */
     public CommonApiResponse savePost(PostRequestDto postRequestDto);
 
+    public CommonApiResponse findPostById(Long postId);
 }

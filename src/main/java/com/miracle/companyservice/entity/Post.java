@@ -119,10 +119,4 @@ public class Post extends BaseEntity {
         this.jobIdSet = jobIdSet;
         this.stackIdSet = stackIdSet;
     }
-
-/*    public void addAll(Collection<Question> collection) {
-        questionList.addAll(collection);
-        questionList.stream()
-                .forEach(q -> q.setId(this.id));
-    }*/
 }

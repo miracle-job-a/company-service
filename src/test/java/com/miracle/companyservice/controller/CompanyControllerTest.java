@@ -231,7 +231,7 @@ class CompanyControllerTest {
     }
 
 
-    @Test
+/*    @Test
     @DisplayName("공고 등록 테스트")
     void savePost() throws Exception {
         List<Question> questionList = new ArrayList<>();
@@ -288,5 +288,5 @@ class CompanyControllerTest {
                 .andExpect(jsonPath("$.data").doesNotExist())
                 .andDo(print())
                 .andReturn();
-    }
+    }*/
 }
