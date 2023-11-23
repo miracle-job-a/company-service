@@ -130,4 +130,13 @@ public interface CompanyService {
      * 공고 상세보기 및 공고 수정 페이지에 해당 공고 데이터 반환 메서드
      */
     public CommonApiResponse findPostById(Long postId);
+
+    /**
+     * Modify post by id common api response.
+     * @author wjdals3936
+     * @param postId the post id
+     * @return the common api response
+     * 공고 수정 메서드
+     */
+    public CommonApiResponse modifyPostById(Long postId);
 }
