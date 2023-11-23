@@ -1,6 +1,5 @@
 package com.miracle.companyservice.service;
 
-import com.miracle.companyservice.dto.request.CompanyInfoReqeustDto;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;

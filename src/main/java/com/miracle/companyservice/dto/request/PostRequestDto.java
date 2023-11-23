@@ -1,5 +1,8 @@
 package com.miracle.companyservice.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.miracle.companyservice.entity.PostType;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,9 +31,10 @@ public class PostRequestDto {
     private String specialSkill;
     private String workAddress;
     private List<QuestionDto> questionList = new ArrayList<>();
-//    private List<String> questionList = new ArrayList<>();
     private Set<Long> jobIdSet;
     private Set<Long> stackIdSet;
+    private LocalDateTime testStartDate;
+    private LocalDateTime testEndDate;
 
     public PostRequestDto() {
     }
@@ -43,8 +47,8 @@ public class PostRequestDto {
                           String specialSkill, String process,
                           String notice, int career,
                           List<QuestionDto> questionList,
-                          // List<String> questionList,
-                          Set<Long> jobIdSet, Set<Long> stackIdSet) {
+                          Set<Long> jobIdSet, Set<Long> stackIdSet,
+                          LocalDateTime testStartDate, LocalDateTime testEndDate) {
         this.companyId = companyId;
         this.postType = postType;
         this.title = title;
@@ -62,5 +66,7 @@ public class PostRequestDto {
         this.questionList = questionList;
         this.jobIdSet = jobIdSet;
         this.stackIdSet = stackIdSet;
+        this.testStartDate = testStartDate;
+        this.testEndDate = testEndDate;
     }
 }

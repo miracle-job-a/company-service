@@ -28,8 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -39,7 +38,6 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final CompanyFaqRepository companyFaqRepository;
     private final BnoRepository bnoRepository;
-    private final PostRepository postRepository;
     private final PostRepository postRepository;
     private final QuestionRepository questionRepository;
 
@@ -241,6 +239,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .career(postRequestDto.getCareer())
                 .jobIdSet(postRequestDto.getJobIdSet())
                 .stackIdSet(postRequestDto.getStackIdSet())
+                .testStartDate(postRequestDto.getTestStartDate())
+                .testEndDate(postRequestDto.getTestEndDate())
                 .build();
         log.info("post : {}",post);
 

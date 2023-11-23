@@ -5,23 +5,15 @@ import com.miracle.companyservice.controller.swagger.ApiCheckBno;
 import com.miracle.companyservice.controller.swagger.ApiCheckEmail;
 import com.miracle.companyservice.controller.swagger.ApiLogin;
 import com.miracle.companyservice.controller.swagger.ApiSignUp;
-import com.miracle.companyservice.dto.request.CompanyCheckBnoRequestDto;
-import com.miracle.companyservice.dto.request.CompanyCheckEmailRequestDto;
-import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
-import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
-import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -104,4 +96,12 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+/*    @PostMapping("post/detail")
+    public CommonApiResponse getPost(HttpServletResponse response){
+        log.info("postRequestDto: {}", postRequestDto);
+        CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }*/
 }
