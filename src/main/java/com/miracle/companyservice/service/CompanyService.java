@@ -1,5 +1,6 @@
 package com.miracle.companyservice.service;
 
+import com.miracle.companyservice.dto.request.CompanyInfoReqeustDto;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;
@@ -9,6 +10,8 @@ import com.miracle.companyservice.dto.response.CommonApiResponse;
  * The interface Company service.
  */
 public interface CompanyService {
+
+    public Boolean companyValidation(Long id, String email, String bno);
     /**
      * Sign up company common api response.
      *
@@ -44,6 +47,17 @@ public interface CompanyService {
      * @author kade
      */
     CommonApiResponse checkBnoStatus(String bno);
+
+    /**
+     * @author kade
+     * @return
+     * 게스트, 유저 메인페이지에 노출될 최근 공고 3건, 마감임박 공고 3건 반환하는 메서드
+     */
+    CommonApiResponse postForMainPage();
+
+
+
+
 
 
     /**

@@ -9,6 +9,8 @@ import java.util.Optional;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
+    Boolean existsByIdAndEmailAndBno(Long id, String email, String bno);
+
     /**
      * Exists by email boolean.
      * @param email the email
@@ -20,6 +22,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByEmailAndPassword(String email, int password);
 
     Boolean existsByBno(String bno);
+
+    @Query("SELECT c.photo FROM Company c WHERE c.id = :companyId")
+    String findPhotoById(Long companyId);
 
     /**
      * Find company byid post common data response dto.

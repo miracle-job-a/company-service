@@ -13,6 +13,7 @@ import java.util.*;
 @NoArgsConstructor
 @ToString
 @Entity
+@ToString
 public class Post extends BaseEntity {
 
     @Id

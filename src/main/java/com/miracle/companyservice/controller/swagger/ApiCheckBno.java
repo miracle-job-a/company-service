@@ -1,5 +1,6 @@
 package com.miracle.companyservice.controller.swagger;
 
+import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,35 +26,37 @@ import java.lang.annotation.Target;
                                         @ExampleObject(
                                                 name = "성공",
                                                 value = "{\"httpStatus\": 200, \"message\": \"가입 가능한 사업자 번호입니다.\", \"data\": true }"),
-                                        @ExampleObject(
-                                                name = "실패 / 미존재 사업자 번호",
-                                                value = "{\"httpStatus\": 200, \"message\": \"존재하지 않는 사업자 번호입니다.\", \"data\": false }"),
-                                        @ExampleObject(
-                                                name = "실패 / 만료된 사업자 번호",
-                                                value = "{\"httpStatus\": 200, \"message\": \"만료된 사업자 번호입니다.\", \"data\": false }"),
-                                        @ExampleObject(
-                                                name = "실패 / 중복된 사업자 번호",
-                                                value = "{\"httpStatus\": 200, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }")},
+                                },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
                         )),
                 @ApiResponse(responseCode = "400",
-                        description = "사업자 번호 유효성 검사 오류.",
+                        description = "비정상 요청",
                         content = @Content(
                                 mediaType = "application/json",
                                 examples = {
                                         @ExampleObject(
-                                                name = "사업자 번호 값 없음",
+                                                name = "실패 / 미존재 사업자 번호",
+                                                value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 사업자 번호입니다.\", \"data\": false }"),
+                                        @ExampleObject(
+                                                name = "실패 / 만료된 사업자 번호",
+                                                value = "{\"httpStatus\": 400, \"message\": \"만료된 사업자 번호입니다.\", \"data\": false }"),
+                                        @ExampleObject(
+                                                name = "실패 / 중복된 사업자 번호",
+                                                value = "{\"httpStatus\": 400, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 / 사업자 번호 값 없음",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "사업자 번호 형식 오류",
+                                                name = "유효성 /사업자 번호 형식 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자 번호 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"
                                         )
                                 },
-                                schema = @Schema(implementation = ErrorApiResponse.class)
+                                schema = @Schema(implementation = CommonApiResponse.class)
                         )),
 
                 @ApiResponse(responseCode = "401",
-                        description = "비정상적인 요청",
+                        description = "비정상 요청",
                         content = @Content(
                                 mediaType = "application/json",
                                 examples = @ExampleObject(

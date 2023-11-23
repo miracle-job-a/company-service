@@ -1,4 +1,4 @@
-package com.miracle.companyservice.filter;
+package com.miracle.companyservice.util.filter;
 
 
 import javax.servlet.*;

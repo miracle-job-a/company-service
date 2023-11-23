@@ -1,5 +1,6 @@
 package com.miracle.companyservice.controller.swagger;
 
+import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,32 +25,34 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "성공",
-                                                value = "{\"httpStatus\": 200, \"message\": \"사용가능한 이메일입니다.\", \"data\": true }"),
-                                        @ExampleObject(
-                                                name = "실패 / 중복된 이메일",
-                                                value = "{\"httpStatus\": 200, \"message\": \"중복된 이메일입니다.\", \"data\": false }")},
+                                                value = "{\"httpStatus\": 200, \"message\": \"사용가능한 이메일입니다.\", \"data\": true }")
+                                        },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
                         )),
                 @ApiResponse(responseCode = "400",
-                        description = "이메일 유효성 검사 오류",
+                        description = "비정상 요청",
                         content = @Content(
                                 mediaType = "application/json",
-                                examples = {@ExampleObject(
-                                        name = "이메일 값 없음",
+                                examples = {
+                                        @ExampleObject(
+                                                name = "실패 / 중복된 이메일",
+                                                value = "{\"httpStatus\": 400, \"message\": \"중복된 이메일입니다.\", \"data\": false }"),
+                                        @ExampleObject(
+                                        name = "유효성 / 이메일 값 없음",
                                         value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "이메일 형식 오류",
+                                                name = "유효성 / 이메일 형식 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "이메일 길이 오류",
+                                                name = "유효성 / 이메일 길이 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 길이가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"
                                         )
                                 },
-                                schema = @Schema(implementation = ErrorApiResponse.class)
+                                schema = @Schema(implementation = CommonApiResponse.class)
                         )),
 
                 @ApiResponse(responseCode = "401",
-                        description = "비정상적인 요청",
+                        description = "비정상 요청",
                         content = @Content(
                                 mediaType = "application/json",
                                 examples = @ExampleObject(
