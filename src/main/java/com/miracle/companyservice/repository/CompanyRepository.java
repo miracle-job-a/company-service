@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
+    Boolean existsByIdAndEmailAndBno(Long id, String email, String bno);
+
     /**
      * Exists by email boolean.
      * @param email the email

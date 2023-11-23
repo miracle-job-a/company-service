@@ -13,8 +13,10 @@ import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +36,10 @@ public class CompanyServiceImpl implements CompanyService {
         this.companyFaqRepository = companyFaqRepository;
         this.bnoRepository = bnoRepository;
         this.postRepository = postRepository;
+    }
+
+    public Boolean companyValidation(Long id, String email, String bno) {
+        return companyRepository.existsByIdAndEmailAndBno(id, email, bno);
     }
 
     public CommonApiResponse checkEmailDuplicated (String email) {
@@ -87,6 +93,14 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
+        if (!bnoRepository.existsByBno(company.get().getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 사업자 번호입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
         if (!bnoRepository.findStatusByBnoIsTrue(company.get().getBno())) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -94,11 +108,11 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-
+        CompanyLoginResponseDto responseDto = new CompanyLoginResponseDto(company.get().getId(), company.get().getEmail(), company.get().getBno());
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("로그인 성공")
-                .data(new CompanyLoginResponseDto(company.get().getId(), company.get().getEmail(), company.get().getBno()))
+                .data(responseDto)
                 .build();
     }
 
@@ -133,14 +147,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse postForMainPage() {
-        List<Post> newestResult = postRepository.findTop3ByOrderByModifiedAtDesc();
+        List<Post> newestResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByModifiedAtDesc(PageRequest.of(0,3));
         List<MainPagePostsResponseDto> newest = new ArrayList<>();
         newestResult.iterator().forEachRemaining( (Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
             newest.add(new MainPagePostsResponseDto(p, photo));
         });
 
-        List<Post> deadlineResult = postRepository.findTop3ByOrderByEndDateAsc();
+        List<Post> deadlineResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByEndDateAsc(PageRequest.of(0,3));
         List<MainPagePostsResponseDto> deadline = new ArrayList<>();
         deadlineResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());

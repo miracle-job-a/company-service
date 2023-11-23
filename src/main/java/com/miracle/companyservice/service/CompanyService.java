@@ -1,11 +1,14 @@
 package com.miracle.companyservice.service;
 
+import com.miracle.companyservice.dto.request.CompanyInfoReqeustDto;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 
 public interface CompanyService {
+
+    public Boolean companyValidation(Long id, String email, String bno);
     /**
      * @author kade
      * @param companySignUpRequestDto

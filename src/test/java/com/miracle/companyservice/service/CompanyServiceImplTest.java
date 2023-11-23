@@ -265,6 +265,7 @@ class CompanyServiceImplTest {
         given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(true); //아이디 일치 확인
         given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode())) // 비밀번호 일치 확인
                 .willReturn(Optional.of(givenCompany));
+        given(bnoRepository.existsByBno(givenCompany.getBno())).willReturn(true); // 사업자 번호 존재확인
         given(bnoRepository.findStatusByBnoIsTrue(givenCompany.getBno())).willReturn(true); // 사업자 만료 확인
 
         Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
@@ -278,6 +279,7 @@ class CompanyServiceImplTest {
 
         verify(companyRepository).existsByEmail(companyLoginRequestDto.getEmail());
         verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        verify(bnoRepository).existsByBno(givenCompany.getBno());
         verify(bnoRepository).findStatusByBnoIsTrue(givenCompany.getBno());
     }
 
@@ -352,8 +354,53 @@ class CompanyServiceImplTest {
     }
 
     @Test
-    @DisplayName("로그인 실패 테스트 3 / 사업자 번호 만료")
+    @DisplayName("로그인 실패 테스트 3 / 미존재 사업자 번호")
     void loginCompanyFail3() {
+        CompanyLoginRequestDto companyLoginRequestDto = new CompanyLoginRequestDto("austin@oracle.com", "123456!");
+        SuccessApiResponse<Object> givenResponse = SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .message("존재하지 않는 사업자 번호입니다.")
+                .data(Boolean.FALSE)
+                .build();
+
+        Company givenCompany = Company.builder()
+                .id(33L)
+                .name("오라클코리아")
+                .email("austin@oracle.com")
+                .password("password!")
+                .bno("111-13-14444")
+                .ceoName("오스틴 강")
+                .address("서울 서초구 효령로 335")
+                .employeeNum(3000)
+                .sector("소프트웨어 개발업")
+                .photo("/사진/저장/경로.jpg")
+                .introduction("데이터 베이스 소프트웨어 개발 및 공급을 하고 있는 글로벌 기업, 오라클입니다.")
+                .faqList(new ArrayList<>())
+                .build();
+
+
+        given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(true); //아이디 일치 확인
+        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode())) // 비밀번호 일치 확인
+                .willReturn(Optional.of(givenCompany));
+        given(bnoRepository.existsByBno(givenCompany.getBno())).willReturn(false); // 사업자 번호 존재확인
+
+        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
+                .thenReturn(Optional.of(givenCompany));
+
+        SuccessApiResponse resultResponse = (SuccessApiResponse) companyService.loginCompany(companyLoginRequestDto);
+
+        Assertions.assertThat(resultResponse.getHttpStatus()).isEqualTo(givenResponse.getHttpStatus());
+        Assertions.assertThat(resultResponse.getMessage()).isEqualTo(givenResponse.getMessage());
+        Assertions.assertThat(resultResponse.getData()).isEqualTo(givenResponse.getData());
+
+        verify(companyRepository).existsByEmail(companyLoginRequestDto.getEmail());
+        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        verify(bnoRepository).existsByBno(givenCompany.getBno());
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트 4 / 사업자 번호 만료")
+    void loginCompanyFail4() {
         CompanyLoginRequestDto companyLoginRequestDto = new CompanyLoginRequestDto("austin@oracle.com", "123456!");
         SuccessApiResponse<Object> givenResponse = SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -380,6 +427,7 @@ class CompanyServiceImplTest {
         given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(true); //아이디 일치 확인
         given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode())) // 비밀번호 일치 확인
                 .willReturn(Optional.of(givenCompany));
+        given(bnoRepository.existsByBno(givenCompany.getBno())).willReturn(true); // 사업자 번호 존재확인
         given(bnoRepository.findStatusByBnoIsTrue(givenCompany.getBno())).willReturn(false); // 사업자 만료 확인
 
         Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
@@ -393,7 +441,13 @@ class CompanyServiceImplTest {
 
         verify(companyRepository).existsByEmail(companyLoginRequestDto.getEmail());
         verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        verify(bnoRepository).existsByBno(givenCompany.getBno());
         verify(bnoRepository).findStatusByBnoIsTrue(givenCompany.getBno());
     }
 
+    @Test
+    @DisplayName("최신 / 마감임박 공고 3건 조회 성공")
+    void postForMainPage() {
+
+    }
 }

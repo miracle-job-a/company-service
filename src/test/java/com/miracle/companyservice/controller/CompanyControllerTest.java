@@ -181,7 +181,7 @@ class CompanyControllerTest {
 
     @Test
     @DisplayName("토큰 불일치 예외 테스트")
-    void signUpCompanyFail() throws Exception {
+    void unauthorizedTokenFail() throws Exception {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
 

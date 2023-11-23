@@ -58,7 +58,7 @@ import java.lang.annotation.Target;
                         )),
 
                 @ApiResponse(responseCode = "401",
-                        description = "비정상적인 요청",
+                        description = "비정상 요청",
                         content = @Content(
                                 mediaType = "application/json",
                                 examples = @ExampleObject(
