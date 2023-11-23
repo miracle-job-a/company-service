@@ -52,7 +52,7 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.existsByIdAndEmailAndBno(id, email, bno);
     }
 
-    public CommonApiResponse checkEmailDuplicated (String email) {
+    public CommonApiResponse checkEmailDuplicated(String email) {
         log.info("email : {}", email);
         if (companyRepository.existsByEmail(email)) {
             return SuccessApiResponse.builder()
@@ -157,14 +157,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse postForMainPage() {
-        List<Post> newestResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByModifiedAtDesc(PageRequest.of(0,3));
+        List<Post> newestResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByModifiedAtDesc(PageRequest.of(0, 3));
         List<MainPagePostsResponseDto> newest = new ArrayList<>();
-        newestResult.iterator().forEachRemaining( (Post p) -> {
+        newestResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
             newest.add(new MainPagePostsResponseDto(p, photo));
         });
 
-        List<Post> deadlineResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByEndDateAsc(PageRequest.of(0,3));
+        List<Post> deadlineResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByEndDateAsc(PageRequest.of(0, 3));
         List<MainPagePostsResponseDto> deadline = new ArrayList<>();
         deadlineResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
@@ -209,7 +209,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse deleteFaq(Long companyId, Long faqId) {
-        if (faqId == null || faqId<= 0) {
+        if (faqId == null || faqId <= 0) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("faq 값이 0보다 작습니다.")
@@ -246,7 +246,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-        if(!companyRepository.existsById(companyId)){
+        if (!companyRepository.existsById(companyId)) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("존재하지 않는 companyId 입니다.")
@@ -264,8 +264,57 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    public CommonApiResponse returnQuestions(Long companyId, Long postId) {
+        if (!postRepository.existsByCompanyIdAndId(companyId, postId)) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId가 공고의 companyId 값과 다릅니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        Optional<Post> post = postRepository.findById(postId);
+        if (post.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 공고입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        List<Question> questionList = post.get().getQuestionList();
+
+        List<QuestionResponseDto> questionResponseDtoList = new ArrayList<>();
+        questionList.iterator().forEachRemaining((Question q) -> questionResponseDtoList.add(new QuestionResponseDto(q)));
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("자기소개서 질문 조회 성공")
+                .data(questionResponseDtoList)
+                .build();
+    }
+
+    public CommonApiResponse getCountPosts(Long companyId) {
+        Long allPostsCount = postRepository.countByCompanyIdAndDeletedFalse(companyId);
+        Long endedPostsCount = postRepository.countByCompanyIdAndClosedTrueDeletedFalse(companyId);
+        Long onGoingPostsCount = postRepository.countByCompanyIdAndClosedFalseDeletedFalse(companyId);
+
+        System.out.println(allPostsCount);
+        System.out.println(endedPostsCount);
+        System.out.println(onGoingPostsCount);
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("allPostsCount", allPostsCount);
+        map.put("endedPostsCount", endedPostsCount);
+        map.put("onGoingPostsCount",onGoingPostsCount);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고 수 조회 완료")
+                .data(map)
+                .build();
+    }
+
+
     @Override
-    public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId){
+    public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
@@ -278,12 +327,12 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("company : {}", company);
 
         List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
-        log.info("faqs : {}",faqs);
+        log.info("faqs : {}", faqs);
 
         List<CompanyFaqResponseDto> faqList = faqs.stream()
                 .map(companyFaq -> new CompanyFaqResponseDto(companyFaq))
                 .collect(Collectors.toList());
-        log.info("faqList : {}",faqList);
+        log.info("faqList : {}", faqList);
 
         PostCommonDataResponseDto responseDto = new PostCommonDataResponseDto(
                 company.get(),
@@ -297,10 +346,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse savePost(PostRequestDto postRequestDto){
+    public CommonApiResponse savePost(PostRequestDto postRequestDto) {
 
         List<QuestionRequestDto> questions = postRequestDto.getQuestionList();
-        log.info("questions : {}",questions);
+        log.info("questions : {}", questions);
 
         Post post = Post.builder()
                 .companyId(postRequestDto.getCompanyId())
@@ -322,11 +371,11 @@ public class CompanyServiceImpl implements CompanyService {
                 .testStartDate(postRequestDto.getTestStartDate())
                 .testEndDate(postRequestDto.getTestEndDate())
                 .build();
-        log.info("post : {}",post);
+        log.info("post : {}", post);
 
         Post savedPost = postRepository.save(post);
-        log.info("savedPost : {}",savedPost);
-        log.info("savedPost.getId() : {}",savedPost.getId());
+        log.info("savedPost : {}", savedPost);
+        log.info("savedPost.getId() : {}", savedPost.getId());
 
         if (savedPost == null) {
             return SuccessApiResponse.builder()
@@ -341,10 +390,10 @@ public class CompanyServiceImpl implements CompanyService {
                         .question(questionRequestDto.getQuestion())
                         .build())
                 .collect(Collectors.toList());
-        log.info("questionList : {}",questionList);
+        log.info("questionList : {}", questionList);
 
         List<Question> savedQuestions = questionRepository.saveAll(questionList);
-        log.info("savedQuestions : {}",savedQuestions);
+        log.info("savedQuestions : {}", savedQuestions);
 
         if (savedQuestions.isEmpty()) {
             return SuccessApiResponse.builder()
