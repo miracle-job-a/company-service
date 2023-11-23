@@ -39,12 +39,8 @@ import java.lang.annotation.Target;
                                                 name = "실패 / 미존재 FAQ",
                                                 value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 faqId 입니다.\", \"data\": false }"),
                                         @ExampleObject(
-                                                name = "실패 / 10개 초과",
-                                                value = "{\"httpStatus\": 400, \"message\": \"FAQ는 10개를 넘을 수 없습니다.\", \"data\": false }"),
-                                        @ExampleObject(
                                                 name = "실패 / 기업 아이디 불일치 ",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400\", \"message\":companyId와 삭제하려는 faq의 companyId가 일치하지 않습니다. \".\", \"data\": \"false\" }"),
-
                                         @ExampleObject(
                                                 name = "실패 / FAQ 아이디 오류 ",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\":faq 값이 0보다 작습니다. \".\", \"data\": \"false\" }"),
