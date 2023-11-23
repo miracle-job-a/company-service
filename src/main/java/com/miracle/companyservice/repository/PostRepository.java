@@ -25,4 +25,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * closed = 0 && deleted = 최신 공고 반환
      */
     List<Post> findAllByClosedFalseAndDeletedFalseOrderByModifiedAtDesc(Pageable pageable);
+
+    /**
+     * @author kade
+     * @param companyId
+     * @param postId
+     * @return boolean
+     * companyID와 postId가 일치하는 공고 유무 확인
+     */
+    boolean existsByCompanyIdAndId(Long companyId, Long postId);
+
+
+    Long countByCompanyIdAndDeletedFalse(Long companyId); //전체 공고
+    Long countByCompanyIdAndClosedTrueDeletedFalse(Long companyId); //마감공고수
+    Long countByCompanyIdAndClosedFalseDeletedFalse(Long companyId); //진행중공고
 }

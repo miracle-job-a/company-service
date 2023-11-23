@@ -330,7 +330,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("faqs : {}", faqs);
 
         List<CompanyFaqResponseDto> faqList = faqs.stream()
-                .map(CompanyFaqResponseDto::new)
+                .map(companyFaq -> new CompanyFaqResponseDto(companyFaq))
                 .collect(Collectors.toList());
         log.info("faqList : {}", faqList);
 
@@ -384,8 +384,6 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
 
-        Long postId = post.getId();
-
         List<Question> questionList = questions.stream()
                 .map(questionRequestDto -> Question.builder()
                         .post(savedPost)
@@ -407,6 +405,37 @@ public class CompanyServiceImpl implements CompanyService {
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("공고가 성공적으로 등록되었습니다.")
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse findPostById(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+        if (post.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .message("공고 정보가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        log.info("post : {}", post);
+
+        List<Question> questions = questionRepository.findByPostId(postId);
+        log.info("questions : {}", questions);
+
+        List<QuestionResponseDto> questionList = questions.stream()
+                .map(QuestionResponseDto::new)
+                .collect(Collectors.toList());
+        log.info("questionList : {}", questionList);
+
+        PostResponseDto responseDto = new PostResponseDto(
+                post.get(),
+                questionList);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("SUCCESS")
+                .data(responseDto)
                 .build();
     }
 }

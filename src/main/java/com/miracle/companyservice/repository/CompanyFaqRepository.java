@@ -8,12 +8,7 @@ import java.util.List;
 
 @Repository
 public interface CompanyFaqRepository extends JpaRepository<CompanyFaq, Long> {
-    /**
-     * Find by company id list.
-     * @param companyId the company id
-     * @return the list
-     * @author wjdals3936
-     */
+
     List<CompanyFaq> findByCompanyId(Long companyId);
 
     /**

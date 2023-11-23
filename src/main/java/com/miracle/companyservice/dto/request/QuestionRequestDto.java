@@ -6,10 +6,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class QuestionRequestDto {
-    private String question;
-
-    public QuestionRequestDto() {
-    }
+    private final String question;
 
     public QuestionRequestDto(String question) {
         this.question = question;
