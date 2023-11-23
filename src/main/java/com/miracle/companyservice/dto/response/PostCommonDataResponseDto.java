@@ -17,10 +17,10 @@ public class PostCommonDataResponseDto{
     private final int employeeNum;
     private final String address;
     private final String introduction;
-    private final List<CompanyFaqDto> faqList;
+    private final List<CompanyFaqResponseDto> faqList;
 
     @Builder
-    public PostCommonDataResponseDto(Company company, List<CompanyFaqDto> faqList) {
+    public PostCommonDataResponseDto(Company company, List<CompanyFaqResponseDto> faqList) {
         this.name = company.getName();
         this.ceoName = company.getCeoName();
         this.photo = company.getPhoto();
