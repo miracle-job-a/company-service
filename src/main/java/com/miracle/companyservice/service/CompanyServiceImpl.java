@@ -1,5 +1,6 @@
 package com.miracle.companyservice.service;
 
+import com.miracle.companyservice.dto.request.CompanyFaqRequestDto;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;
@@ -178,6 +179,88 @@ public class CompanyServiceImpl implements CompanyService {
                 .httpStatus(HttpStatus.OK.value())
                 .message("최신 공고, 마감임박 공고 조회 성공")
                 .data(data)
+                .build();
+    }
+
+    public CommonApiResponse addFaq(CompanyFaqRequestDto companyFaqRequestDto) {
+        Optional<Company> company = companyRepository.findById(companyFaqRequestDto.getCompanyId());
+        if (company.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 companyId 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        Long count = companyFaqRepository.countByCompanyId(companyFaqRequestDto.getCompanyId());
+        if (count >= 10) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("FAQ는 10개를 넘을 수 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        CompanyFaq save = companyFaqRepository.save(new CompanyFaq(companyFaqRequestDto.getQuestion(), companyFaqRequestDto.getAnswer(), company.get()));
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("FAQ 등록 성공")
+                .data(save.getId())
+                .build();
+    }
+
+    public CommonApiResponse deleteFaq(Long companyId, Long faqId) {
+        if (faqId == null || faqId<= 0) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("faq 값이 0보다 작습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (!companyFaqRepository.existsById(faqId)) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 faqId 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (!companyFaqRepository.existsByCompanyIdAndId(companyId, faqId)) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId와 삭제하려는 faq의 compnayId가 일치하지 않습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        companyFaqRepository.deleteById(faqId);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("FAQ 삭제 성공")
+                .data(Boolean.TRUE)
+                .build();
+    }
+
+    public CommonApiResponse getFaq(Long companyId) {
+        if (companyId == null || companyId <= 0) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId 값이 0보다 작습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if(!companyRepository.existsById(companyId)){
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 companyId 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        List<CompanyFaq> faqList = companyFaqRepository.findByCompanyId(companyId);
+        List<CompanyFaqResponseDto> faqDtoList = new ArrayList<>();
+
+        faqList.iterator().forEachRemaining((CompanyFaq c) -> faqDtoList.add(new CompanyFaqResponseDto(c.getId(), c.getQuestion(), c.getAnswer())));
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("FAQ 조회 성공")
+                .data(faqDtoList)
                 .build();
     }
 
