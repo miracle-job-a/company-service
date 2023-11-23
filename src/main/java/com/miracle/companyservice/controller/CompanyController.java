@@ -1,21 +1,18 @@
 package com.miracle.companyservice.controller;
 
 
+
 import com.miracle.companyservice.controller.swagger.*;
 import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
-import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -29,7 +26,6 @@ public class CompanyController {
     public CompanyController(CompanyServiceImpl companyServiceImpl) {
         this.companyService = companyServiceImpl;
     }
-
 
     @ApiCheckEmail
     @PostMapping("/email")
@@ -88,13 +84,41 @@ public class CompanyController {
 
     /**
      * Post common data common api response.
+     *
      * @param companyId the company id
+     * @param response  the response
      * @return the common api response
      * @author wjdals3936
      */
-    @PostMapping("{companyId}/post/common-data")
-    public CommonApiResponse PostCommonData(@PathVariable Long companyId){
+    @PostMapping("{companyId}/company-faq")
+    public CommonApiResponse findCompanyFaq(@PathVariable Long companyId, HttpServletResponse response) {
         log.debug("companyId : {} ", companyId);
-        return companyService.getCompanyFaqsByCompanyId(companyId);
+        CommonApiResponse commonApiResponse = companyService.getCompanyFaqsByCompanyId(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
     }
+
+    /**
+     * Post registration common api response.
+     *
+     * @param postRequestDto the post request dto
+     * @param response       the response
+     * @return the common api response
+     * @author wjdals3936
+     */
+    @PostMapping("post/register")
+    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+        log.info("postRequestDto: {}", postRequestDto);
+        CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+/*    @PostMapping("post/detail")
+    public CommonApiResponse getPost(HttpServletResponse response){
+        log.info("postRequestDto: {}", postRequestDto);
+        CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }*/
 }
