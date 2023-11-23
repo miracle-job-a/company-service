@@ -1,12 +1,13 @@
 package com.miracle.companyservice.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Question {
 
@@ -16,4 +17,8 @@ public class Question {
 
     @Column(nullable = false)
     private String question;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

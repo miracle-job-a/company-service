@@ -1,7 +1,11 @@
 package com.miracle.companyservice.entity;
 
+import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
+import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 public class Company extends BaseEntity {
 
     @Id
@@ -50,13 +55,14 @@ public class Company extends BaseEntity {
     private int employeeNum;
     private boolean approveStatus;
 
-    public Company(Long id, String email, String bno, int password, String name, String photo,
-                   String ceoName, String sector, String address, String addressDetail, String introduction,
+    @Builder
+    public Company(Long id, String email, String bno, String password, String name, String photo,
+                   String ceoName, String sector, String address, String introduction,
                    List<CompanyFaq> faqList, int employeeNum, boolean approveStatus) {
         this.id = id;
         this.email = email;
         this.bno = bno;
-        this.password = password;
+        this.password = password.hashCode();
         this.name = name;
         this.photo = photo;
         this.ceoName = ceoName;
@@ -67,4 +73,19 @@ public class Company extends BaseEntity {
         this.employeeNum = employeeNum;
         this.approveStatus = approveStatus;
     }
+
+    public Company(CompanySignUpRequestDto companySignUpRequestDto) {
+        this.email = companySignUpRequestDto.getEmail();
+        this.bno = companySignUpRequestDto.getBno();
+        this.password = companySignUpRequestDto.getPassword().hashCode();
+        this.name = companySignUpRequestDto.getName();
+        this.photo = companySignUpRequestDto.getPhoto();
+        this.ceoName = companySignUpRequestDto.getCeoName();
+        this.sector = companySignUpRequestDto.getSector();
+        this.address = companySignUpRequestDto.getAddress();
+        this.introduction = companySignUpRequestDto.getIntroduction();
+        this.employeeNum = companySignUpRequestDto.getEmployeeNum();
+    }
+
+
 }
