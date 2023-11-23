@@ -84,12 +84,21 @@ public class CompanyController {
     }
 
     @ApiGetFaq
-    @GetMapping("/{companyId}/faq")
+    @GetMapping("/{companyId}/faqs")
     public CommonApiResponse getFaq(@PathVariable Long companyId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.getFaq(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiReturnQuestions
+    @GetMapping("/{companyId}/post/{postId}/questions")
+    public CommonApiResponse returnQuestions(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.returnQuestions(companyId, postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
 
     /**
      * Post common data common api response.
