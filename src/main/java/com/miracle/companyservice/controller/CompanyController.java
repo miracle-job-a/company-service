@@ -112,9 +112,37 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+    @ApiGetLatestPosts
+    @GetMapping("/{companyId}/posts/latest")
+    public CommonApiResponse getLatestPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getLatestPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 
+    @ApiGetDeadlinePosts
+    @GetMapping("/{companyId}/posts/deadline")
+    public CommonApiResponse getDeadlinePosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getDeadlinePosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 
+    @ApiGetEndPosts
+    @GetMapping("/{companyId}/posts/end")
+    public CommonApiResponse getEndPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getEndPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 
+    @ApiGetOpenPosts
+    @GetMapping("/{companyId}/posts/open")
+    public CommonApiResponse getOpenPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getOpenPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 
     /**
      * Post common data common api response.
@@ -141,7 +169,7 @@ public class CompanyController {
      * @author wjdals3936
      */
     @PostMapping("/post")
-    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
         log.info("postRequestDto: {}", postRequestDto);
         CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
@@ -149,7 +177,7 @@ public class CompanyController {
     }
 
     @PostMapping("/post/{postId}/detail")
-    public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response){
+    public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.findPostById(postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
