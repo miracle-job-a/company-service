@@ -74,7 +74,7 @@ public class CompanyController {
     }
 
     @ApiDeleteFaq
-    @DeleteMapping("/{companyId}/faq/{faqId}")
+    @DeleteMapping("/{companyId}/faqs/{faqId}")
     public CommonApiResponse deleteFaq(@PathVariable Long companyId, @PathVariable Long faqId, HttpServletRequest request, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.deleteFaq(companyId, faqId);
         response.setStatus(commonApiResponse.getHttpStatus());
@@ -90,13 +90,59 @@ public class CompanyController {
     }
 
     @ApiReturnQuestions
-    @GetMapping("/{companyId}/post/{postId}/questions")
+    @GetMapping("/{companyId}/posts/{postId}/questions")
     public CommonApiResponse returnQuestions(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.returnQuestions(companyId, postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
+    @ApiCountPosts
+    @GetMapping("/{companyId}/posts")
+    public CommonApiResponse countPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCountPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiChangeToClose
+    @GetMapping("/{companyId}/posts/{postId}")
+    public CommonApiResponse changeToClose(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.changeToClose(companyId, postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+    @ApiGetLatestPosts
+    @GetMapping("/{companyId}/posts/latest")
+    public CommonApiResponse getLatestPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getLatestPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetDeadlinePosts
+    @GetMapping("/{companyId}/posts/deadline")
+    public CommonApiResponse getDeadlinePosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getDeadlinePosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetEndPosts
+    @GetMapping("/{companyId}/posts/end")
+    public CommonApiResponse getEndPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getEndPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetOpenPosts
+    @GetMapping("/{companyId}/posts/open")
+    public CommonApiResponse getOpenPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getOpenPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 
     /**
      * Post common data common api response.
@@ -122,7 +168,7 @@ public class CompanyController {
      * @author wjdals3936
      */
     @PostMapping("/post")
-    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
         log.info("postRequestDto: {}", postRequestDto);
         CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
