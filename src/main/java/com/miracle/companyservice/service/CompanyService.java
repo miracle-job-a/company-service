@@ -90,6 +90,15 @@ public interface CompanyService {
     CommonApiResponse returnQuestions(Long companyId, Long postId);
 
     /**
+     * @author kade
+     * @param companyId
+     * @return Map<String, Long>
+     * 기업 메인 페이지에 노출될 공고수를 반환하는 api
+     * 전체 공고 수, 진행 중 공고수, 마감된 공고수
+     */
+    CommonApiResponse getCountPosts(Long companyId);
+
+    /**
      * Gets company faqs by company id.
      *
      * @param companyId the company id

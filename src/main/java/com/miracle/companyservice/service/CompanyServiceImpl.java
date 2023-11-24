@@ -292,18 +292,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse getCountPosts(Long companyId) {
-        Long allPostsCount = postRepository.countByCompanyIdAndDeletedFalse(companyId);
-        Long endedPostsCount = postRepository.countByCompanyIdAndClosedTrueDeletedFalse(companyId);
-        Long onGoingPostsCount = postRepository.countByCompanyIdAndClosedFalseDeletedFalse(companyId);
-
-        System.out.println(allPostsCount);
-        System.out.println(endedPostsCount);
-        System.out.println(onGoingPostsCount);
+        Long countAllPosts = postRepository.countByCompanyIdAndDeletedFalse(companyId);
+        Long countEndedPosts = postRepository.countByCompanyIdAndClosedTrueAndDeletedFalse(companyId);
+        Long countOnGoing = postRepository.countByCompanyIdAndClosedFalseAndDeletedFalse(companyId);
 
         Map<String, Long> map = new HashMap<>();
-        map.put("allPostsCount", allPostsCount);
-        map.put("endedPostsCount", endedPostsCount);
-        map.put("onGoingPostsCount",onGoingPostsCount);
+        map.put("countAllPosts", countAllPosts);
+        map.put("countEndedPosts", countEndedPosts);
+        map.put("countOnGoing",countOnGoing);
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
