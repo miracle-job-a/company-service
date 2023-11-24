@@ -1,6 +1,5 @@
 package com.miracle.companyservice.controller.swagger;
 
-import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +15,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "기업 공고 수 반환", description = "해당 기업의 전체 공고수, 진행중 공고수, 마감 공고수를 반환합니다.",
+@Operation(summary = "공고관리 - 마감임박순 정렬", description = "해당 기업이 공고 관리에서 마감임박 순으로 정렬하는 API / 마감된 공고는 보여주지 않습니다.",
         responses = {
                 @ApiResponse(responseCode = "200",
                         description = "정상 요청",
@@ -25,7 +24,7 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "성공",
-                                                value = "{\"httpStatus\": 200, \"message\": \"공고 수 조회 완료\", \"data\": Map<String, Long> countAllPosts, countEndedPosts, countOpen }")
+                                                value = "{\"httpStatus\": 200, \"message\": \"마감 임박 공고 정렬\", \"data\": List<CompanyManagePostsResponseDto> }")
 
                                 },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
@@ -72,5 +71,5 @@ import java.lang.annotation.Target;
                                 schema = @Schema(implementation = ErrorApiResponse.class)
                         )),
         })
-public @interface ApiCountPosts {
+public @interface ApiGetDeadlinePosts {
 }
