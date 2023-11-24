@@ -105,6 +105,17 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiChangeToClose
+    @GetMapping("/{companyId}/posts/{postId}")
+    public CommonApiResponse changeToClose(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.changeToClose(companyId, postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+
+
+
     /**
      * Post common data common api response.
      *

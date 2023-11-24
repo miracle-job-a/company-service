@@ -308,6 +308,33 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    public CommonApiResponse changeToClose(Long companyId, Long postId) {
+        if (!postRepository.existsByCompanyIdAndId(companyId, postId)) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId가 공고의 companyId 값과 다릅니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        Optional<Post> postById = postRepository.findById(postId);
+        if (postById.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고가 존재하지 않습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        Post post = postById.get();
+        post.setClosed(true);
+        postRepository.save(post);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고가 마감처리 되었습니다.")
+                .data(Boolean.TRUE)
+                .build();
+    }
+
+
 
     @Override
     public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId) {
