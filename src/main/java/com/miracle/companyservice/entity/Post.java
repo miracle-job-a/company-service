@@ -1,15 +1,13 @@
 package com.miracle.companyservice.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 @Entity

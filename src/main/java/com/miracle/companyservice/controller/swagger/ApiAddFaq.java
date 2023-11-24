@@ -45,7 +45,7 @@ import java.lang.annotation.Target;
 
                                         @ExampleObject(
                                                 name = "유효성 / 기업아이디 오류 ",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\":companyId 값이 0보다 작습니다. \".\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\": \"companyId 값이 0보다 작습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
                                                 name = "유효성 / 질문 값이 없음",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_12\", \"message\": \"질문 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),

@@ -1,6 +1,5 @@
 package com.miracle.companyservice.repository;
 
-import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.entity.Post;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,6 +36,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 
     Long countByCompanyIdAndDeletedFalse(Long companyId); //전체 공고
-    Long countByCompanyIdAndClosedTrueDeletedFalse(Long companyId); //마감공고수
-    Long countByCompanyIdAndClosedFalseDeletedFalse(Long companyId); //진행중공고
+    Long countByCompanyIdAndClosedTrueAndDeletedFalse(Long companyId); //마감공고수
+    Long countByCompanyIdAndClosedFalseAndDeletedFalse(Long companyId); //진행중공고
 }

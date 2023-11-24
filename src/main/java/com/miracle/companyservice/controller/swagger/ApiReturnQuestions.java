@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
                                                 value = "{\"httpStatus\": 400, \"message\": \"companyId가 공고의 companyId 값과 다릅니다.\", \"data\": false }"),
                                         @ExampleObject(
                                                 name = "실패 / 미존재 공고",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400\", \"message\":존재하지 않는 공고입니다. \".\", \"data\": \"false\" }"),
+                                                value = "{\"httpStatus\": 400, \"code\": \"400\", \"message\": \"존재하지 않는 공고입니다.\", \"data\": \"false\" }"),
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),

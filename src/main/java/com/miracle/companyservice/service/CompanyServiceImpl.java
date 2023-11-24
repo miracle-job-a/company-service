@@ -292,18 +292,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse getCountPosts(Long companyId) {
-        Long allPostsCount = postRepository.countByCompanyIdAndDeletedFalse(companyId);
-        Long endedPostsCount = postRepository.countByCompanyIdAndClosedTrueDeletedFalse(companyId);
-        Long onGoingPostsCount = postRepository.countByCompanyIdAndClosedFalseDeletedFalse(companyId);
-
-        System.out.println(allPostsCount);
-        System.out.println(endedPostsCount);
-        System.out.println(onGoingPostsCount);
+        Long countAllPosts = postRepository.countByCompanyIdAndDeletedFalse(companyId);
+        Long countEndedPosts = postRepository.countByCompanyIdAndClosedTrueAndDeletedFalse(companyId);
+        Long countOnGoing = postRepository.countByCompanyIdAndClosedFalseAndDeletedFalse(companyId);
 
         Map<String, Long> map = new HashMap<>();
-        map.put("allPostsCount", allPostsCount);
-        map.put("endedPostsCount", endedPostsCount);
-        map.put("onGoingPostsCount",onGoingPostsCount);
+        map.put("countAllPosts", countAllPosts);
+        map.put("countEndedPosts", countEndedPosts);
+        map.put("countOnGoing",countOnGoing);
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
@@ -311,6 +307,33 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(map)
                 .build();
     }
+
+    public CommonApiResponse changeToClose(Long companyId, Long postId) {
+        if (!postRepository.existsByCompanyIdAndId(companyId, postId)) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId가 공고의 companyId 값과 다릅니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        Optional<Post> postById = postRepository.findById(postId);
+        if (postById.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고가 존재하지 않습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        Post post = postById.get();
+        post.setClosed(true);
+        postRepository.save(post);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고가 마감처리 되었습니다.")
+                .data(Boolean.TRUE)
+                .build();
+    }
+
 
 
     @Override
