@@ -114,6 +114,40 @@ public interface CompanyService {
     CommonApiResponse changeToClose(Long companyId, Long postId);
 
     /**
+     * @author kade
+     * @return List<ManagePostsResponseDto>
+     * 기업의 공고관리 페이지에 보이는 공고 리스트를 최신순 정렬합니다. (디폴트)
+     */
+    CommonApiResponse getLatestPosts(Long companyId);
+
+    /**
+     * @author kade
+     * @param companyId
+     * @return List<ManagePostsResponseDto>
+     * 기업의 공고관리 페이지에 보이는 공고 리스트를 마감임박순으로 정렬합니다.
+     */
+    CommonApiResponse getDeadlinePosts(Long companyId);
+
+    /**
+     * @author kade
+     * @param companyId
+     * @return List<ManagePostsResponseDto>
+     * 기업의 공고관리 페이지에서 마감된 공고만 정렬하여 보여줍니다. (마감된 공고만 보기)
+     */
+    CommonApiResponse getEndPosts(Long companyId);
+
+    /**
+     * @author kade
+     * @param companyId
+     * @return List<ManagePostsResponseDto>
+     * 기업의 공고관리 페이지에서 진행중 공고만 정렬하여 보여줍니다. (진행중 공고만 보기)
+     */
+    CommonApiResponse getOpenPosts(Long companyId);
+
+
+
+
+    /**
      * Gets company faqs by company id.
      *
      * @param companyId the company id
@@ -132,4 +166,5 @@ public interface CompanyService {
     public CommonApiResponse savePost(PostRequestDto postRequestDto);
 
     public CommonApiResponse findPostById(Long postId);
+
 }
