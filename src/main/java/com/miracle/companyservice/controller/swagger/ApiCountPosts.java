@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "성공",
-                                                value = "{\"httpStatus\": 200, \"message\": \"공고 수 조회 완료\", \"data\": Map<String, Long> countAllPosts, countEndedPosts, countOnGoing }")
+                                                value = "{\"httpStatus\": 200, \"message\": \"공고 수 조회 완료\", \"data\": Map<String, Long> countAllPosts, countEndedPosts, countOpen }")
 
                                 },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
