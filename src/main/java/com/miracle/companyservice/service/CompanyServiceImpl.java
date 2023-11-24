@@ -295,12 +295,12 @@ public class CompanyServiceImpl implements CompanyService {
     public CommonApiResponse getCountPosts(Long companyId) {
         Long countAllPosts = postRepository.countByCompanyIdAndDeletedFalse(companyId);
         Long countEndedPosts = postRepository.countByCompanyIdAndClosedTrueAndDeletedFalse(companyId);
-        Long countOnGoing = postRepository.countByCompanyIdAndClosedFalseAndDeletedFalse(companyId);
+        Long countOpen = postRepository.countByCompanyIdAndClosedFalseAndDeletedFalse(companyId);
 
         Map<String, Long> map = new HashMap<>();
         map.put("countAllPosts", countAllPosts);
         map.put("countEndedPosts", countEndedPosts);
-        map.put("countOnGoing",countOnGoing);
+        map.put("countOpen",countOpen);
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
@@ -335,6 +335,41 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    public CommonApiResponse getLatestPosts(Long companyId) {
+        List<ManagePostsResponseDto> latest = postRepository.findAllByCompanyIdOrderByLatest(companyId);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("최신 공고 정렬")
+                .data(latest)
+                .build();
+    }
+
+    public CommonApiResponse getDeadlinePosts(Long companyId) {
+        List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId, LocalDateTime.now());
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("마감 임박 공고 정렬")
+                .data(deadline)
+                .build();
+    }
+
+    public CommonApiResponse getEndPosts(Long companyId) {
+        List<ManagePostsResponseDto> end = postRepository.findAllByCompanyIdOrderByEnd(companyId);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("마감 공고만 보기")
+                .data(end)
+                .build();
+    }
+
+    public CommonApiResponse getOpenPosts(Long companyId) {
+        List<ManagePostsResponseDto> open = postRepository.findAllByCompanyIdOrderByOpen(companyId);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("진행 중 공고만 보기")
+                .data(open)
+                .build();
+    }
 
 
     @Override
