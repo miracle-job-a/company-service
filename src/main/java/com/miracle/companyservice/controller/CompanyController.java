@@ -74,7 +74,7 @@ public class CompanyController {
     }
 
     @ApiDeleteFaq
-    @DeleteMapping("/{companyId}/faq/{faqId}")
+    @DeleteMapping("/{companyId}/faqs/{faqId}")
     public CommonApiResponse deleteFaq(@PathVariable Long companyId, @PathVariable Long faqId, HttpServletRequest request, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.deleteFaq(companyId, faqId);
         response.setStatus(commonApiResponse.getHttpStatus());
@@ -90,13 +90,20 @@ public class CompanyController {
     }
 
     @ApiReturnQuestions
-    @GetMapping("/{companyId}/post/{postId}/questions")
+    @GetMapping("/{companyId}/posts/{postId}/questions")
     public CommonApiResponse returnQuestions(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.returnQuestions(companyId, postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
+    @ApiCountPosts
+    @GetMapping("/{companyId}/posts")
+    public CommonApiResponse countPosts(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCountPosts(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 
     /**
      * Post common data common api response.
