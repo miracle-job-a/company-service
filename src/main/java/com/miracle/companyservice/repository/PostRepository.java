@@ -35,8 +35,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      */
     boolean existsByCompanyIdAndId(Long companyId, Long postId);
 
-
     Long countByCompanyIdAndDeletedFalse(Long companyId); //전체 공고
-    Long countByCompanyIdAndClosedTrueDeletedFalse(Long companyId); //마감공고수
-    Long countByCompanyIdAndClosedFalseDeletedFalse(Long companyId); //진행중공고
+    Long countByCompanyIdAndClosedTrueAndDeletedFalse(Long companyId); //마감공고수
+    Long countByCompanyIdAndClosedFalseAndDeletedFalse(Long companyId); //진행중공고
 }

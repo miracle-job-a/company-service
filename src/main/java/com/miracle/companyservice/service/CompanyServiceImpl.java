@@ -293,8 +293,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     public CommonApiResponse getCountPosts(Long companyId) {
         Long allPostsCount = postRepository.countByCompanyIdAndDeletedFalse(companyId);
-        Long endedPostsCount = postRepository.countByCompanyIdAndClosedTrueDeletedFalse(companyId);
-        Long onGoingPostsCount = postRepository.countByCompanyIdAndClosedFalseDeletedFalse(companyId);
+        Long endedPostsCount = postRepository.countByCompanyIdAndClosedTrueAndDeletedFalse(companyId);
+        Long onGoingPostsCount = postRepository.countByCompanyIdAndClosedFalseAndDeletedFalse(companyId);
 
         System.out.println(allPostsCount);
         System.out.println(endedPostsCount);
@@ -311,7 +311,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(map)
                 .build();
     }
-
 
     @Override
     public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId) {
@@ -438,6 +437,79 @@ public class CompanyServiceImpl implements CompanyService {
                 .httpStatus(HttpStatus.OK.value())
                 .message("해당 공고 데이터 조회 성공")
                 .data(responseDto)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse modifyPostById(PostRequestDto postRequestDto) {
+
+        Post post = Post.builder()
+                .id(postRequestDto.getPostId())
+                .companyId(postRequestDto.getCompanyId())
+                .postType(postRequestDto.getPostType())
+                .title(postRequestDto.getTitle())
+                .endDate(postRequestDto.getEndDate())
+                .tool(postRequestDto.getTool())
+                .workAddress(postRequestDto.getWorkAddress())
+                .mainTask(postRequestDto.getMainTask())
+                .workCondition(postRequestDto.getWorkCondition())
+                .qualification(postRequestDto.getQualification())
+                .benefit(postRequestDto.getBenefit())
+                .specialSkill(postRequestDto.getSpecialSkill())
+                .process(postRequestDto.getProcess())
+                .notice(postRequestDto.getNotice())
+                .career(postRequestDto.getCareer())
+                .jobIdSet(postRequestDto.getJobIdSet())
+                .stackIdSet(postRequestDto.getStackIdSet())
+                .testStartDate(postRequestDto.getTestStartDate())
+                .testEndDate(postRequestDto.getTestEndDate())
+                .build();
+
+        Post modifiedPost = postRepository.save(post);
+        if (modifiedPost == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고 수정에 실패하였습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        List<Question> modifiedQuestions = new ArrayList<>();
+
+        List<QuestionRequestDto> questionRequestDtos = postRequestDto.getQuestionList();
+        if (questionRequestDtos != null) {
+            for (QuestionRequestDto questionRequestDto : questionRequestDtos) {
+                Optional<Question> optionalQuestion = questionRepository.findByIdAndPostId(questionRequestDto.getId(), modifiedPost.getId());
+                if (optionalQuestion.isPresent()) {
+                    Question question = optionalQuestion.get();
+                    Question updatedQuestion = question.toBuilder()
+                            .question(questionRequestDto.getQuestion())
+                            .build();
+                    Question savedQuestion = questionRepository.save(updatedQuestion);
+                    modifiedQuestions.add(savedQuestion);
+                } else {
+                    Question question = Question.builder()
+                            .question(questionRequestDto.getQuestion())
+                            .post(modifiedPost)
+                            .build();
+                    Question savedQuestion = questionRepository.save(question);
+                    modifiedQuestions.add(savedQuestion);
+                }
+            }
+
+            if (modifiedQuestions.contains(null)) {
+                return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("자소서 문항 수정에 실패하였습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+            }
+        }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고가 성공적으로 수정되었습니다.")
+                .data(Boolean.TRUE)
                 .build();
     }
 }

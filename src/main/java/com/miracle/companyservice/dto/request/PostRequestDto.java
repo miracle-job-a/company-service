@@ -1,17 +1,21 @@
 package com.miracle.companyservice.dto.request;
 
 import com.miracle.companyservice.entity.PostType;
+import com.miracle.companyservice.entity.Question;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @ToString
 public class PostRequestDto {
+    private final Long postId;
     private final Long companyId;
     private final PostType postType;
     private final String title;
@@ -33,7 +37,8 @@ public class PostRequestDto {
     private final LocalDateTime testEndDate;
 
     @Builder
-    public PostRequestDto(Long companyId, PostType postType, String title, int career, LocalDateTime endDate, String mainTask, String workCondition, String qualification, String tool, String benefit, String process, String notice, String specialSkill, String workAddress, List<QuestionRequestDto> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet, LocalDateTime testStartDate, LocalDateTime testEndDate) {
+    public PostRequestDto(Long postId, Long companyId, PostType postType, String title, int career, LocalDateTime endDate, String mainTask, String workCondition, String qualification, String tool, String benefit, String process, String notice, String specialSkill, String workAddress, List<QuestionRequestDto> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet, LocalDateTime testStartDate, LocalDateTime testEndDate) {
+        this.postId = postId;
         this.companyId = companyId;
         this.postType = postType;
         this.title = title;
@@ -56,6 +61,7 @@ public class PostRequestDto {
     }
 
     public PostRequestDto() {
+        this.postId = null;
         this.companyId = null;
         this.postType = null;
         this.title = null;

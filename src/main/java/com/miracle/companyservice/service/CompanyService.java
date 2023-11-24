@@ -61,7 +61,7 @@ public interface CompanyService {
     /**
      * Post for main page common api response.
      *
-     * @return 게스트,  유저 메인페이지에 노출될 최근 공고 3건, 마감임박 공고 3건 반환하는 메서드
+     * @return 게스트, 유저 메인페이지에 노출될 최근 공고 3건, 마감임박 공고 3건 반환하는 메서드
      * @author kade
      */
     CommonApiResponse postForMainPage();
@@ -106,10 +106,10 @@ public interface CompanyService {
 
     /**
      * Gets company faqs by company id.
-     * @author wjdals3936
+     *
      * @param companyId the company id
-     * @return the company faqs by company id
-     * 공고 생성 및 상세 조회 시, 해당 기업 정보, FAQ 데이터를 반환하는 메서드
+     * @return the company faqs by company id 공고 생성 및 상세 조회 시, 해당 기업 정보, FAQ 데이터를 반환하는 메서드
+     * @author wjdals3936
      */
     public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId);
 
@@ -134,9 +134,9 @@ public interface CompanyService {
     /**
      * Modify post by id common api response.
      * @author wjdals3936
-     * @param postId the post id
+     * @param postRequestDto the post request dto
      * @return the common api response
      * 공고 수정 메서드
      */
-    public CommonApiResponse modifyPostById(Long postId);
+    public CommonApiResponse modifyPostById(PostRequestDto postRequestDto);
 }

@@ -106,9 +106,8 @@ public class CompanyController {
      * @return the common api response
      * @author wjdals3936
      */
-    @GetMapping("/{companyId}/basic-info")
+    @GetMapping("/{companyId}/info")
     public CommonApiResponse findCompanyFaq(@PathVariable Long companyId, HttpServletResponse response) {
-        log.debug("companyId : {} ", companyId);
         CommonApiResponse commonApiResponse = companyService.getCompanyFaqsByCompanyId(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
@@ -137,9 +136,9 @@ public class CompanyController {
         return commonApiResponse;
     }
 
-    @PutMapping("/posts/{postId}")
-    public CommonApiResponse modifyPost(@PathVariable Long postId, HttpServletResponse response){
-        CommonApiResponse commonApiResponse = companyService.modifyPostById(postId);
+    @PutMapping("/posts")
+    public CommonApiResponse modifyPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.modifyPostById(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
