@@ -14,7 +14,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     /**
      * @author kade
-     * @param now
      * @param pageable
      * @return List<Post>
      * 현재 날짜와 비교하여 마감임박 공고를 반환합니다.
@@ -24,9 +23,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p " +
             "WHERE p.closed = false " +
             "AND p.deleted = false " +
-  //          "AND FUNCTION('TIMESTAMPDIFF', DAY, :now, p.endDate) <= 7 " +
             "ORDER BY p.endDate ASC")
-    List<Post> findTop3ByEndDateOrderByEndDateAsc(LocalDateTime now, Pageable pageable);
+    List<Post> findTop3ByEndDateOrderByEndDateAsc(Pageable pageable);
 
     /**
      * @author kade
