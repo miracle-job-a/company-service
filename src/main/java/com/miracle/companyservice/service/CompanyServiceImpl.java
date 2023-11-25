@@ -165,7 +165,7 @@ public class CompanyServiceImpl implements CompanyService {
             newest.add(new MainPagePostsResponseDto(p, photo));
         });
 
-        List<Post> deadlineResult = postRepository.findTop3ByEndDateOrderByEndDateAsc(LocalDateTime.now(), PageRequest.of(0, 3));
+        List<Post> deadlineResult = postRepository.findTop3ByEndDateOrderByEndDateAsc(PageRequest.of(0, 3));
         List<MainPagePostsResponseDto> deadline = new ArrayList<>();
         deadlineResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
@@ -334,7 +334,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse getDeadlinePosts(Long companyId) {
-        List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId, LocalDateTime.now());
+        List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("마감 임박 공고 정렬")
