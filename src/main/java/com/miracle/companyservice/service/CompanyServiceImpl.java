@@ -455,14 +455,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse findPostById(Long postId) {
-        System.out.println(1);
         Optional<Post> post = postRepository.findById(postId);
-        System.out.println(2);
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.NOT_FOUND.value())
                     .message("해당 공고 정보가 없습니다.")
-//                    .message("일치하는 공고가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -475,18 +472,14 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-        System.out.println(3);
         List<QuestionResponseDto> questionList = questions.stream()
                 .map(QuestionResponseDto::new)
                 .collect(Collectors.toList());
-        System.out.println(4);
-        System.out.println(post.get());
-        System.out.println(questionList);
-        System.out.println(new PostResponseDto(post.get(), questionList));
+
         PostResponseDto responseDto = new PostResponseDto(
                 post.get(),
                 questionList);
-        System.out.println(5);
+
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("해당 공고 데이터 조회 성공")
