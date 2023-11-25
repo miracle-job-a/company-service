@@ -87,12 +87,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @param now
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고 관리를 들어갔을 때, 마감임박 순으로 정렬하는 메서드
-     * 마감된 공고는 보여주지 않습니다.
      */
     @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.createdAt, p.endDate, p.closed) " +
             "FROM Post p " +
-            "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = false AND p.endDate >= :now " +
-            "ORDER BY p.endDate ASC")
+            "WHERE p.companyId = :companyId AND p.deleted = false AND p.endDate >= :now " +
+            "ORDER BY p.closed ASC, p.endDate ASC")
     List<ManagePostsResponseDto> findAllByCompanyIdOrderByDeadline(Long companyId, LocalDateTime now);
 
     /**
