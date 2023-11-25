@@ -81,23 +81,18 @@ public class ExceptionController {
     }
 
     /**
-     * Illegal argument exception handle api response.
-     *
-     * @param e       the e
-     * @param request the request
-     * @return the api response
-     * @author wjdals3936
+     * 400 클라이언트 에러
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
     public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpRequest request) {
-        log.info("[ExceptionController] uri: {}, method: {}, methodValue: {}", request.getURI(), request.getMethod(), request.getMethodValue());
-        log.info(e.getMessage());
+        log.info("[IllegalArgumentException] : " + e.getMessage());
+
 
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .code("400")
                 .message("잘못된 요청입니다.")
-                .exception(e.toString())
+                .exception("IllegalArgumentException")
                 .build();
     }
 }

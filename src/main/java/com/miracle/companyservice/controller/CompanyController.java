@@ -144,37 +144,23 @@ public class CompanyController {
         return commonApiResponse;
     }
 
-    /**
-     * Post common data common api response.
-     *
-     * @param companyId the company id
-     * @param response  the response
-     * @return the common api response
-     * @author wjdals3936
-     */
+    @ApiFindCompanyInfo
     @GetMapping("/{companyId}/info")
-    public CommonApiResponse findCompanyFaq(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getCompanyFaqsByCompanyId(companyId);
+    public CommonApiResponse findCompanyInfo(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCompanyInfoAndFaqsByCompanyId(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
-    /**
-     * Post registration common api response.
-     *
-     * @param postRequestDto the post request dto
-     * @param response       the response
-     * @return the common api response
-     * @author wjdals3936
-     */
+    @ApiRegisterPost
     @PostMapping("/post")
     public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
-        log.info("postRequestDto: {}", postRequestDto);
         CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
+    @ApiGetPost
     @GetMapping("/posts/{postId}")
     public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.findPostById(postId);
@@ -182,6 +168,7 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiModifyPost
     @PutMapping("/posts")
     public CommonApiResponse modifyPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.modifyPostById(postRequestDto);
