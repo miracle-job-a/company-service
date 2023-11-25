@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,9 @@ class CompanyFaqRepositoryTest {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @BeforeEach
     void setUpTest() {
@@ -41,6 +45,17 @@ class CompanyFaqRepositoryTest {
                 .introduction("데이터 베이스 소프트웨어 개발 및 공급을 하고 있는 글로벌 기업, 오라클입니다.")
                 .build();
         companyRepository.save(company);
+    }
+
+    @AfterEach
+    void resetTest() {
+        companyFaqRepository.deleteAll();
+        companyRepository.deleteAll();
+        entityManager.createNativeQuery("ALTER TABLE Company ALTER COLUMN id RESTART WITH 1").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE Company_faq ALTER COLUMN id RESTART WITH 1").executeUpdate();
+
+        entityManager.flush();
+        entityManager.clear();
     }
 
     @Test
@@ -69,14 +84,14 @@ class CompanyFaqRepositoryTest {
     @Test
     @DisplayName("기업에 해당하는 FAQ 개수 반환")
     void countByCompanyId() {
-        Optional<Company> company = companyRepository.findById(2L);
+        Optional<Company> company = companyRepository.findById(1L);
 
         CompanyFaq companyFaq1 = new CompanyFaq("질문1", "답변1", company.get());
         CompanyFaq companyFaq2 = new CompanyFaq("질문2", "답변2", company.get());
         companyFaqRepository.save(companyFaq1);
         companyFaqRepository.save(companyFaq2);
 
-        Long count = companyFaqRepository.countByCompanyId(2L);
+        Long count = companyFaqRepository.countByCompanyId(1L);
 
         Assertions.assertThat(count).isEqualTo(2L);
     }
@@ -84,17 +99,34 @@ class CompanyFaqRepositoryTest {
     @Test
     @DisplayName("기업아이디와 FAQ의 기업아이디 일치여부 확인")
     void existsByCompanyIdAndId() {
-        Optional<Company> company = companyRepository.findById(3L);
+        Optional<Company> company = companyRepository.findById(1L);
 
         CompanyFaq companyFaq1 = new CompanyFaq("질문1", "답변1", company.get());
         CompanyFaq companyFaq2 = new CompanyFaq("질문2", "답변2", company.get());
         companyFaqRepository.save(companyFaq1);
         companyFaqRepository.save(companyFaq2);
 
-        boolean result1 = companyFaqRepository.existsByCompanyIdAndId(3L, 5L);
-        boolean result2 = companyFaqRepository.existsByCompanyIdAndId(3L, 6L);
+        boolean result1 = companyFaqRepository.existsByCompanyIdAndId(1L, 1L);
+        boolean result2 = companyFaqRepository.existsByCompanyIdAndId(1L, 2L);
 
         Assertions.assertThat(result1).isTrue();
         Assertions.assertThat(result2).isTrue();
+    }
+
+    @Test
+    @DisplayName("FAQ 삭제")
+    void delete() {
+        Optional<Company> company = companyRepository.findById(1L);
+        CompanyFaq companyFaq1 = new CompanyFaq("질문1", "답변1", company.get());
+        CompanyFaq companyFaq2 = new CompanyFaq("질문2", "답변2", company.get());
+        CompanyFaq save1 = companyFaqRepository.save(companyFaq1);
+        CompanyFaq save2 = companyFaqRepository.save(companyFaq2);
+        Long id1 = save1.getId();
+        Long id2 = save2.getId();
+
+        companyFaqRepository.deleteById(id1);
+        Long count = companyFaqRepository.countByCompanyId(1L);
+
+        Assertions.assertThat(count).isEqualTo(1L);
     }
 }
