@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "공고관리 - 마감임박순 정렬", description = "해당 기업이 공고 관리에서 마감임박 순으로 정렬하는 API / 마감된 공고는 보여주지 않습니다.",
+@Operation(summary = "공고관리 - 마감임박순 정렬", description = "해당 기업이 공고 관리에서 마감임박 순으로 정렬하는 API",
         responses = {
                 @ApiResponse(responseCode = "200",
                         description = "정상 요청",
