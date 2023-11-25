@@ -20,7 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         this.authorizationInterceptor = authorizationInterceptor;
     }
 
-/*   @Override
+   @Override
     public void addInterceptors(InterceptorRegistry registry) {
         String baseUrl = "/v1/company";
         List<String> excludePath = new ArrayList<>();
@@ -28,14 +28,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         excludePath.add(baseUrl + "/email");
         excludePath.add(baseUrl + "/bno");
         excludePath.add(baseUrl + "/signup");
-        excludePath.add(baseUrl + "/login");*/
+        excludePath.add(baseUrl + "/login");
 
         //excludePath.add(baseUrl + "/*/posts/*/questions");
 
         //excludePath.add(baseUrl + "/main");
-        //excludePath.add(baseUrl + "/*/basic-info");
-        //excludePath.add(baseUrl + "/post/*/detail");
+        //excludePath.add(baseUrl + "/*/info");
+        //excludePath.add(baseUrl + "/posts/*");
         //registry.addInterceptor(authorizationInterceptor)
      //           .excludePathPatterns(excludePath);
-   // }
+   }
 }

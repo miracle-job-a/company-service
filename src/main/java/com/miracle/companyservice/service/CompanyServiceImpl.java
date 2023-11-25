@@ -371,7 +371,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-
     @Override
     public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
@@ -383,15 +382,18 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
 
-        log.info("company : {}", company);
-
         List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
-        log.info("faqs : {}", faqs);
+        if (faqs == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("기업의 자주 묻는 질문 정보가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
 
         List<CompanyFaqResponseDto> faqList = faqs.stream()
                 .map(companyFaq -> new CompanyFaqResponseDto(companyFaq))
                 .collect(Collectors.toList());
-        log.info("faqList : {}", faqList);
 
         PostCommonDataResponseDto responseDto = new PostCommonDataResponseDto(
                 company.get(),
@@ -399,7 +401,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
-                .message("SUCCESS")
+                .message("기업 정보 및 자주 묻는 질문 조회 성공")
                 .data(responseDto)
                 .build();
     }
@@ -408,7 +410,6 @@ public class CompanyServiceImpl implements CompanyService {
     public CommonApiResponse savePost(PostRequestDto postRequestDto) {
 
         List<QuestionRequestDto> questions = postRequestDto.getQuestionList();
-        log.info("questions : {}", questions);
 
         Post post = Post.builder()
                 .companyId(postRequestDto.getCompanyId())
@@ -430,16 +431,13 @@ public class CompanyServiceImpl implements CompanyService {
                 .testStartDate(postRequestDto.getTestStartDate())
                 .testEndDate(postRequestDto.getTestEndDate())
                 .build();
-        log.info("post : {}", post);
 
         Post savedPost = postRepository.save(post);
-        log.info("savedPost : {}", savedPost);
-        log.info("savedPost.getId() : {}", savedPost.getId());
-
         if (savedPost == null) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("공고 등록에 실패하였습니다.")
+                    .data(Boolean.FALSE)
                     .build();
         }
 
@@ -449,21 +447,20 @@ public class CompanyServiceImpl implements CompanyService {
                         .question(questionRequestDto.getQuestion())
                         .build())
                 .collect(Collectors.toList());
-        log.info("questionList : {}", questionList);
 
         List<Question> savedQuestions = questionRepository.saveAll(questionList);
-        log.info("savedQuestions : {}", savedQuestions);
-
         if (savedQuestions.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("질문 등록에 실패하였습니다.")
+                    .data(Boolean.FALSE)
                     .build();
         }
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("공고가 성공적으로 등록되었습니다.")
+                .data(Boolean.TRUE)
                 .build();
     }
 
@@ -473,19 +470,23 @@ public class CompanyServiceImpl implements CompanyService {
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.NOT_FOUND.value())
-                    .message("공고 정보가 없습니다.")
+                    .message("해당 공고 정보가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
-        log.info("post : {}", post);
 
         List<Question> questions = questionRepository.findByPostId(postId);
-        log.info("questions : {}", questions);
+        if (questions == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("해당 공고의 자기소개서 문항이 존재하지 않습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
 
         List<QuestionResponseDto> questionList = questions.stream()
                 .map(QuestionResponseDto::new)
                 .collect(Collectors.toList());
-        log.info("questionList : {}", questionList);
 
         PostResponseDto responseDto = new PostResponseDto(
                 post.get(),
@@ -493,8 +494,81 @@ public class CompanyServiceImpl implements CompanyService {
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
-                .message("SUCCESS")
+                .message("해당 공고 데이터 조회 성공")
                 .data(responseDto)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse modifyPostById(PostRequestDto postRequestDto) {
+
+        Post post = Post.builder()
+                .id(postRequestDto.getPostId())
+                .companyId(postRequestDto.getCompanyId())
+                .postType(postRequestDto.getPostType())
+                .title(postRequestDto.getTitle())
+                .endDate(postRequestDto.getEndDate())
+                .tool(postRequestDto.getTool())
+                .workAddress(postRequestDto.getWorkAddress())
+                .mainTask(postRequestDto.getMainTask())
+                .workCondition(postRequestDto.getWorkCondition())
+                .qualification(postRequestDto.getQualification())
+                .benefit(postRequestDto.getBenefit())
+                .specialSkill(postRequestDto.getSpecialSkill())
+                .process(postRequestDto.getProcess())
+                .notice(postRequestDto.getNotice())
+                .career(postRequestDto.getCareer())
+                .jobIdSet(postRequestDto.getJobIdSet())
+                .stackIdSet(postRequestDto.getStackIdSet())
+                .testStartDate(postRequestDto.getTestStartDate())
+                .testEndDate(postRequestDto.getTestEndDate())
+                .build();
+
+        Post modifiedPost = postRepository.save(post);
+        if (modifiedPost == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고 수정에 실패하였습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        List<Question> modifiedQuestions = new ArrayList<>();
+
+        List<QuestionRequestDto> questionRequestDtos = postRequestDto.getQuestionList();
+        if (questionRequestDtos != null) {
+            for (QuestionRequestDto questionRequestDto : questionRequestDtos) {
+                Optional<Question> optionalQuestion = questionRepository.findByIdAndPostId(questionRequestDto.getId(), modifiedPost.getId());
+                if (optionalQuestion.isPresent()) {
+                    Question question = optionalQuestion.get();
+                    Question updatedQuestion = question.toBuilder()
+                            .question(questionRequestDto.getQuestion())
+                            .build();
+                    Question savedQuestion = questionRepository.save(updatedQuestion);
+                    modifiedQuestions.add(savedQuestion);
+                } else {
+                    Question question = Question.builder()
+                            .question(questionRequestDto.getQuestion())
+                            .post(modifiedPost)
+                            .build();
+                    Question savedQuestion = questionRepository.save(question);
+                    modifiedQuestions.add(savedQuestion);
+                }
+            }
+
+            if (modifiedQuestions.contains(null)) {
+                return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("자소서 문항 수정에 실패하였습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+            }
+        }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고가 성공적으로 수정되었습니다.")
+                .data(Boolean.TRUE)
                 .build();
     }
 }
