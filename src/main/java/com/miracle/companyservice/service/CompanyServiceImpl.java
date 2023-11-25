@@ -466,7 +466,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse findPostById(Long postId) {
+        System.out.println(1);
         Optional<Post> post = postRepository.findById(postId);
+        System.out.println(2);
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.NOT_FOUND.value())
@@ -484,15 +486,18 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-
+        System.out.println(3);
         List<QuestionResponseDto> questionList = questions.stream()
                 .map(QuestionResponseDto::new)
                 .collect(Collectors.toList());
-
+        System.out.println(4);
+        System.out.println(post.get());
+        System.out.println(questionList);
+        System.out.println(new PostResponseDto(post.get(), questionList));
         PostResponseDto responseDto = new PostResponseDto(
                 post.get(),
                 questionList);
-
+        System.out.println(5);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("해당 공고 데이터 조회 성공")
@@ -571,6 +576,27 @@ public class CompanyServiceImpl implements CompanyService {
                 .message("공고가 성공적으로 수정되었습니다.")
                 .data(Boolean.TRUE)
                 .build();
+    }
+
+    @Override
+    public CommonApiResponse deletePostById(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+
+        if (post.isPresent()) {
+            post.get().setDeleted(true);
+            postRepository.save(post.get());
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("공고가 성공적으로 삭제되었습니다.")
+                    .data(Boolean.TRUE)
+                    .build();
+        } else {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고 삭제 실패")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
     }
 }
 

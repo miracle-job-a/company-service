@@ -177,4 +177,12 @@ public interface CompanyService {
      * 공고 수정 메서드
      */
     public CommonApiResponse modifyPostById(PostRequestDto postRequestDto);
+
+    /**
+     * @author wjdals3936
+     * @param postId the post id
+     * @return the common api response
+     * 공고 삭제 메서드
+     */
+    public CommonApiResponse deletePostById(Long postId);
 }
