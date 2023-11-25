@@ -33,9 +33,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //excludePath.add(baseUrl + "/*/posts/*/questions");
 
         //excludePath.add(baseUrl + "/main");
-        //excludePath.add(baseUrl + "/*/info");
-        //excludePath.add(baseUrl + "/posts/*");
-        //registry.addInterceptor(authorizationInterceptor)
-     //           .excludePathPatterns(excludePath);
+        excludePath.add(baseUrl + "/*/info"); // 회사 정보 조회
+        // excludePath.add(baseUrl + "/posts/*"); // - 조회 (삭제랑 같은 url이라 제외해야 함)
+
+        registry.addInterceptor(authorizationInterceptor)
+                .excludePathPatterns(excludePath);
    }
 }
