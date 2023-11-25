@@ -14,7 +14,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     /**
      * @author kade
-     * @param now
      * @param pageable
      * @return List<Post>
      * 현재 날짜와 비교하여 마감임박 공고를 반환합니다.
@@ -24,9 +23,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p " +
             "WHERE p.closed = false " +
             "AND p.deleted = false " +
-            "AND p.endDate >= :now " +
             "ORDER BY p.endDate ASC")
-    List<Post> findTop3ByEndDateOrderByEndDateAsc(LocalDateTime now, Pageable pageable);
+    List<Post> findTop3ByEndDateOrderByEndDateAsc(Pageable pageable);
 
     /**
      * @author kade
@@ -84,16 +82,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     /**
      * @author kade
      * @param companyId
-     * @param now
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고 관리를 들어갔을 때, 마감임박 순으로 정렬하는 메서드
-     * 마감된 공고는 보여주지 않습니다.
      */
     @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.createdAt, p.endDate, p.closed) " +
             "FROM Post p " +
-            "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = false AND p.endDate >= :now " +
-            "ORDER BY p.endDate ASC")
-    List<ManagePostsResponseDto> findAllByCompanyIdOrderByDeadline(Long companyId, LocalDateTime now);
+            "WHERE p.companyId = :companyId AND p.deleted = false " +
+            "ORDER BY p.closed ASC, p.endDate ASC")
+    List<ManagePostsResponseDto> findAllByCompanyIdOrderByDeadline(Long companyId);
 
     /**
      * @author kade

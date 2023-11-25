@@ -165,7 +165,7 @@ public class CompanyServiceImpl implements CompanyService {
             newest.add(new MainPagePostsResponseDto(p, photo));
         });
 
-        List<Post> deadlineResult = postRepository.findTop3ByEndDateOrderByEndDateAsc(LocalDateTime.now(), PageRequest.of(0, 3));
+        List<Post> deadlineResult = postRepository.findTop3ByEndDateOrderByEndDateAsc(PageRequest.of(0, 3));
         List<MainPagePostsResponseDto> deadline = new ArrayList<>();
         deadlineResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
@@ -210,13 +210,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse deleteFaq(Long companyId, Long faqId) {
-        if (faqId == null || faqId <= 0) {
-            return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("faq 값이 0보다 작습니다.")
-                    .data(Boolean.FALSE)
-                    .build();
-        }
         if (!companyFaqRepository.existsById(faqId)) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -240,13 +233,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse getFaq(Long companyId) {
-        if (companyId == null || companyId <= 0) {
-            return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("companyId 값이 0보다 작습니다.")
-                    .data(Boolean.FALSE)
-                    .build();
-        }
         if (!companyRepository.existsById(companyId)) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -257,7 +243,8 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyFaq> faqList = companyFaqRepository.findByCompanyId(companyId);
         List<CompanyFaqResponseDto> faqDtoList = new ArrayList<>();
 
-        faqList.iterator().forEachRemaining((CompanyFaq c) -> faqDtoList.add(new CompanyFaqResponseDto(c.getId(), c.getQuestion(), c.getAnswer())));
+        faqList.iterator().forEachRemaining((CompanyFaq c) ->
+                faqDtoList.add(new CompanyFaqResponseDto(c.getId(), c.getQuestion(), c.getAnswer())));
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("FAQ 조회 성공")
@@ -284,7 +271,9 @@ public class CompanyServiceImpl implements CompanyService {
         List<Question> questionList = post.get().getQuestionList();
 
         List<QuestionResponseDto> questionResponseDtoList = new ArrayList<>();
-        questionList.iterator().forEachRemaining((Question q) -> questionResponseDtoList.add(new QuestionResponseDto(q)));
+        questionList.iterator().forEachRemaining((Question q) ->
+                questionResponseDtoList.add(new QuestionResponseDto(q)));
+
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("자기소개서 질문 조회 성공")
@@ -345,7 +334,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse getDeadlinePosts(Long companyId) {
-        List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId, LocalDateTime.now());
+        List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("마감 임박 공고 정렬")
