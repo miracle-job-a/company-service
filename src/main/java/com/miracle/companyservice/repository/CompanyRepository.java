@@ -42,5 +42,4 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
      */
     @Query("SELECT c.photo FROM Company c WHERE c.id = :companyId")
     String findPhotoById(Long companyId);
-
 }

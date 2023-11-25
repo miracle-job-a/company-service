@@ -361,12 +361,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId) {
+    public CommonApiResponse getCompanyInfoAndFaqsByCompanyId(Long companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.NOT_FOUND.value())
-                    .message("기업 정보가 없습니다.")
+                    .message("해당 기업에 대한 정보가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -374,8 +374,8 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
         if (faqs == null) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("기업의 자주 묻는 질문 정보가 없습니다.")
+                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .message("해당 기업의 자주 묻는 질문 정보가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -441,7 +441,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (savedQuestions.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("질문 등록에 실패하였습니다.")
+                    .message("자기소개서 문항 등록에 실패하였습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -467,12 +467,11 @@ public class CompanyServiceImpl implements CompanyService {
         List<Question> questions = questionRepository.findByPostId(postId);
         if (questions == null) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("해당 공고의 자기소개서 문항이 존재하지 않습니다.")
+                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .message("해당 공고에 대한 자기소개서 문항이 존재하지 않습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
-
         List<QuestionResponseDto> questionList = questions.stream()
                 .map(QuestionResponseDto::new)
                 .collect(Collectors.toList());
@@ -559,6 +558,27 @@ public class CompanyServiceImpl implements CompanyService {
                 .message("공고가 성공적으로 수정되었습니다.")
                 .data(Boolean.TRUE)
                 .build();
+    }
+
+    @Override
+    public CommonApiResponse deletePostById(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+
+        if (post.isPresent()) {
+            post.get().setDeleted(true);
+            postRepository.save(post.get());
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("공고가 성공적으로 삭제되었습니다.")
+                    .data(Boolean.TRUE)
+                    .build();
+        } else {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고 삭제 실패")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
     }
 }
 

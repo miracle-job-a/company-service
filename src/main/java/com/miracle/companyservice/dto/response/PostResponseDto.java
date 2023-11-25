@@ -59,6 +59,9 @@ public class PostResponseDto{
     }
 
     private String formatDate(LocalDateTime date, String format) {
+        if (date == null) {
+            return "null";
+        }
         return date.format(DateTimeFormatter.ofPattern(format));
     }
 }
