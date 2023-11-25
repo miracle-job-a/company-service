@@ -24,7 +24,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p " +
             "WHERE p.closed = false " +
             "AND p.deleted = false " +
-            "AND p.endDate >= :now " +
+  //          "AND FUNCTION('TIMESTAMPDIFF', DAY, :now, p.endDate) <= 7 " +
             "ORDER BY p.endDate ASC")
     List<Post> findTop3ByEndDateOrderByEndDateAsc(LocalDateTime now, Pageable pageable);
 
@@ -84,15 +84,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     /**
      * @author kade
      * @param companyId
-     * @param now
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고 관리를 들어갔을 때, 마감임박 순으로 정렬하는 메서드
      */
     @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.createdAt, p.endDate, p.closed) " +
             "FROM Post p " +
-            "WHERE p.companyId = :companyId AND p.deleted = false AND p.endDate >= :now " +
+            "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.endDate ASC")
-    List<ManagePostsResponseDto> findAllByCompanyIdOrderByDeadline(Long companyId, LocalDateTime now);
+    List<ManagePostsResponseDto> findAllByCompanyIdOrderByDeadline(Long companyId);
 
     /**
      * @author kade
