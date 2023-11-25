@@ -69,9 +69,8 @@ public class ExceptionController {
      * 500 서버에러
      */
     @ExceptionHandler(value = RuntimeException.class)
-    public CommonApiResponse runtimeHandle(RuntimeException e) {
+    public CommonApiResponse runtimeHandle(RuntimeException e, HttpRequest request) {
         log.info("[runtimeHandle] : " + e.getMessage());
-
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .code("500")
@@ -85,14 +84,13 @@ public class ExceptionController {
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
     public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpRequest request) {
-        log.info("[IllegalArgumentException] : " + e.getMessage());
-
+        log.info("[illegalArgumentExceptionHandle] : " + e.getMessage());
 
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .code("400")
                 .message("잘못된 요청입니다.")
-                .exception("IllegalArgumentException")
+                .exception("illegalArgumentExceptionHandle")
                 .build();
     }
 }
