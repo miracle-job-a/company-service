@@ -175,4 +175,12 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiDeletePost
+    @DeleteMapping("/posts/{postId}")
+    public CommonApiResponse deletePost(@PathVariable Long postId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.deletePostById(postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }
