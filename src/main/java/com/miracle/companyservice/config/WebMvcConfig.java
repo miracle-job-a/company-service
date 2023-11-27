@@ -13,22 +13,22 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private AuthorizationInterceptor authorizationInterceptor;
+    private final AuthorizationInterceptor authorizationInterceptor;
 
     @Autowired
     public WebMvcConfig(AuthorizationInterceptor authorizationInterceptor) {
         this.authorizationInterceptor = authorizationInterceptor;
     }
 
-   @Override
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         String baseUrl = "/v1/company";
         List<String> excludePath = new ArrayList<>();
         excludePath.add("/swagger-ui/index");
-        excludePath.add(baseUrl + "/email");
-        excludePath.add(baseUrl + "/bno");
-        excludePath.add(baseUrl + "/signup");
-        excludePath.add(baseUrl + "/login");
+     //   excludePath.add(baseUrl + "/email");
+     //   excludePath.add(baseUrl + "/bno");
+     //   excludePath.add(baseUrl + "/signup");
+     //   excludePath.add(baseUrl + "/login");
 
         //excludePath.add(baseUrl + "/*/posts/*/questions");
 
@@ -36,6 +36,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //excludePath.add(baseUrl + "/*/info");
         //excludePath.add(baseUrl + "/posts/*");
         //registry.addInterceptor(authorizationInterceptor)
-     //           .excludePathPatterns(excludePath);
-   }
+        //           .excludePathPatterns(excludePath);
+    }
 }
