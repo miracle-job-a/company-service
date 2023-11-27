@@ -152,7 +152,7 @@ public interface CompanyService {
      * @return the company faqs by company id
      * 공고 생성 및 상세 조회 시, 해당 기업 정보, FAQ 데이터를 반환하는 메서드
      */
-    public CommonApiResponse getCompanyFaqsByCompanyId(Long companyId);
+    public CommonApiResponse getCompanyInfoAndFaqsByCompanyId(Long companyId);
 
     /**
      * @author wjdals3936
@@ -177,4 +177,12 @@ public interface CompanyService {
      * 공고 수정 메서드
      */
     public CommonApiResponse modifyPostById(PostRequestDto postRequestDto);
+
+    /**
+     * @author wjdals3936
+     * @param postId the post id
+     * @return the common api response
+     * 공고 삭제 메서드
+     */
+    public CommonApiResponse deletePostById(Long postId);
 }
