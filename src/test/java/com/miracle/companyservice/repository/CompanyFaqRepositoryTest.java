@@ -32,6 +32,14 @@ class CompanyFaqRepositoryTest {
 
     @BeforeEach
     void setUpTest() {
+        companyFaqRepository.deleteAll();
+        companyRepository.deleteAll();
+        entityManager.createNativeQuery("ALTER TABLE Company ALTER COLUMN id RESTART WITH 1").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE Company_faq ALTER COLUMN id RESTART WITH 1").executeUpdate();
+
+        entityManager.flush();
+        entityManager.clear();
+
        Company company = Company.builder()
                 .name("오라클코리아")
                 .email("austinTEST@oracle.com")
@@ -47,16 +55,6 @@ class CompanyFaqRepositoryTest {
         companyRepository.save(company);
     }
 
-    @AfterEach
-    void resetTest() {
-        companyFaqRepository.deleteAll();
-        companyRepository.deleteAll();
-        entityManager.createNativeQuery("ALTER TABLE Company ALTER COLUMN id RESTART WITH 1").executeUpdate();
-        entityManager.createNativeQuery("ALTER TABLE Company_faq ALTER COLUMN id RESTART WITH 1").executeUpdate();
-
-        entityManager.flush();
-        entityManager.clear();
-    }
 
     @Test
     @DisplayName("FAQ 저장 테스트")

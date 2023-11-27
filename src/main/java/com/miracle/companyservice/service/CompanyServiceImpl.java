@@ -365,7 +365,7 @@ public class CompanyServiceImpl implements CompanyService {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("해당 기업에 대한 정보가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
@@ -374,7 +374,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyFaq> faqs = companyFaqRepository.findByCompanyId(companyId);
         if (faqs == null) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("해당 기업의 자주 묻는 질문 정보가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
@@ -458,7 +458,7 @@ public class CompanyServiceImpl implements CompanyService {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("해당 공고 정보가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
@@ -467,7 +467,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Question> questions = questionRepository.findByPostId(postId);
         if (questions == null) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("해당 공고에 대한 자기소개서 문항이 존재하지 않습니다.")
                     .data(Boolean.FALSE)
                     .build();

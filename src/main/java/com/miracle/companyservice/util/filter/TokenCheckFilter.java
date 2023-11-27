@@ -16,9 +16,9 @@ public class TokenCheckFilter implements Filter {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
-        String id = httpServletRequest.getHeader("sessionId") + privateKey;
+        String id = httpServletRequest.getHeader("Session-Id") + privateKey;
         int miracle = id.hashCode();
-        int token = httpServletRequest.getIntHeader("miracle");
+        int token = httpServletRequest.getIntHeader("Miracle");
 
         if (miracle != token) {
             RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher("/errors/token");

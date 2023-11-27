@@ -31,26 +31,26 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
         String pathCompanyId = pathVariables.get("companyId");
-        if (!pathCompanyId.equals(request.getHeader("id"))) {
+        if (!pathCompanyId.equals(request.getHeader("Company-Id"))) {
             sendFailResponseByForbidden(response);
             return false;
         }
 
-        if (request.getHeader("id") == null) {
+        if (request.getHeader("Company-Id") == null) {
             sendFailResponseByHeader(response);
             return false;
         }
-        Long id = Long.parseLong(request.getHeader("id"));
-        if (request.getHeader("email") == null) {
+        Long id = Long.parseLong(request.getHeader("Company-Id"));
+        if (request.getHeader("Company-Email") == null) {
             sendFailResponseByHeader(response);
             return false;
         }
-        String email = request.getHeader("email");
-        if (request.getHeader("bno") == null) {
+        String email = request.getHeader("Company-Email");
+        if (request.getHeader("Company-Bno") == null) {
             sendFailResponseByHeader(response);
             return false;
         }
-        String bno = request.getHeader("bno");
+        String bno = request.getHeader("Company-Bno");
         if (!companyService.companyValidation(id, email, bno)) {
             sendFailResponse(response);
             return false;

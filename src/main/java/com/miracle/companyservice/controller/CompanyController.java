@@ -106,7 +106,7 @@ public class CompanyController {
     }
 
     @ApiChangeToClose
-    @GetMapping("/{companyId}/posts/{postId}")
+    @GetMapping("/{companyId}/posts/{postId}/close")
     public CommonApiResponse changeToClose(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.changeToClose(companyId, postId);
         response.setStatus(commonApiResponse.getHttpStatus());
@@ -154,14 +154,14 @@ public class CompanyController {
 
     @ApiRegisterPost
     @PostMapping("{companyId}/post")
-    public CommonApiResponse registerPost(@PathVariable Long companyId, @Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
+    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiGetPost
-    @GetMapping("/posts/{postId}")
+    @GetMapping("{companyId}/posts/{postId}")
     public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.findPostById(postId);
         response.setStatus(commonApiResponse.getHttpStatus());
@@ -169,15 +169,15 @@ public class CompanyController {
     }
 
     @ApiModifyPost
-    @PutMapping("/posts")
-    public CommonApiResponse modifyPost(@Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+    @PutMapping("{companyId}/posts/{postId}")
+    public CommonApiResponse modifyPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.modifyPostById(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiDeletePost
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("{companyId}/posts/{postId}")
     public CommonApiResponse deletePost(@PathVariable Long postId, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.deletePostById(postId);
         response.setStatus(commonApiResponse.getHttpStatus());

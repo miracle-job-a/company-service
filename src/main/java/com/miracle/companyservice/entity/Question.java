@@ -22,4 +22,9 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public Question(String question, Post post) {
+        this.question = question;
+        this.post = post;
+    }
 }
