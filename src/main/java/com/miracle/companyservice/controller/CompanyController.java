@@ -67,7 +67,7 @@ public class CompanyController {
 
     @ApiAddFaq
     @PostMapping("/{companyId}/faq")
-    public CommonApiResponse addFaq(@PathVariable Long companyId, @RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
+    public CommonApiResponse addFaq(@PathVariable Long companyId,@Valid @RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.addFaq(companyFaqRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
@@ -153,8 +153,8 @@ public class CompanyController {
     }
 
     @ApiRegisterPost
-    @PostMapping("/post")
-    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
+    @PostMapping("{companyId}/post")
+    public CommonApiResponse registerPost(@PathVariable Long companyId, @Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
@@ -170,7 +170,7 @@ public class CompanyController {
 
     @ApiModifyPost
     @PutMapping("/posts")
-    public CommonApiResponse modifyPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+    public CommonApiResponse modifyPost(@Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.modifyPostById(postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
