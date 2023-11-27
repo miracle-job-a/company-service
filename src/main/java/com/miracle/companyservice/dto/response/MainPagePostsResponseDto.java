@@ -2,6 +2,7 @@ package com.miracle.companyservice.dto.response;
 
 import com.miracle.companyservice.entity.Post;
 import com.miracle.companyservice.entity.PostType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @ToString
 @Getter
+@EqualsAndHashCode
 public class MainPagePostsResponseDto {
 
     //postId
