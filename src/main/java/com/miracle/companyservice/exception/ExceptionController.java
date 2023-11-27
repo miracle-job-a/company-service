@@ -29,6 +29,9 @@ public class ExceptionController {
      * 400_8 유효성검사 - address
      * 400_9 유효성검사 - introduction
      * 400_10 유효성검사 - employeeNum
+     * 400_11 유효성검사 - id
+     * 400_12 유효성검사 - question(faq)
+     * 400_13 유효성검사 - answer(faq)
      *
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -66,9 +69,8 @@ public class ExceptionController {
      * 500 서버에러
      */
     @ExceptionHandler(value = RuntimeException.class)
-    public CommonApiResponse runtimeHandle(RuntimeException e) {
+    public CommonApiResponse runtimeHandle(RuntimeException e, HttpRequest request) {
         log.info("[runtimeHandle] : " + e.getMessage());
-
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .code("500")
@@ -78,23 +80,17 @@ public class ExceptionController {
     }
 
     /**
-     * Illegal argument exception handle api response.
-     *
-     * @param e       the e
-     * @param request the request
-     * @return the api response
-     * @author wjdals3936
+     * 400 클라이언트 에러
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
     public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpRequest request) {
-        log.info("[ExceptionController] uri: {}, method: {}, methodValue: {}", request.getURI(), request.getMethod(), request.getMethodValue());
-        log.info(e.getMessage());
+        log.info("[illegalArgumentExceptionHandle] : " + e.getMessage());
 
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .code("400")
                 .message("잘못된 요청입니다.")
-                .exception(e.toString())
+                .exception("illegalArgumentExceptionHandle")
                 .build();
     }
 }

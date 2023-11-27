@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "사업자 번호 확인", description = "사업자 번호 중복과 만료 여부를 조회하여 반환합니다.",
+@Operation(summary = "공고 삭제", description = "기업이 공고를 삭제하면 Post 테이블의 deleted 컬럼을 1로 바꿔주는 API",
         responses = {
                 @ApiResponse(responseCode = "200",
                         description = "정상 요청",
@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "성공",
-                                                value = "{\"httpStatus\": 200, \"message\": \"가입 가능한 사업자 번호입니다.\", \"data\": true }"),
+                                                value = "{\"httpStatus\": 200, \"message\": \"공고가 성공적으로 삭제되었습니다.\", \"data\": true }")
                                 },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
                         )),
@@ -35,21 +35,21 @@ import java.lang.annotation.Target;
                                 mediaType = "application/json",
                                 examples = {
                                         @ExampleObject(
-                                                name = "실패 / 미존재 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 사업자 번호입니다.\", \"data\": false }"),
+                                                name = "실패 / 공고 삭제 실패",
+                                                value = "{\"httpStatus\": 400, \"message\": \"공고 삭제 실패\", \"data\": false }")/*,
                                         @ExampleObject(
-                                                name = "실패 / 만료된 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"만료된 사업자 번호입니다.\", \"data\": false }"),
+                                                name = "유효성 / 이메일 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "실패 / 중복된 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }"),
+                                                name = "유효성 / 이메일 형식 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 이메일 길이 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 길이가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
 
                                         @ExampleObject(
-                                                name = "유효성 / 사업자 번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 /사업자 번호 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자 번호 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }")
+                                                name = "유효성 / 비밀번호 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),*/
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
@@ -64,6 +64,7 @@ import java.lang.annotation.Target;
                                 ),
                                 schema = @Schema(implementation = ErrorApiResponse.class)
                         )),
+
                 @ApiResponse(responseCode = "500",
                         description = "서버 에러",
                         content = @Content(
@@ -75,5 +76,5 @@ import java.lang.annotation.Target;
                                 schema = @Schema(implementation = ErrorApiResponse.class)
                         )),
         })
-public @interface ApiCheckBno {
+public @interface ApiDeletePost {
 }

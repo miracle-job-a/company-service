@@ -1,16 +1,16 @@
 package com.miracle.companyservice.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode
 public class CompanyFaq extends BaseEntity {
 
     @Id
@@ -30,5 +30,12 @@ public class CompanyFaq extends BaseEntity {
     public CompanyFaq(String question, String answer) {
         this.question = question;
         this.answer = answer;
+    }
+
+    @Builder
+    public CompanyFaq(String question, String answer, Company company) {
+        this.question = question;
+        this.answer = answer;
+        this.company = company;
     }
 }

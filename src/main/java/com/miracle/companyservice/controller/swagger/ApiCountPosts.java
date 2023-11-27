@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "사업자 번호 확인", description = "사업자 번호 중복과 만료 여부를 조회하여 반환합니다.",
+@Operation(summary = "기업 공고 수 반환", description = "해당 기업의 전체 공고수, 진행중 공고수, 마감 공고수를 반환합니다.",
         responses = {
                 @ApiResponse(responseCode = "200",
                         description = "정상 요청",
@@ -25,44 +25,41 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "성공",
-                                                value = "{\"httpStatus\": 200, \"message\": \"가입 가능한 사업자 번호입니다.\", \"data\": true }"),
+                                                value = "{\"httpStatus\": 200, \"message\": \"공고 수 조회 완료\", \"data\": Map<String, Long> countAllPosts, countEndedPosts, countOpen }")
+
                                 },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
                         )),
-                @ApiResponse(responseCode = "400",
-                        description = "비정상 요청",
-                        content = @Content(
-                                mediaType = "application/json",
-                                examples = {
-                                        @ExampleObject(
-                                                name = "실패 / 미존재 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 사업자 번호입니다.\", \"data\": false }"),
-                                        @ExampleObject(
-                                                name = "실패 / 만료된 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"만료된 사업자 번호입니다.\", \"data\": false }"),
-                                        @ExampleObject(
-                                                name = "실패 / 중복된 사업자 번호",
-                                                value = "{\"httpStatus\": 400, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }"),
 
-                                        @ExampleObject(
-                                                name = "유효성 / 사업자 번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 /사업자 번호 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_5\", \"message\": \"사업자 번호 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }")
-                                },
-                                schema = @Schema(implementation = CommonApiResponse.class)
-                        )),
 
                 @ApiResponse(responseCode = "401",
                         description = "비정상 요청",
                         content = @Content(
                                 mediaType = "application/json",
-                                examples = @ExampleObject(
-                                        name = "토큰 인증 실패",
-                                        value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"토큰 값이 일치하지 않습니다.\", \"exception\": \"UnauthorizedTokenException\" }"
-                                ),
-                                schema = @Schema(implementation = ErrorApiResponse.class)
+                                examples = {
+                                        @ExampleObject(
+                                                name = "토큰 인증 실패",
+                                                value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"토큰 값이 일치하지 않습니다.\", \"exception\": \"UnauthorizedTokenException\" }"),
+                                        @ExampleObject(
+                                                name = "회원 인증 실패",
+                                                value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"회원 인증에 실패하여 정보를 요청할 수 없습니다.\", \"data\": \"false\" }"),
+                                        @ExampleObject(
+                                                name = "회원 정보에 빈 값이 있음",
+                                                value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"회원 정보에 빈 값이 있어 인증을 할 수 없습니다.\", \"data\": \"false\" }"),
+                                },
+                        schema = @Schema(implementation = SuccessApiResponse.class)
+                )),
+                @ApiResponse(responseCode = "403",
+                        description = "권한 없음",
+                        content = @Content(
+                                mediaType = "application/json",
+                                examples = {
+                                        @ExampleObject(
+                                                name = "접근 권한 없음",
+                                                value = "{\"httpStatus\": 403, \"code\": \"403\", \"message\": \"접근 권한이 없습니다.\", \"data\": \"false\" }"),
+
+                                },
+                                schema = @Schema(implementation = SuccessApiResponse.class)
                         )),
                 @ApiResponse(responseCode = "500",
                         description = "서버 에러",
@@ -75,5 +72,5 @@ import java.lang.annotation.Target;
                                 schema = @Schema(implementation = ErrorApiResponse.class)
                         )),
         })
-public @interface ApiCheckBno {
+public @interface ApiCountPosts {
 }

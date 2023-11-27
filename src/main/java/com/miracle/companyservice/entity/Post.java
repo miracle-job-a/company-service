@@ -1,17 +1,17 @@
 package com.miracle.companyservice.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@Entity
 @ToString
+@Entity
+@EqualsAndHashCode
 public class Post extends BaseEntity {
 
     @Id
@@ -64,8 +64,9 @@ public class Post extends BaseEntity {
     private LocalDateTime testStartDate;
     private LocalDateTime testEndDate;
 
-    @OneToMany
-    @JoinColumn(name = "post_id")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+//    @JoinColumn(name = "post_id")
+//    @OneToMany(cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
     @ElementCollection
@@ -84,6 +85,7 @@ public class Post extends BaseEntity {
     @Column(name = "stack_id")
     private Set<Long> stackIdSet = new HashSet<>();
 
+    @Builder
     public Post(Long id, Long companyId,
                 PostType postType, String title,
                 LocalDateTime endDate, String tool,
@@ -93,7 +95,7 @@ public class Post extends BaseEntity {
                 String notice,int career,
                 boolean closed, boolean deleted,
                 LocalDateTime testStartDate, LocalDateTime testEndDate,
-                List<Question> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet) {
+                Set<Long> jobIdSet, Set<Long> stackIdSet) {
         this.id = id;
         this.companyId = companyId;
         this.postType = postType;
@@ -113,7 +115,6 @@ public class Post extends BaseEntity {
         this.deleted = deleted;
         this.testStartDate = testStartDate;
         this.testEndDate = testEndDate;
-        this.questionList = questionList;
         this.jobIdSet = jobIdSet;
         this.stackIdSet = stackIdSet;
     }
