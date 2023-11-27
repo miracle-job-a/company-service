@@ -31,7 +31,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
         String pathCompanyId = pathVariables.get("companyId");
-        if (pathCompanyId != request.getHeader("id")) {
+        if (!pathCompanyId.equals(request.getHeader("id"))) {
             sendFailResponseByForbidden(response);
             return false;
         }
