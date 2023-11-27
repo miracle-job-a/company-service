@@ -11,6 +11,7 @@ import java.util.*;
 @NoArgsConstructor
 @ToString
 @Entity
+@EqualsAndHashCode
 public class Post extends BaseEntity {
 
     @Id
