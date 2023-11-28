@@ -67,7 +67,7 @@ public class PostRequestDto {
             example = "2023-12-21T00:00:00"
     )
     @NotBlank(message = "400_16:마감일 값이 없습니다.")
-    @Future(message = "400_20:현재 날짜보다 미래의 날짜를 설정해야 합니다.")
+    @Future(message = "400_16:현재 날짜보다 미래의 날짜를 설정해야 합니다.")
     private final LocalDateTime endDate;
     private final String mainTask;
     private final String workCondition;

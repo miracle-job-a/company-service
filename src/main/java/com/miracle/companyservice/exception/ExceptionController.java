@@ -38,7 +38,7 @@ public class ExceptionController {
      * 400_17 유효성검사 - tool
      * 400_18 유효성검사 - workAddress
      * 400_19 유효성검사 - postType
-     * 400_20 유효성검사 - date
+     * 400_20 유효성검사 - testDate
      * 400_21 유효성검사 - career
      *
      *
