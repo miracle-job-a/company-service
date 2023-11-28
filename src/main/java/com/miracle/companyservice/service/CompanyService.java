@@ -54,6 +54,7 @@ public interface CompanyService {
     CommonApiResponse checkBnoStatus(String bno);
 
     /**
+     * @author kade
      * @return Map<String, Object>
      * 게스트, 유저 메인페이지에 노출될 최근 공고 3건, 마감임박 공고 3건 반환하는 메서드
      * newest -> 최신 공고(MainPagePostsResponseDto)
@@ -62,6 +63,7 @@ public interface CompanyService {
     CommonApiResponse postForMainPage();
 
     /**
+     * @author kade
      * @param companyFaqRequestDto
      * @return Long
      * FAQ를 등록하는 메서드. 성공 시, faqId를 반환합니다
@@ -69,7 +71,7 @@ public interface CompanyService {
     CommonApiResponse addFaq(CompanyFaqRequestDto companyFaqRequestDto);
 
     /**
-     * Delete faq common api response.
+     * @author kade
      * @param companyId
      * @param faqId
      * @return Boolean

@@ -41,16 +41,16 @@ public class SwaggerConfig {
 
     @Bean
     public Docket interceptedApi(TypeResolver typeResolver) {
-       return defaultDocket(typeResolver, "interceptor-API")
-               .globalRequestParameters(interceptorRequestParameterList())
-               .globalResponses(HttpMethod.GET, interceptorResponse())
-               .globalResponses(HttpMethod.POST, interceptorResponse())
-               .globalResponses(HttpMethod.PUT, interceptorResponse())
-               .globalResponses(HttpMethod.PATCH, interceptorResponse())
-               .globalResponses(HttpMethod.DELETE, interceptorResponse())
-               .select()
-               .apis(RequestHandlerSelectors.withMethodAnnotation(ApiInterceptor.class))
-               .build();
+        return defaultDocket(typeResolver, "interceptor-API")
+                .globalRequestParameters(interceptorRequestParameterList())
+                .globalResponses(HttpMethod.GET, interceptorResponse())
+                .globalResponses(HttpMethod.POST, interceptorResponse())
+                .globalResponses(HttpMethod.PUT, interceptorResponse())
+                .globalResponses(HttpMethod.PATCH, interceptorResponse())
+                .globalResponses(HttpMethod.DELETE, interceptorResponse())
+                .select()
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiInterceptor.class))
+                .build();
     }
 
     private Docket defaultDocket(TypeResolver typeResolver, String groupName) {
@@ -125,7 +125,7 @@ public class SwaggerConfig {
                 .isDefault(true)
                 .examples(
                         List.of(getUnauthorizedBuild())
-                        ).build();
+                ).build();
 
         Response serverErrorResponse = new ResponseBuilder()
                 .code("500")
@@ -146,7 +146,7 @@ public class SwaggerConfig {
                 .mediaType("application/json")
                 .summary("서버 에러")
                 .value(new ErrorApiResponse(
-                        HttpStatus.UNAUTHORIZED.value(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         "서버에 문제가 생겼습니다. 다시 시도해주세요.",
                         "500",
                         "RuntimeException"))
@@ -168,6 +168,22 @@ public class SwaggerConfig {
 
     private List<Response> interceptorResponse() {
         List<Response> interceptorResponseList = new ArrayList<>();
+        Response notExistsCompanyResponse = new ResponseBuilder()
+                .code("400")
+                .description("미존재 기업")
+                .isDefault(true)
+                .examples(
+                        List.of(new ExampleBuilder()
+                                .id("1")
+                                .mediaType("application/json")
+                                .summary("미존재 기업")
+                                .value(new SuccessApiResponse<>(
+                                        HttpStatus.BAD_REQUEST.value(),
+                                        "존재하지 않는 companyId 입니다.",
+                                        Boolean.FALSE))
+                                .build())
+                ).build();
+
         Response unauthorizedFailResponse = new ResponseBuilder()
                 .code("401")
                 .description("인증 실패")
@@ -175,14 +191,14 @@ public class SwaggerConfig {
                 .examples(
                         List.of(getUnauthorizedBuild()
                                 , new ExampleBuilder()
-                                .id("2")
-                                .mediaType("application/json")
-                                .summary("회원 인증 실패")
-                                .value(new SuccessApiResponse<>(
-                                        HttpStatus.UNAUTHORIZED.value(),
-                                        "회원 인증에 실패하여, 정보를 요청할 수 없습니다.",
-                                        Boolean.FALSE))
-                                .build(),
+                                        .id("2")
+                                        .mediaType("application/json")
+                                        .summary("회원 인증 실패")
+                                        .value(new SuccessApiResponse<>(
+                                                HttpStatus.UNAUTHORIZED.value(),
+                                                "회원 인증에 실패하여, 정보를 요청할 수 없습니다.",
+                                                Boolean.FALSE))
+                                        .build(),
                                 new ExampleBuilder()
                                         .id("3")
                                         .mediaType("application/json")
@@ -218,11 +234,11 @@ public class SwaggerConfig {
                         List.of(getServerErrorBuild())
                 ).build();
 
+        interceptorResponseList.add(notExistsCompanyResponse);
         interceptorResponseList.add(unauthorizedFailResponse);
         interceptorResponseList.add(forbiddenResponse);
         interceptorResponseList.add(serverErrorResponse);
 
         return interceptorResponseList;
     }
-
 }

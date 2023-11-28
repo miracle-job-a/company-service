@@ -36,10 +36,6 @@ import java.lang.annotation.Target;
                                 mediaType = "application/json",
                                 examples = {
                                         @ExampleObject(
-                                                name = "실패 / 미존재 기업",
-                                                value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 companyId 입니다.\", \"data\": false }"),
-
-                                        @ExampleObject(
                                                 name = "실패 / 10개 초과",
                                                 value = "{\"httpStatus\": 400, \"message\": \"FAQ는 10개를 넘을 수 없습니다.\", \"data\": false }"),
 
