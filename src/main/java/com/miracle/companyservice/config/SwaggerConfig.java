@@ -30,12 +30,12 @@ public class SwaggerConfig {
     public Docket api(TypeResolver typeResolver) {
         List<RequestParameter> requestParameterList = new ArrayList<>();
         RequestParameter sessionId = new RequestParameterBuilder()
-                .name("sessionId")
+                .name("Session-Id")
                 .in(ParameterType.HEADER)
                 .required(Boolean.TRUE)
                 .build();
         RequestParameter miracle = new RequestParameterBuilder()
-                .name("miracle")
+                .name("Miracle")
                 .in(ParameterType.HEADER)
                 .required(Boolean.TRUE)
                 .build();
