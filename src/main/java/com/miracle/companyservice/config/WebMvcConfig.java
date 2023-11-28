@@ -39,7 +39,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/deadline");
         excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/end");
         excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/open");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts");
+        excludePath.add(baseUrl + "/{companyId:\\d+}");
         registry.addInterceptor(authorizationInterceptor)
                 .excludePathPatterns(excludePath)
                 .addPathPatterns(HttpMethod.GET.name(), baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/");
