@@ -203,4 +203,13 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiGetCompany
+    @ApiInterceptor
+    @GetMapping("/{companyId}")
+    public CommonApiResponse getCompany(@PathVariable Long companyId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findCompanyById(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }
