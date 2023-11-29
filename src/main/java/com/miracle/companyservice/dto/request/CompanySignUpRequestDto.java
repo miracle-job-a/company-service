@@ -92,7 +92,7 @@ public class CompanySignUpRequestDto {
     @Schema(
             description = "기업 소개 글. 최소 10글자 이상의 소개글이 있어야 합니다.",
             required = true,
-            example = "2017-01-01"
+            example = "시리즈A 투자를 받은 유망한 기업입니다."
     )
     @NotBlank(message = "400_9:기업소개 값이 없습니다.")
     @Size(min = 20,  message = "400_0:기업소개 값이 너무 짧습니다.")
