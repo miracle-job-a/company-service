@@ -183,8 +183,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-    public CommonApiResponse addFaq(CompanyFaqRequestDto companyFaqRequestDto) {
-        Optional<Company> company = companyRepository.findById(companyFaqRequestDto.getCompanyId());
+    public CommonApiResponse addFaq(long companyId, CompanyFaqRequestDto companyFaqRequestDto) {
+        Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -193,7 +193,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
 
-        Long count = companyFaqRepository.countByCompanyId(companyFaqRequestDto.getCompanyId());
+        Long count = companyFaqRepository.countByCompanyId(companyId);
         if (count >= 10) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())

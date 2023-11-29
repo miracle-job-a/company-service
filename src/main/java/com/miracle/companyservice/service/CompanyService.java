@@ -64,11 +64,12 @@ public interface CompanyService {
 
     /**
      * @author kade
+     * @param companyId
      * @param companyFaqRequestDto
      * @return Long
      * FAQ를 등록하는 메서드. 성공 시, faqId를 반환합니다
      */
-    CommonApiResponse addFaq(CompanyFaqRequestDto companyFaqRequestDto);
+    CommonApiResponse addFaq(long companyId, CompanyFaqRequestDto companyFaqRequestDto);
 
     /**
      * @author kade
