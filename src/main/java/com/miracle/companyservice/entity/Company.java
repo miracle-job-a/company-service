@@ -1,7 +1,6 @@
 package com.miracle.companyservice.entity;
 
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
 import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,13 +21,13 @@ public class Company extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 512)
     private String email;
 
     @Column(nullable = false, unique = true, length = 50)
     private String bno;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 128)
     private String password;
 
     @Column(nullable = false, length = 50)
