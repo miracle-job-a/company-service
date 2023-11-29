@@ -88,7 +88,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse loginCompany(CompanyLoginRequestDto companyLoginRequestDto) {
-        log.info("email : {}, password : {}", companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
+        log.info("email : {}, password : {}", companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword());
         if (!companyRepository.existsByEmail(companyLoginRequestDto.getEmail())) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
