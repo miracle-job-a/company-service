@@ -658,7 +658,7 @@ class CompanyServiceImplTest {
                 .data(1L)
                 .build();
 
-        CompanyFaqRequestDto companyFaqRequestDto = new CompanyFaqRequestDto(companyId, "질문1", "답변1");
+        CompanyFaqRequestDto companyFaqRequestDto = new CompanyFaqRequestDto("질문1", "답변1");
 
         given(companyRepository.findById(companyId)).willReturn(Optional.of(givenCompany)); // company 존재여부 확인
         given(companyFaqRepository.countByCompanyId(companyId)).willReturn(0L); // 현재 등록된 faq 개수 확인
@@ -670,7 +670,7 @@ class CompanyServiceImplTest {
 
         Mockito.when(companyFaqRepository.save(companyFaq)).thenReturn(savedCompanyFaq);
 
-        SuccessApiResponse commonApiResponse = (SuccessApiResponse) companyService.addFaq(companyFaqRequestDto);
+        SuccessApiResponse commonApiResponse = (SuccessApiResponse) companyService.addFaq(companyId, companyFaqRequestDto);
         assertThat(commonApiResponse.getHttpStatus()).isEqualTo(givenResult.getHttpStatus());
         assertThat(commonApiResponse.getMessage()).isEqualTo(givenResult.getMessage());
         assertThat(commonApiResponse.getData()).isEqualTo(givenResult.getData());
@@ -706,14 +706,14 @@ class CompanyServiceImplTest {
                 .data(Boolean.FALSE)
                 .build();
 
-        CompanyFaqRequestDto companyFaqRequestDto = new CompanyFaqRequestDto(companyId, "질문1", "답변1");
+        CompanyFaqRequestDto companyFaqRequestDto = new CompanyFaqRequestDto("질문1", "답변1");
 
         given(companyRepository.findById(companyId)).willReturn(Optional.of(givenCompany)); // company 존재여부 확인
         given(companyFaqRepository.countByCompanyId(companyId)).willReturn(10L); // 현재 등록된 faq 개수 확인
 
         Mockito.when(companyFaqRepository.countByCompanyId(companyId)).thenReturn(10L);
 
-        SuccessApiResponse commonApiResponse = (SuccessApiResponse) companyService.addFaq(companyFaqRequestDto);
+        SuccessApiResponse commonApiResponse = (SuccessApiResponse) companyService.addFaq(companyId, companyFaqRequestDto);
         assertThat(commonApiResponse.getHttpStatus()).isEqualTo(givenResult.getHttpStatus());
         assertThat(commonApiResponse.getMessage()).isEqualTo(givenResult.getMessage());
         assertThat(commonApiResponse.getData()).isEqualTo(givenResult.getData());
@@ -735,13 +735,13 @@ class CompanyServiceImplTest {
                 .data(Boolean.FALSE)
                 .build();
 
-        CompanyFaqRequestDto companyFaqRequestDto = new CompanyFaqRequestDto(companyId, "질문1", "답변1");
+        CompanyFaqRequestDto companyFaqRequestDto = new CompanyFaqRequestDto("질문1", "답변1");
 
         given(companyRepository.findById(companyId)).willReturn(givenCompany); // company 존재여부 확인
 
         Mockito.when(companyRepository.findById(companyId)).thenReturn(givenCompany);
 
-        SuccessApiResponse commonApiResponse = (SuccessApiResponse) companyService.addFaq(companyFaqRequestDto);
+        SuccessApiResponse commonApiResponse = (SuccessApiResponse) companyService.addFaq(companyId, companyFaqRequestDto);
         assertThat(commonApiResponse.getHttpStatus()).isEqualTo(givenResult.getHttpStatus());
         assertThat(commonApiResponse.getMessage()).isEqualTo(givenResult.getMessage());
         assertThat(commonApiResponse.getData()).isEqualTo(givenResult.getData());
