@@ -26,7 +26,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
      * @param password
      * 이메일과 비밀번호가 일치하는 기업 정보를 가져오는 메서드
      */
-    Optional<Company> findByEmailAndPassword(String email, int password);
+    Optional<Company> findByEmailAndPassword(String email, String password);
 
     /**
      * @author kade

@@ -2,6 +2,7 @@ package com.miracle.companyservice.entity;
 
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
+import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class Company extends BaseEntity {
     private String bno;
 
     @Column(nullable = false)
-    private int password;
+    private String password;
 
     @Column(nullable = false, length = 50)
     private String name;
@@ -62,7 +63,7 @@ public class Company extends BaseEntity {
         this.id = id;
         this.email = email;
         this.bno = bno;
-        this.password = password.hashCode();
+        this.password = PasswordEncryptor.SHA3Algorithm(password);
         this.name = name;
         this.photo = photo;
         this.ceoName = ceoName;
@@ -77,7 +78,7 @@ public class Company extends BaseEntity {
     public Company(CompanySignUpRequestDto companySignUpRequestDto) {
         this.email = companySignUpRequestDto.getEmail();
         this.bno = companySignUpRequestDto.getBno();
-        this.password = companySignUpRequestDto.getPassword().hashCode();
+        this.password = PasswordEncryptor.SHA3Algorithm(companySignUpRequestDto.getPassword());
         this.name = companySignUpRequestDto.getName();
         this.photo = companySignUpRequestDto.getPhoto();
         this.ceoName = companySignUpRequestDto.getCeoName();
