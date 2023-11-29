@@ -74,7 +74,7 @@ public class CompanyController {
     @ApiInterceptor
     @PostMapping("/{companyId}/faq")
     public CommonApiResponse addFaq(@PathVariable Long companyId, @Valid @RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.addFaq(companyFaqRequestDto);
+        CommonApiResponse commonApiResponse = companyService.addFaq(companyId, companyFaqRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
