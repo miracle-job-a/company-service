@@ -187,4 +187,12 @@ public interface CompanyService {
      * 공고 삭제 메서드
      */
     public CommonApiResponse deletePostById(Long postId);
+
+    /**
+     * @author wjdals3936
+     * @param companyId the company id
+     * @return the common api response
+     * 기업 상세페이지 정보 반환 메서드
+     */
+    public CommonApiResponse findCompanyById(Long companyId);
 }

@@ -26,7 +26,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -563,7 +562,6 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse deletePostById(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
-
         if (post.isPresent()) {
             post.get().setDeleted(true);
             postRepository.save(post.get());
@@ -579,6 +577,45 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
+    }
+
+    @Override
+    public CommonApiResponse findCompanyById(Long companyId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("해당 기업에 대한 정보가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        Boolean bnoStatus = bnoRepository.findStatusByBnoIsTrue(company.get().getBno());
+        if (bnoStatus == false) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("bno가 만료되었습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        Long countOpen = postRepository.countByCompanyIdAndClosedFalseAndDeletedFalse(companyId);
+        if (countOpen == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("진행 중인 공고 수 조회에 실패하였습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        CompanyPageResponseDto responseDto = new CompanyPageResponseDto(
+                company.get(), bnoStatus, countOpen);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("기업 상세페이지 정보 조회 성공")
+                .data(responseDto)
+                .build();
     }
 }
 
