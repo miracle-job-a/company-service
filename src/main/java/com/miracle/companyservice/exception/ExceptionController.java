@@ -40,7 +40,9 @@ public class ExceptionController {
      * 400_19 유효성검사 - postType
      * 400_20 유효성검사 - testDate
      * 400_21 유효성검사 - career
-     *
+     * 400_22 유효성검사 - mainTask
+     * 400_23 유효성검사 - workCondition
+     * 400_24 유효성검사 - process
      *
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

@@ -37,10 +37,10 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String workAddress;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String mainTask;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String workCondition;
 
     @Column(columnDefinition = "TEXT")
@@ -52,21 +52,25 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String specialSkill;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String process;
 
     @Column(columnDefinition = "TEXT")
     private String notice;
 
+    @Column(nullable = false)
     private int career;
+
+    @Column(nullable = false)
     private boolean closed;
+
+    @Column(nullable = false)
     private boolean deleted;
+
     private LocalDateTime testStartDate;
     private LocalDateTime testEndDate;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    @JoinColumn(name = "post_id")
-//    @OneToMany(cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
     @ElementCollection
