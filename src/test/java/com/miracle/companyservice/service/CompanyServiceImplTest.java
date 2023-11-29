@@ -6,6 +6,7 @@ import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.response.*;
 import com.miracle.companyservice.entity.*;
 import com.miracle.companyservice.repository.*;
+import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -278,12 +279,12 @@ class CompanyServiceImplTest {
 
 
         given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(true); //아이디 일치 확인
-        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode())) // 비밀번호 일치 확인
+        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()))) // 비밀번호 일치 확인
                 .willReturn(Optional.of(givenCompany));
         given(bnoRepository.existsByBno(givenCompany.getBno())).willReturn(true); // 사업자 번호 존재확인
         given(bnoRepository.findStatusByBnoIsTrue(givenCompany.getBno())).willReturn(true); // 사업자 만료 확인
 
-        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
+        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword())))
                 .thenReturn(Optional.of(givenCompany));
 
         SuccessApiResponse successApiResponse = (SuccessApiResponse) companyService.loginCompany(companyLoginRequestDto);
@@ -293,7 +294,7 @@ class CompanyServiceImplTest {
         assertThat(successApiResponse.getData()).isEqualTo(givenResponse.getData());
 
         verify(companyRepository).existsByEmail(companyLoginRequestDto.getEmail());
-        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
         verify(bnoRepository).existsByBno(givenCompany.getBno());
         verify(bnoRepository).findStatusByBnoIsTrue(givenCompany.getBno());
     }
@@ -326,7 +327,7 @@ class CompanyServiceImplTest {
 
         given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(false); //아이디 일치 확인
 
-        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
+        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword())))
                 .thenReturn(Optional.of(givenCompany));
 
         SuccessApiResponse resultResponse = (SuccessApiResponse) companyService.loginCompany(companyLoginRequestDto);
@@ -352,10 +353,10 @@ class CompanyServiceImplTest {
 
 
         given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(true); //아이디 일치 확인
-        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode())) // 비밀번호 일치 확인
+        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()))) // 비밀번호 일치 확인
                 .willReturn(givenCompany);
 
-        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
+        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword())))
                 .thenReturn(givenCompany);
 
         SuccessApiResponse resultResponse = (SuccessApiResponse) companyService.loginCompany(companyLoginRequestDto);
@@ -365,7 +366,7 @@ class CompanyServiceImplTest {
         assertThat(resultResponse.getData()).isEqualTo(givenResponse.getData());
 
         verify(companyRepository).existsByEmail(companyLoginRequestDto.getEmail());
-        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
     }
 
     @Test
@@ -395,11 +396,11 @@ class CompanyServiceImplTest {
 
 
         given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(true); //아이디 일치 확인
-        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode())) // 비밀번호 일치 확인
+        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()))) // 비밀번호 일치 확인
                 .willReturn(Optional.of(givenCompany));
         given(bnoRepository.existsByBno(givenCompany.getBno())).willReturn(false); // 사업자 번호 존재확인
 
-        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
+        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword())))
                 .thenReturn(Optional.of(givenCompany));
 
         SuccessApiResponse resultResponse = (SuccessApiResponse) companyService.loginCompany(companyLoginRequestDto);
@@ -409,7 +410,7 @@ class CompanyServiceImplTest {
         assertThat(resultResponse.getData()).isEqualTo(givenResponse.getData());
 
         verify(companyRepository).existsByEmail(companyLoginRequestDto.getEmail());
-        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
         verify(bnoRepository).existsByBno(givenCompany.getBno());
     }
 
@@ -440,12 +441,12 @@ class CompanyServiceImplTest {
 
 
         given(companyRepository.existsByEmail(companyLoginRequestDto.getEmail())).willReturn(true); //아이디 일치 확인
-        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode())) // 비밀번호 일치 확인
+        given(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()))) // 비밀번호 일치 확인
                 .willReturn(Optional.of(givenCompany));
         given(bnoRepository.existsByBno(givenCompany.getBno())).willReturn(true); // 사업자 번호 존재확인
         given(bnoRepository.findStatusByBnoIsTrue(givenCompany.getBno())).willReturn(false); // 사업자 만료 확인
 
-        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode()))
+        Mockito.when(companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword())))
                 .thenReturn(Optional.of(givenCompany));
 
         SuccessApiResponse resultResponse = (SuccessApiResponse) companyService.loginCompany(companyLoginRequestDto);
@@ -455,7 +456,7 @@ class CompanyServiceImplTest {
         assertThat(resultResponse.getData()).isEqualTo(givenResponse.getData());
 
         verify(companyRepository).existsByEmail(companyLoginRequestDto.getEmail());
-        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        verify(companyRepository).findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
         verify(bnoRepository).existsByBno(givenCompany.getBno());
         verify(bnoRepository).findStatusByBnoIsTrue(givenCompany.getBno());
     }

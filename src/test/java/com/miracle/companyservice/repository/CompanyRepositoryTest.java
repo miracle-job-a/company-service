@@ -4,6 +4,7 @@ package com.miracle.companyservice.repository;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.entity.Company;
+import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -108,10 +109,10 @@ class CompanyRepositoryTest {
     @DisplayName("이메일 / 비밀번호 일치 확인")
     void findByEmailAndPassword() {
         CompanyLoginRequestDto companyLoginRequestDto = new CompanyLoginRequestDto("austinTEST@oracle.com", "123456!");
-        Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
 
         Assertions.assertThat(company.get().getEmail()).isEqualTo(companyLoginRequestDto.getEmail());
-        Assertions.assertThat(company.get().getPassword()).isEqualTo(companyLoginRequestDto.getPassword().hashCode());
+        Assertions.assertThat(company.get().getPassword()).isEqualTo(PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
     }
 
     @Test
