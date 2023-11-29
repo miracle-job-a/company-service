@@ -59,6 +59,7 @@ public class PostRequestDto {
             example = "3"
     )
     @PositiveOrZero(message = "400_21:경력 값은 0을 포함한 양수를 허용합니다.")
+    @NotBlank(message = "400_21:경력 값이 없습니다.")
     private final int career;
 
     @Schema(
@@ -69,7 +70,11 @@ public class PostRequestDto {
     @NotBlank(message = "400_16:마감일 값이 없습니다.")
     @Future(message = "400_16:현재 날짜보다 미래의 날짜를 설정해야 합니다.")
     private final LocalDateTime endDate;
+
+    @NotBlank(message = "400_22:주요 업무 값이 없습니다.")
     private final String mainTask;
+
+    @NotBlank(message = "400_23:근무 조건 값이 없습니다.")
     private final String workCondition;
     private final String qualification;
 
@@ -81,6 +86,8 @@ public class PostRequestDto {
     @NotBlank(message = "400_17:개발툴 값이 없습니다.")
     private final String tool;
     private final String benefit;
+
+    @NotBlank(message = "400_24:채용절차 값이 없습니다.")
     private final String process;
     private final String notice;
     private final String specialSkill;

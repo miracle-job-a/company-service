@@ -45,14 +45,17 @@ public class Company extends BaseEntity {
     @Column(nullable = false)
     private String address;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
     @OneToMany
     @JoinColumn(name = "company_id")
     private List<CompanyFaq> faqList = new ArrayList<>();
 
+    @Column(nullable = false)
     private int employeeNum;
+
+    @Column(nullable = false)
     private boolean approveStatus;
 
     @Builder
