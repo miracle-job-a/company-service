@@ -21,14 +21,14 @@ public class Company extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 512)
     private String email;
 
     @Column(nullable = false, unique = true, length = 50)
     private String bno;
 
-    @Column(nullable = false)
-    private int password;
+    @Column(nullable = false, length = 128)
+    private String password;
 
     @Column(nullable = false, length = 50)
     private String name;
@@ -42,17 +42,20 @@ public class Company extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String sector;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String address;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
     @OneToMany
     @JoinColumn(name = "company_id")
     private List<CompanyFaq> faqList = new ArrayList<>();
 
+    @Column(nullable = false)
     private int employeeNum;
+
+    @Column(nullable = false)
     private boolean approveStatus;
 
     @Builder
@@ -62,7 +65,7 @@ public class Company extends BaseEntity {
         this.id = id;
         this.email = email;
         this.bno = bno;
-        this.password = password.hashCode();
+        this.password = password;
         this.name = name;
         this.photo = photo;
         this.ceoName = ceoName;
@@ -77,7 +80,7 @@ public class Company extends BaseEntity {
     public Company(CompanySignUpRequestDto companySignUpRequestDto) {
         this.email = companySignUpRequestDto.getEmail();
         this.bno = companySignUpRequestDto.getBno();
-        this.password = companySignUpRequestDto.getPassword().hashCode();
+        this.password = companySignUpRequestDto.getPassword();
         this.name = companySignUpRequestDto.getName();
         this.photo = companySignUpRequestDto.getPhoto();
         this.ceoName = companySignUpRequestDto.getCeoName();
