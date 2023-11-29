@@ -20,6 +20,7 @@ import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
 import com.miracle.companyservice.repository.*;
+import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -87,7 +88,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public CommonApiResponse loginCompany(CompanyLoginRequestDto companyLoginRequestDto) {
-        log.info("email : {}, password : {}", companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        log.info("email : {}, password : {}", companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword());
         if (!companyRepository.existsByEmail(companyLoginRequestDto.getEmail())) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -95,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-        Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())

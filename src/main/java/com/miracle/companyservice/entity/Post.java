@@ -43,7 +43,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String workCondition;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String qualification;
 
     @Column(columnDefinition = "TEXT")

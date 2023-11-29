@@ -6,6 +6,7 @@ import com.miracle.companyservice.dto.response.ErrorApiResponse;
 import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.entity.PostType;
 import com.miracle.companyservice.entity.Question;
+import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.service.CompanyServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,9 @@ class CompanyControllerTest {
 
     @MockBean
     CompanyServiceImpl companyService;
+
+    @MockBean
+    CompanyRepository companyRepository;
 
 
     @Test
