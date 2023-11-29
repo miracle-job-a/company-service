@@ -159,11 +159,12 @@ public interface CompanyService {
 
     /**
      * @author wjdals3936
-     * @param postRequestDto the post dto
+     * @param postRequestDto
+     * @param companyId
      * @return the common api response
      * 일반 공고 등록 시, 공고 데이터를 저장하는 메서드
      */
-    public CommonApiResponse savePost(PostRequestDto postRequestDto);
+    public CommonApiResponse savePost(Long companyId, PostRequestDto postRequestDto);
 
     /**
      * @author wjdals3936
@@ -179,7 +180,7 @@ public interface CompanyService {
      * @return the common api response
      * 공고 수정 메서드
      */
-    public CommonApiResponse modifyPostById(PostRequestDto postRequestDto);
+    public CommonApiResponse modifyPostById(Long companyId,PostRequestDto postRequestDto);
 
     /**
      * @author wjdals3936

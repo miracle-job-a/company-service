@@ -49,10 +49,12 @@ public class CompanyServiceImpl implements CompanyService {
         this.questionRepository = questionRepository;
     }
 
+    @Override
     public Boolean companyValidation(Long id, String email, String bno) {
         return companyRepository.existsByIdAndEmailAndBno(id, email, bno);
     }
 
+    @Override
     public CommonApiResponse checkEmailDuplicated(String email) {
         log.info("email : {}", email);
         if (companyRepository.existsByEmail(email)) {
@@ -69,6 +71,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse signUpCompany(CompanySignUpRequestDto companySignUpRequestDto) {
         log.info("companySignUpRequestDto : {}", companySignUpRequestDto);
         if (companyRepository.existsByEmail(companySignUpRequestDto.getEmail())) {
@@ -87,6 +90,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse loginCompany(CompanyLoginRequestDto companyLoginRequestDto) {
         log.info("email : {}, password : {}", companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword());
         if (!companyRepository.existsByEmail(companyLoginRequestDto.getEmail())) {
@@ -127,6 +131,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse checkBnoStatus(String bno) {
         log.info("bno : {}", bno);
         if (!bnoRepository.existsByBno(bno)) {
@@ -157,6 +162,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse postForMainPage() {
         List<Post> newestResult = postRepository.findAllByClosedFalseAndDeletedFalseOrderByCreatedAtDesc(PageRequest.of(0, 3));
         List<MainPagePostsResponseDto> newest = new ArrayList<>();
@@ -209,6 +215,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse deleteFaq(Long companyId, Long faqId) {
         if (!companyFaqRepository.existsById(faqId)) {
             return SuccessApiResponse.builder()
@@ -232,6 +239,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse getFaq(Long companyId) {
         if (!companyRepository.existsById(companyId)) {
             return SuccessApiResponse.builder()
@@ -252,6 +260,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse returnQuestions(Long companyId, Long postId) {
         if (!postRepository.existsByCompanyIdAndId(companyId, postId)) {
             return SuccessApiResponse.builder()
@@ -281,6 +290,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse getCountPosts(Long companyId) {
         Long countAllPosts = postRepository.countByCompanyIdAndDeletedFalse(companyId);
         Long countEndedPosts = postRepository.countByCompanyIdAndClosedTrueAndDeletedFalse(companyId);
@@ -298,6 +308,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse changeToClose(Long companyId, Long postId) {
         if (!postRepository.existsByCompanyIdAndId(companyId, postId)) {
             return SuccessApiResponse.builder()
@@ -324,6 +335,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse getLatestPosts(Long companyId) {
         List<ManagePostsResponseDto> latest = postRepository.findAllByCompanyIdOrderByLatest(companyId);
         return SuccessApiResponse.builder()
@@ -333,6 +345,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse getDeadlinePosts(Long companyId) {
         List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
         return SuccessApiResponse.builder()
@@ -342,6 +355,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse getEndPosts(Long companyId) {
         List<ManagePostsResponseDto> end = postRepository.findAllByCompanyIdOrderByEnd(companyId);
         return SuccessApiResponse.builder()
@@ -351,6 +365,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
     public CommonApiResponse getOpenPosts(Long companyId) {
         List<ManagePostsResponseDto> open = postRepository.findAllByCompanyIdOrderByOpen(companyId);
         return SuccessApiResponse.builder()
@@ -396,12 +411,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse savePost(PostRequestDto postRequestDto) {
+    public CommonApiResponse savePost(Long companyId, PostRequestDto postRequestDto) {
 
         List<QuestionRequestDto> questions = postRequestDto.getQuestionList();
 
         Post post = Post.builder()
-                .companyId(postRequestDto.getCompanyId())
+                .companyId(companyId)
                 .postType(postRequestDto.getPostType())
                 .title(postRequestDto.getTitle())
                 .endDate(postRequestDto.getEndDate())
@@ -488,11 +503,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse modifyPostById(PostRequestDto postRequestDto) {
+    public CommonApiResponse modifyPostById(Long companyId,PostRequestDto postRequestDto) {
 
         Post post = Post.builder()
                 .id(postRequestDto.getPostId())
-                .companyId(postRequestDto.getCompanyId())
+                .companyId(companyId)
                 .postType(postRequestDto.getPostType())
                 .title(postRequestDto.getTitle())
                 .endDate(postRequestDto.getEndDate())
