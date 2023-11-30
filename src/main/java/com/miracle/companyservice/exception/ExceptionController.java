@@ -43,7 +43,7 @@ public class ExceptionController {
      * 400_22 유효성검사 - mainTask
      * 400_23 유효성검사 - workCondition
      * 400_24 유효성검사 - process
-     *
+     * 400_25 유효성검사 - includeEnded
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public CommonApiResponse notValidHandle(MethodArgumentNotValidException e) {
