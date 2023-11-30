@@ -43,6 +43,15 @@ import java.lang.annotation.Target;
                                         @ExampleObject(
                                                 name = "유효성 / 마감공고 여부 값 없음",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_25\", \"message\": \"마감된 공고 검색여부 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 스택 Set 초과",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_26\", \"message\": \"스택 id Set은 10을 초과할 수 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 직무 Set 초과",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_27\", \"message\": \"직무 id Set은 10을 초과할 수 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 주소 Set 초과",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_28\", \"message\": \"주소 Set은 3을 초과할 수 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
