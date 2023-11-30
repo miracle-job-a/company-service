@@ -27,7 +27,7 @@ public class PostResponseDto{
     private final String specialSkill;
     private final String process;
     private final String notice;
-    private final String career;
+    private final int career;
     private final Boolean closed;
     private final Set<Long> jobIdSet;
     private final Set<Long> stackIdSet;
@@ -39,7 +39,7 @@ public class PostResponseDto{
     public PostResponseDto(Post post, List<QuestionResponseDto> questionList){
         this.postType = post.getPostType();
         this.title = post.getTitle();
-        this.endDate = formatDate(post.getEndDate(), "yyyy-MM-dd");
+        this.endDate = formatDate(post.getEndDate());
         this.tool = post.getTool();
         this.workAddress = post.getWorkAddress();
         this.mainTask = post.getMainTask();
@@ -49,19 +49,19 @@ public class PostResponseDto{
         this.specialSkill = post.getSpecialSkill();
         this.process = post.getProcess();
         this.notice = post.getNotice();
-        this.career = post.getBenefit();
+        this.career = post.getCareer();
         this.closed = post.isClosed();
         this.jobIdSet = post.getJobIdSet();
         this.stackIdSet = post.getStackIdSet();
         this.questionList = questionList;
-        this.testStartDate = formatDate(post.getTestStartDate(), "yyyy-MM-dd'T'HH:mm:ss");
-        this.testEndDate = formatDate(post.getTestEndDate(), "yyyy-MM-dd'T'HH:mm:ss");
+        this.testStartDate = formatDate(post.getTestStartDate());
+        this.testEndDate = formatDate(post.getTestEndDate());
     }
 
-    private String formatDate(LocalDateTime date, String format) {
+    private String formatDate(LocalDateTime date) {
         if (date == null) {
-            return "null";
+            return null;
         }
-        return date.format(DateTimeFormatter.ofPattern(format));
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
     }
 }

@@ -30,6 +30,9 @@ public class ManagePostsResponseDto {
     }
 
     private String formatDate(LocalDateTime date) {
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        if (date == null) {
+            return null;
+        }
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
     }
 }

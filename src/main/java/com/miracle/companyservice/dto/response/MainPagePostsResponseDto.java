@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @ToString
@@ -26,7 +27,7 @@ public class MainPagePostsResponseDto {
     //기업정보에서 가져와야함
     private final String photo;
 
-    private final LocalDateTime endDate;
+    private final String endDate;
 
     private final String workAddress;
 
@@ -41,11 +42,17 @@ public class MainPagePostsResponseDto {
         this.postType = post.getPostType();
         this.title = post.getTitle();
         this.photo = photo;
-        this.endDate = post.getEndDate();
+        this.endDate = formatDate(post.getEndDate());
         this.workAddress = post.getWorkAddress();
         this.jobIdSet = post.getJobIdSet();
         this.career = post.getCareer();
     }
 
+    private String formatDate(LocalDateTime date) {
+        if (date == null) {
+            return null;
+        }
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+    }
 
 }
