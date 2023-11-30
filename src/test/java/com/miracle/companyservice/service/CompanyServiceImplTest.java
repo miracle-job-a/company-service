@@ -1251,38 +1251,39 @@ class CompanyServiceImplTest {
     @DisplayName("최신 공고 정렬")
     void getLatestPosts() {
         long givenCompanyId = 97L;
-
+        Set<Long> jobIdSet = new HashSet<>();
+        jobIdSet.add(1L);
         List<ManagePostsResponseDto> baseData = new ArrayList<>();
-        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1",
+        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2",
+        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 10, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3",
+        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3", jobIdSet,
                 LocalDateTime.of(2023, 11, 25, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 25, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4",
+        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 11, 25, 0, 0), true)); //EndDate
-        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5",
+        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), true)); //EndDate
         // 3,2,1 - 4,5 순으로 나와야 함.
         List<ManagePostsResponseDto> sortedLatest = new ArrayList<>();
-        sortedLatest.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3",
+        sortedLatest.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3", jobIdSet,
                 LocalDateTime.of(2023, 11, 25, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 25, 0, 0), false)); //EndDate
-        sortedLatest.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2",
+        sortedLatest.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 10, 0, 0), false)); //EndDate
-        sortedLatest.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1",
+        sortedLatest.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), false)); //EndDate
-        sortedLatest.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4",
+        sortedLatest.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 11, 25, 0, 0), true)); //EndDate
-        sortedLatest.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5",
+        sortedLatest.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), true)); //EndDate
 
@@ -1313,50 +1314,52 @@ class CompanyServiceImplTest {
     @DisplayName("마감 임박 공고 정렬")
     void getDeadlinePosts() {
         long givenCompanyId = 99L;
+        Set<Long> jobIdSet = new HashSet<>();
+        jobIdSet.add(1L);
 
         List<ManagePostsResponseDto> baseData = new ArrayList<>();
-        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1",
+        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2",
+        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 10, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3",
+        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3", jobIdSet,
                 LocalDateTime.of(2023, 11, 25, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 25, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "공고4",
+        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "공고4", jobIdSet,
                 LocalDateTime.of(2023, 11, 19, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 23, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "공고5",
+        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "공고5", jobIdSet,
                 LocalDateTime.of(2023, 11, 18, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 24, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(6L, PostType.NORMAL, "마감6",
+        baseData.add(new ManagePostsResponseDto(6L, PostType.NORMAL, "마감6", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 11, 25, 0, 0), true)); //EndDate
-        baseData.add(new ManagePostsResponseDto(7L, PostType.NORMAL, "마감7",
+        baseData.add(new ManagePostsResponseDto(7L, PostType.NORMAL, "마감7", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), true)); //EndDate
         //1 2 4 5 3 - 6 7순서로 나와야함.
         List<ManagePostsResponseDto> sortedDeadline = new ArrayList<>();
-        sortedDeadline.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1",
+        sortedDeadline.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), false)); //EndDate
-        sortedDeadline.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2",
+        sortedDeadline.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 10, 0, 0), false)); //EndDate
-        sortedDeadline.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "공고4",
+        sortedDeadline.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "공고4", jobIdSet,
                 LocalDateTime.of(2023, 11, 19, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 23, 0, 0), false)); //EndDate
-        sortedDeadline.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "공고5",
+        sortedDeadline.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "공고5", jobIdSet,
                 LocalDateTime.of(2023, 11, 18, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 24, 0, 0), false)); //EndDate
-        sortedDeadline.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3",
+        sortedDeadline.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3", jobIdSet,
                 LocalDateTime.of(2023, 11, 25, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 25, 0, 0), false)); //EndDate
-        sortedDeadline.add(new ManagePostsResponseDto(6L, PostType.NORMAL, "마감6",
+        sortedDeadline.add(new ManagePostsResponseDto(6L, PostType.NORMAL, "마감6", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 11, 25, 0, 0), true)); //EndDate
-        sortedDeadline.add(new ManagePostsResponseDto(7L, PostType.NORMAL, "마감7",
+        sortedDeadline.add(new ManagePostsResponseDto(7L, PostType.NORMAL, "마감7", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), true)); //EndDate
 
@@ -1388,29 +1391,30 @@ class CompanyServiceImplTest {
     @DisplayName("마감 공고만 보기")
     void getEndPosts() {
         long givenCompanyId = 99L;
-
+        Set<Long> jobIdSet = new HashSet<>();
+        jobIdSet.add(1L);
         List<ManagePostsResponseDto> baseData = new ArrayList<>();
-        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1",
+        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2",
+        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 10, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3",
+        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3", jobIdSet,
                 LocalDateTime.of(2023, 11, 25, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 25, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4",
+        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 11, 25, 0, 0), true)); //EndDate
-        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5",
+        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), true)); //EndDate
         // 4 - 5 순서로 보여야함
         List<ManagePostsResponseDto> sortedEnd = new ArrayList<>();
-        sortedEnd.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4",
+        sortedEnd.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 11, 25, 0, 0), true)); //EndDate
-        sortedEnd.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5",
+        sortedEnd.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), true)); //EndDate
 
@@ -1439,32 +1443,33 @@ class CompanyServiceImplTest {
     @DisplayName("진행중 공고만 보기")
     void getOpenPosts() {
         long givenCompanyId = 99L;
-
+        Set<Long> jobIdSet = new HashSet<>();
+        jobIdSet.add(1L);
         List<ManagePostsResponseDto> baseData = new ArrayList<>();
-        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1",
+        baseData.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2",
+        baseData.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 10, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3",
+        baseData.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3", jobIdSet,
                 LocalDateTime.of(2023, 11, 25, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 25, 0, 0), false)); //EndDate
-        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4",
+        baseData.add(new ManagePostsResponseDto(4L, PostType.NORMAL, "마감4", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 11, 25, 0, 0), true)); //EndDate
-        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5",
+        baseData.add(new ManagePostsResponseDto(5L, PostType.NORMAL, "마감5", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), true)); //EndDate
         // 3 2 1 순서로 보여야함
         List<ManagePostsResponseDto> sortedOpen = new ArrayList<>();
-        sortedOpen.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3",
+        sortedOpen.add(new ManagePostsResponseDto(3L, PostType.NORMAL, "공고3", jobIdSet,
                 LocalDateTime.of(2023, 11, 25, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 25, 0, 0), false)); //EndDate
-        sortedOpen.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2",
+        sortedOpen.add(new ManagePostsResponseDto(2L, PostType.NORMAL, "공고2", jobIdSet,
                 LocalDateTime.of(2023, 11, 23, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 10, 0, 0), false)); //EndDate
-        sortedOpen.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1",
+        sortedOpen.add(new ManagePostsResponseDto(1L, PostType.NORMAL, "공고1", jobIdSet,
                 LocalDateTime.of(2023, 11, 20, 0, 0), //createdAt
                 LocalDateTime.of(2023, 12, 5, 0, 0), false)); //EndDate
 

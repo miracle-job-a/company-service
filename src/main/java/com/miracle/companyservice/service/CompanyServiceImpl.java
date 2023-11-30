@@ -1,10 +1,6 @@
 package com.miracle.companyservice.service;
 
-import com.miracle.companyservice.dto.request.CompanyFaqRequestDto;
-import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
-import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.request.PostRequestDto;
-import com.miracle.companyservice.dto.request.QuestionRequestDto;
+import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.CompanyFaqResponseDto;
 import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
@@ -20,10 +16,13 @@ import com.miracle.companyservice.repository.BnoRepository;
 import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
 import com.miracle.companyservice.repository.*;
+import com.miracle.companyservice.util.specification.PostSpecifications;
 import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -374,6 +373,59 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(open)
                 .build();
     }
+
+    public CommonApiResponse conditionalSearch(int page, ConditionalSearchPostRequestDto conditionalSearchRequestDto) {
+        // 주소 값이 빈 경우 검색이 될 수 있도록 빈 값을(" ") 넣어줍니다.
+        if (conditionalSearchRequestDto.getAddressSet().isEmpty()) {
+            conditionalSearchRequestDto.getAddressSet().add(" ");
+        }
+
+        // 마감된 공고 미포함
+        if (!conditionalSearchRequestDto.getIncludeEnded()) {
+            Specification<Post> finalSpec = Specification
+                    .where(PostSpecifications.notClosed())
+                    .and(PostSpecifications.notDeleted())
+                    .and(PostSpecifications.distinctById())
+                    .and(PostSpecifications.workAddressLike(conditionalSearchRequestDto.getAddressSet()))
+                    .and(PostSpecifications.careerGreaterThanOrEqual(conditionalSearchRequestDto.getCareer()))
+                    .and(PostSpecifications.jobIdIn(conditionalSearchRequestDto.getJobIdSet()))
+                    .and(PostSpecifications.stackIdIn(conditionalSearchRequestDto.getStackIdSet()))
+                    .and(PostSpecifications.orderByCreatedAtDesc());
+
+            Page<Post> postPage = postRepository.findAll(finalSpec, PageRequest.of(page - 1, 10));
+            List<Post> content = postPage.getContent();
+            List<ConditionalSearchPostResponseDto> result = new ArrayList<>();
+            content.stream().iterator().forEachRemaining((Post p) -> result.add(new ConditionalSearchPostResponseDto(p)));
+
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("공고 상세 검색 완료 - " + page + "페이지")
+                    .data(content)
+                    .build();
+        }
+        // 마감된 공고 포함
+        Specification<Post> finalSpec = Specification
+                .where(PostSpecifications.notDeleted())
+                .and(PostSpecifications.distinctById())
+                .and(PostSpecifications.workAddressLike(conditionalSearchRequestDto.getAddressSet()))
+                .and(PostSpecifications.careerGreaterThanOrEqual(conditionalSearchRequestDto.getCareer()))
+                .and(PostSpecifications.jobIdIn(conditionalSearchRequestDto.getJobIdSet()))
+                .and(PostSpecifications.stackIdIn(conditionalSearchRequestDto.getStackIdSet()))
+                .and(PostSpecifications.orderByCreatedAtDesc());
+
+        Page<Post> postPage = postRepository.findAll(finalSpec, PageRequest.of(page - 1, 10));
+        List<Post> content = postPage.getContent();
+
+        List<ConditionalSearchPostResponseDto> result = new ArrayList<>();
+        content.stream().iterator().forEachRemaining((Post p) -> result.add(new ConditionalSearchPostResponseDto(p)));
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고 상세 검색 완료 - " + page + "페이지")
+                .data(content)
+                .build();
+    }
+
 
     @Override
     public CommonApiResponse getCompanyInfoAndFaqsByCompanyId(Long companyId) {

@@ -1,17 +1,22 @@
 package com.miracle.companyservice.repository;
 
+import com.miracle.companyservice.dto.response.ConditionalSearchPostResponseDto;
 import com.miracle.companyservice.dto.response.ManagePostsResponseDto;
 import com.miracle.companyservice.entity.Post;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
     /**
      * @author kade
      * @param pageable
@@ -73,7 +78,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고관리를 들어갔을 때, 최신순으로 정렬하여 반환하는 메서드 (디폴트)
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.createdAt DESC")
@@ -85,7 +90,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고 관리를 들어갔을 때, 마감임박 순으로 정렬하는 메서드
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.endDate ASC")
@@ -98,7 +103,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * 기업이 공고 관리를 들어갔을 때, 종료된 공고만 정렬하여 보여주는 메서드
      * 진행중 공고는 보이지 않습니다.
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = true " +
             "ORDER BY p.createdAt DESC")
@@ -111,9 +116,20 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * 기업이 공고 관리를 들어갔을 떄, 진행 중 공고만 정렬하여 보여주는 메서드
      * 마감된 공고는 보이지 않습니다.
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = false " +
             "ORDER BY p.createdAt DESC")
     List<ManagePostsResponseDto> findAllByCompanyIdOrderByOpen(Long companyId);
+
+
+    /**
+     * @author kade
+     * @param spec can be {@literal null}.
+     * @param pageable must not be {@literal null}.
+     * @return List<ConditionalSearchPostReponseDto>
+     * 공고의 조건 검색에 따른 결과를 리턴합니다.
+     */
+    @Override
+    Page<Post> findAll(Specification<Post> spec, Pageable pageable);
 }
