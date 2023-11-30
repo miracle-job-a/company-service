@@ -5,10 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 import java.util.Set;
 
 @Getter
@@ -16,6 +13,12 @@ import java.util.Set;
 @EqualsAndHashCode
 public class ConditionalSearchPostRequestDto {
 
+    @Schema(
+            description = "스택 id Set은 10을 초과할 수 없습니다.",
+            required = true,
+            example = "10"
+    )
+    @Size(max = 10, message = "400:26:스택 id Set은 10을 초과할 수 없습니다.")
     private final Set<Long> stackIdSet;
 
     @Schema(
@@ -26,7 +29,21 @@ public class ConditionalSearchPostRequestDto {
     @PositiveOrZero(message = "400_21:경력값은 0이상의 양수입니다.")
     @NotBlank(message = "400_21:경력 값이 없습니다.")
     private final Integer career;
+
+    @Schema(
+            description = "직무 id Set은 10을 초과할 수 없습니다.",
+            required = true,
+            example = "10"
+    )
+    @Size(max = 10, message = "400:27:직무 id Set은 10을 초과할 수 없습니다.")
     private final Set<Long> jobIdSet;
+
+    @Schema(
+            description = "주소 Set은 3을 초과할 수 없습니다.",
+            required = true,
+            example = "3"
+    )
+    @Size(max = 3, message = "400:28:주소 Set은 3을 초과할 수 없습니다.")
     private final Set<String> addressSet;
 
     @Schema(
