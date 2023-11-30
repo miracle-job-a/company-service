@@ -159,6 +159,7 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiConditionalSearch
     @ApiDefault
     @PostMapping("/posts/search")
     public CommonApiResponse conditionalSearch(@RequestParam int page, @Valid @RequestBody ConditionalSearchPostRequestDto conditionalSearchRequestDto, HttpServletResponse response) {
