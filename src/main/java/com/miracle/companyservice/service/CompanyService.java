@@ -1,9 +1,6 @@
 package com.miracle.companyservice.service;
 
-import com.miracle.companyservice.dto.request.CompanyFaqRequestDto;
-import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
-import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.request.PostRequestDto;
+import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 
 /**
@@ -146,7 +143,14 @@ public interface CompanyService {
      */
     CommonApiResponse getOpenPosts(Long companyId);
 
-
+    /**
+     * @author kade
+     * @param page //페이징 정보
+     * @param conditionalSearchPostRequestDto
+     * @return List<ConditionalSearchPostResponseDto>
+     * 공고의 조건검색을 처리하는 메서드
+     */
+    CommonApiResponse conditionalSearch(int page, ConditionalSearchPostRequestDto conditionalSearchPostRequestDto);
 
 
     /**
