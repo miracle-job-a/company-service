@@ -132,7 +132,12 @@ public class SwaggerConfig {
                 .description("서버 에러")
                 .isDefault(true)
                 .examples(
-                        List.of(getServerErrorBuild())
+                        List.of(getServerErrorBuild(),
+                                decodeSecretKeyErrorBuild(),
+                                encryptDataErrorBuild(),
+                                decryptDataErrorBuild(),
+                                generateSecretKeyErrorBuild()
+                                )
                 ).build();
 
         defaultResponseList.add(unauthorizedResponse);
@@ -150,6 +155,58 @@ public class SwaggerConfig {
                         "서버에 문제가 생겼습니다. 다시 시도해주세요.",
                         "500",
                         "RuntimeException"))
+                .build();
+    }
+
+    private static Example decodeSecretKeyErrorBuild() {
+        return new ExampleBuilder()
+                .id("2")
+                .mediaType("application/json")
+                .summary("SecretKey 디코딩 실패")
+                .value(new ErrorApiResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "SecretKey 디코딩에 실패하였습니다.",
+                        "500",
+                        "DecodeSecretKeyException"))
+                .build();
+    }
+
+    private static Example encryptDataErrorBuild() {
+        return new ExampleBuilder()
+                .id("3")
+                .mediaType("application/json")
+                .summary("데이터 암호화 실패")
+                .value(new ErrorApiResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "데이터 암호화에 실패하였습니다.",
+                        "500",
+                        "EncryptDataException"))
+                .build();
+    }
+
+    private static Example decryptDataErrorBuild() {
+        return new ExampleBuilder()
+                .id("4")
+                .mediaType("application/json")
+                .summary("데이터 복호화 실패")
+                .value(new ErrorApiResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "데이터 복호화에 실패하였습니다.",
+                        "500",
+                        "DecryptDataException"))
+                .build();
+    }
+
+    private static Example generateSecretKeyErrorBuild() {
+        return new ExampleBuilder()
+                .id("5")
+                .mediaType("application/json")
+                .summary("SecretKey 생성 실패")
+                .value(new ErrorApiResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "SecretKey 생성에 실패하였습니다.",
+                        "500",
+                        "GenerateSecretKeyException"))
                 .build();
     }
 
@@ -231,7 +288,11 @@ public class SwaggerConfig {
                 .description("서버 에러")
                 .isDefault(true)
                 .examples(
-                        List.of(getServerErrorBuild())
+                        List.of(getServerErrorBuild(),
+                                decodeSecretKeyErrorBuild(),
+                                encryptDataErrorBuild(),
+                                decryptDataErrorBuild(),
+                                generateSecretKeyErrorBuild())
                 ).build();
 
         interceptorResponseList.add(notExistsCompanyResponse);
