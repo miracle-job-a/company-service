@@ -118,7 +118,7 @@ public interface CompanyService {
      * @return List<ManagePostsResponseDto>
      * 기업의 공고관리 페이지에 보이는 공고 리스트를 최신순 정렬합니다. (디폴트)
      */
-    CommonApiResponse getLatestPosts(Long companyId);
+    CommonApiResponse getLatestPosts(Long companyId, int strNum, int endNum);
 
     /**
      * @author kade
@@ -126,7 +126,7 @@ public interface CompanyService {
      * @return List<ManagePostsResponseDto>
      * 기업의 공고관리 페이지에 보이는 공고 리스트를 마감임박순으로 정렬합니다.
      */
-    CommonApiResponse getDeadlinePosts(Long companyId);
+    CommonApiResponse getDeadlinePosts(Long companyId, int strNum, int endNum);
 
     /**
      * @author kade
@@ -134,7 +134,7 @@ public interface CompanyService {
      * @return List<ManagePostsResponseDto>
      * 기업의 공고관리 페이지에서 마감된 공고만 정렬하여 보여줍니다. (마감된 공고만 보기)
      */
-    CommonApiResponse getEndPosts(Long companyId);
+    CommonApiResponse getEndPosts(Long companyId, int strNum, int endNum);
 
     /**
      * @author kade
@@ -142,7 +142,7 @@ public interface CompanyService {
      * @return List<ManagePostsResponseDto>
      * 기업의 공고관리 페이지에서 진행중 공고만 정렬하여 보여줍니다. (진행중 공고만 보기)
      */
-    CommonApiResponse getOpenPosts(Long companyId);
+    CommonApiResponse getOpenPosts(Long companyId, int strNum, int endNum);
 
     /**
      * @author kade

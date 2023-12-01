@@ -126,8 +126,8 @@ public class CompanyController {
     @ApiGetLatestPosts
     @ApiDefault
     @GetMapping("/{companyId}/posts/latest")
-    public CommonApiResponse getLatestPosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getLatestPosts(companyId);
+    public CommonApiResponse getLatestPosts(@PathVariable Long companyId, @RequestParam int strNum, @RequestParam int endNum, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getLatestPosts(companyId, strNum, endNum);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
@@ -135,8 +135,8 @@ public class CompanyController {
     @ApiGetDeadlinePosts
     @ApiDefault
     @GetMapping("/{companyId}/posts/deadline")
-    public CommonApiResponse getDeadlinePosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getDeadlinePosts(companyId);
+    public CommonApiResponse getDeadlinePosts(@PathVariable Long companyId, @RequestParam int strNum, @RequestParam int endNum, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getDeadlinePosts(companyId, strNum, endNum);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
@@ -144,8 +144,8 @@ public class CompanyController {
     @ApiGetEndPosts
     @ApiDefault
     @GetMapping("/{companyId}/posts/end")
-    public CommonApiResponse getEndPosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getEndPosts(companyId);
+    public CommonApiResponse getEndPosts(@PathVariable Long companyId, @RequestParam int strNum, @RequestParam int endNum, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getEndPosts(companyId, strNum, endNum);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
@@ -153,8 +153,8 @@ public class CompanyController {
     @ApiGetOpenPosts
     @ApiDefault
     @GetMapping("/{companyId}/posts/open")
-    public CommonApiResponse getOpenPosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getOpenPosts(companyId);
+    public CommonApiResponse getOpenPosts(@PathVariable Long companyId, @RequestParam int strNum, @RequestParam int endNum, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getOpenPosts(companyId, strNum, endNum);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }

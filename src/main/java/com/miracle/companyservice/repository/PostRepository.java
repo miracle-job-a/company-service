@@ -76,11 +76,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고관리를 들어갔을 때, 최신순으로 정렬하여 반환하는 메서드 (디폴트)
      */
-    @Query("SELECT p " +
+    @Query("SELECT DISTINCT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.createdAt DESC")
-    List<Post> findAllByCompanyIdOrderByLatest(Long companyId);
+    Page<Post> findAllByCompanyIdOrderByLatest(Long companyId, Pageable pageable);
 
     /**
      * @author kade
@@ -88,11 +88,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고 관리를 들어갔을 때, 마감임박 순으로 정렬하는 메서드
      */
-    @Query("SELECT p " +
+    @Query("SELECT DISTINCT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.endDate ASC")
-    List<Post> findAllByCompanyIdOrderByDeadline(Long companyId);
+    Page<Post> findAllByCompanyIdOrderByDeadline(Long companyId, Pageable pageable);
 
     /**
      * @author kade
@@ -105,20 +105,20 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = true " +
             "ORDER BY p.createdAt DESC")
-    List<Post> findAllByCompanyIdOrderByEnd(Long companyId);
+    Page<Post> findAllByCompanyIdOrderByEnd(Long companyId, Pageable pageable);
 
     /**
      * @author kade
      * @param companyId
      * @return List<CompanyManagePostsResponseDto>
-     * 기업이 공고 관리를 들어갔을 떄, 진행 중 공고만 정렬하여 보여주는 메서드
+     * 기업이 공고 관리를 들어갔을 때, 진행 중 공고만 정렬하여 보여주는 메서드
      * 마감된 공고는 보이지 않습니다.
      */
     @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = false " +
             "ORDER BY p.createdAt DESC")
-    List<Post> findAllByCompanyIdOrderByOpen(Long companyId);
+    Page<Post> findAllByCompanyIdOrderByOpen(Long companyId, Pageable pageable);
 
     /**
      * @author wjdals3936
