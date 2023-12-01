@@ -38,9 +38,6 @@ import java.lang.annotation.Target;
                                                 name = "유효성 / 경력 값 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_21\", \"message\": \"경력값은 0이상의 양수입니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "유효성 / 경력 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_21\", \"message\": \"경력값이 없습니다..\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
                                                 name = "유효성 / 마감공고 여부 값 없음",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_25\", \"message\": \"마감된 공고 검색여부 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
