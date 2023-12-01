@@ -231,4 +231,13 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiModifyCompanyInfo
+    @ApiInterceptor
+    @PutMapping("{companyId}/posts/{postId}")
+    public CommonApiResponse modifyCompanyInfo(@PathVariable Long companyId, @PathVariable Long postId, @RequestBody CompanyInfoRequestDto requestDto, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.modifyCompanyInfo(companyId, postId, requestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }
