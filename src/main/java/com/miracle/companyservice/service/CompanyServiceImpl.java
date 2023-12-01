@@ -13,10 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -450,6 +454,34 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
+    @Override
+    public CommonApiResponse getCompanyList(int strNum, int endNum, boolean today) {
+        List<Page<CompanyListForAdminResponseDto>> companyList = new ArrayList<>();
+        if (today) {
+            for (int i = strNum - 1; i < endNum; i++) {
+                LocalDateTime todayTrue = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
+                Page<CompanyListForAdminResponseDto> createdAt = companyRepository.findAllByCreatedAt(todayTrue, PageRequest.of(i, 9, Sort.by("createdAt").descending()))
+                        .map((Company c) -> new CompanyListForAdminResponseDto(c, encryptors.decryptAES(c.getEmail(), encryptors.getSecretKey()), bnoRepository.findStatusByBnoIsTrue(c.getBno())));
+                companyList.add(createdAt);
+            }
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("기업 목록 조회 성공")
+                    .data(companyList)
+                    .build();
+        }
+        for (int i = strNum - 1; i < endNum; i++) {
+            LocalDateTime todayFalse = LocalDateTime.of(1945, 8, 15, 0, 0);
+            Page<CompanyListForAdminResponseDto> createdAt = companyRepository.findAllByCreatedAt(todayFalse, PageRequest.of(i, 9, Sort.by("createdAt").descending()))
+                    .map((Company c) -> new CompanyListForAdminResponseDto(c, encryptors.decryptAES(c.getEmail(), encryptors.getSecretKey()), bnoRepository.findStatusByBnoIsTrue(c.getBno())));
+            companyList.add(createdAt);
+        }
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("기업 목록 조회 성공")
+                .data(companyList)
+                .build();
+    }
 
     @Override
     public CommonApiResponse getCompanyInfoAndFaqsByCompanyId(Long companyId) {

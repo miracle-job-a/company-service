@@ -154,6 +154,17 @@ public interface CompanyService {
      */
     CommonApiResponse conditionalSearch(int strNum, int endNum, ConditionalSearchPostRequestDto conditionalSearchPostRequestDto);
 
+    /**
+     * @author kade
+     * @param strNum
+     * @param endNum
+     * @param today
+     * @return List<CompanyListForAdminResponseDto>
+     * 관리자가 기업회원 목록을 조회하여 최근 가입 순 정렬하여 반환
+     * 파라미터 today = false -> 전체 검색
+     * 파라미터 today = true -> 오늘 가입한 회원만 검색
+     */
+    CommonApiResponse getCompanyList(int strNum, int endNum, boolean today);
 
     /**
      * @author wjdals3936
