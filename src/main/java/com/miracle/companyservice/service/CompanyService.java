@@ -161,7 +161,7 @@ public interface CompanyService {
      * @return the company faqs by company id
      * 공고 생성 및 상세 조회 시, 해당 기업 정보, FAQ 데이터를 반환하는 메서드
      */
-    public CommonApiResponse getCompanyInfoAndFaqsByCompanyId(Long companyId);
+    public CommonApiResponse getCompanyInfoAndFaqs(Long companyId);
 
     /**
      * @author wjdals3936
@@ -178,7 +178,7 @@ public interface CompanyService {
      * @return the common api response
      * 공고 상세보기 및 공고 수정 페이지에 해당 공고 데이터 반환 메서드
      */
-    public CommonApiResponse findPostById(Long postId);
+    public CommonApiResponse findPost(Long postId);
 
     /**
      * @author wjdals3936
@@ -186,7 +186,7 @@ public interface CompanyService {
      * @return the common api response
      * 공고 수정 메서드
      */
-    public CommonApiResponse modifyPostById(Long companyId, Long postId, PostRequestDto postRequestDto);
+    public CommonApiResponse modifyPost(Long companyId, Long postId, PostRequestDto postRequestDto);
 
     /**
      * @author wjdals3936
@@ -194,7 +194,7 @@ public interface CompanyService {
      * @return the common api response
      * 공고 삭제 메서드
      */
-    public CommonApiResponse deletePostById(Long postId);
+    public CommonApiResponse deletePost(Long postId);
 
     /**
      * @author wjdals3936
@@ -202,7 +202,7 @@ public interface CompanyService {
      * @return the common api response
      * 기업 상세페이지 정보 반환 메서드
      */
-    public CommonApiResponse findCompanyById(Long companyId);
+    public CommonApiResponse findCompany(Long companyId);
 
     /**
      * @author wjdals3936
@@ -210,5 +210,14 @@ public interface CompanyService {
      * @return the common api response
      * 검색 키워드에 대해 해당되는 공고/기업 데이터 반환 메서드
      */
-    public CommonApiResponse findPostAndCompanyByKeyword(String keyword, int strNum, int endNum);
+    public CommonApiResponse findPostAndCompany(String keyword, int strNum, int endNum);
+
+    /**
+     * @author wjdals3936
+     * @param companyId
+     * @param requestDto
+     * @return the common api response
+     * 회원 기업 정보 수정 메서드
+     */
+    public CommonApiResponse modifyCompanyInfo(Long companyId, CompanyInfoRequestDto requestDto);
 }
