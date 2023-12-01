@@ -19,15 +19,6 @@ import java.util.stream.Collectors;
 @ToString
 public class PostRequestDto {
     @Schema(
-            description = "공고아이디 오류. 아이디 값은 null이 될 수 없고 양수여야 함",
-            required = true,
-            example = "3L"
-    )
-    @NotBlank(message = "400_11:공고아이디 값이 없습니다.")
-    @Positive(message = "400_11:아이디 값은 양수여야 합니다.")
-    private final Long postId;
-
-    @Schema(
             description = "공고 타입 오류. 공고 타입은 NORMAL, MZ 둘 중 하나여야 함",
             required = true,
             example = "NORMAL"
@@ -127,8 +118,7 @@ public class PostRequestDto {
     private final LocalDateTime testEndDate;
 
     @Builder
-    public PostRequestDto(Long postId, PostType postType, String title, int career, LocalDateTime endDate, String mainTask, String workCondition, String qualification, String tool, String benefit, String process, String notice, String specialSkill, String workAddress, List<QuestionRequestDto> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet, LocalDateTime testStartDate, LocalDateTime testEndDate) {
-        this.postId = postId;
+    public PostRequestDto(PostType postType, String title, int career, LocalDateTime endDate, String mainTask, String workCondition, String qualification, String tool, String benefit, String process, String notice, String specialSkill, String workAddress, List<QuestionRequestDto> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet, LocalDateTime testStartDate, LocalDateTime testEndDate) {
         this.postType = postType;
         this.title = title;
         this.career = career;
@@ -150,7 +140,6 @@ public class PostRequestDto {
     }
 
     public PostRequestDto() {
-        this.postId = null;
         this.postType = null;
         this.title = null;
         this.career = 0;
