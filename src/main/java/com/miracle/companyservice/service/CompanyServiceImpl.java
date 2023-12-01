@@ -1,23 +1,14 @@
 package com.miracle.companyservice.service;
 
 import com.miracle.companyservice.dto.request.*;
-import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.dto.response.CompanyFaqResponseDto;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
-import com.miracle.companyservice.dto.response.SuccessApiResponse;
 import com.miracle.companyservice.dto.response.*;
 import com.miracle.companyservice.entity.Company;
-
 import com.miracle.companyservice.entity.CompanyFaq;
 import com.miracle.companyservice.entity.Post;
 import com.miracle.companyservice.entity.Question;
-import com.miracle.companyservice.repository.CompanyFaqRepository;
-import com.miracle.companyservice.repository.BnoRepository;
-import com.miracle.companyservice.repository.CompanyRepository;
-import com.miracle.companyservice.repository.PostRepository;
 import com.miracle.companyservice.repository.*;
-import com.miracle.companyservice.util.specification.PostSpecifications;
 import com.miracle.companyservice.util.encryptor.Encryptors;
+import com.miracle.companyservice.util.specification.PostSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -578,10 +569,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse modifyPostById(Long companyId,PostRequestDto postRequestDto) {
+    public CommonApiResponse modifyPostById(Long companyId, Long postId, PostRequestDto postRequestDto) {
 
         Post post = Post.builder()
-                .id(postRequestDto.getPostId())
+                .id(postId)
                 .companyId(companyId)
                 .postType(postRequestDto.getPostType())
                 .title(postRequestDto.getTitle())
@@ -708,5 +699,49 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(responseDto)
                 .build();
     }
-}
 
+    @Override
+    public CommonApiResponse findPostAndCompanyByKeyword(String keyword, int strNum, int endNum) {
+        String likeKeyword = "%" + keyword + "%";
+        int page = strNum;
+        List<Page<PostListResponseDto>> postList = new ArrayList<>();
+        List<Page<CompanyListResponseDto>> companyList = new ArrayList<>();
+
+
+        while (page < endNum) {
+            Page<PostListResponseDto> postPageResult = postRepository.findByKeyword(likeKeyword, PageRequest.of(page, 9));
+            if (postPageResult.isEmpty()) {
+                break;
+            }
+            postList.add(postPageResult);
+
+            Page<CompanyListResponseDto> companyPageResult = companyRepository.findByKeyword(likeKeyword, PageRequest.of(page, 9));
+            if (companyPageResult.isEmpty()) {
+                break;
+            }
+            companyList.add(companyPageResult);
+
+            page++;
+        }
+
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("postList", postList);
+        data.put("companyList", companyList);
+
+        if (data == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고/기업 검색 조회에 실패하였습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("검색 키워드를 기반으로 한 데이터 조회 성공")
+                .data(data)
+                .build();
+    }
+}

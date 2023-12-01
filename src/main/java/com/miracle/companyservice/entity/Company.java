@@ -46,8 +46,7 @@ public class Company extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
-    @OneToMany
-    @JoinColumn(name = "company_id")
+    @OneToMany(mappedBy = "company")
     private List<CompanyFaq> faqList = new ArrayList<>();
 
     @Column(nullable = false)
@@ -87,6 +86,4 @@ public class Company extends BaseEntity {
         this.introduction = companySignUpRequestDto.getIntroduction();
         this.employeeNum = companySignUpRequestDto.getEmployeeNum();
     }
-
-
 }

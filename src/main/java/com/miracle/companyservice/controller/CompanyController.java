@@ -199,8 +199,8 @@ public class CompanyController {
     @ApiModifyPost
     @ApiInterceptor
     @PutMapping("{companyId}/posts/{postId}")
-    public CommonApiResponse modifyPost(@PathVariable Long companyId, @RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
-        CommonApiResponse commonApiResponse = companyService.modifyPostById(companyId, postRequestDto);
+    public CommonApiResponse modifyPost(@PathVariable Long companyId, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.modifyPostById(companyId, postId, postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
@@ -219,6 +219,15 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     public CommonApiResponse getCompany(@PathVariable Long companyId, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.findCompanyById(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiSearchPostAndCompany
+    @ApiDefault
+    @GetMapping("")
+    public CommonApiResponse searchPostAndCompany(@RequestParam String keyword, @RequestParam int strNum, @RequestParam int endNum, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findPostAndCompanyByKeyword(keyword,strNum, endNum);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
