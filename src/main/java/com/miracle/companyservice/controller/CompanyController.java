@@ -7,6 +7,7 @@ import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.bridge.ICommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -181,8 +182,17 @@ public class CompanyController {
     @ApiQuitCompany
     @ApiInterceptor
     @DeleteMapping("/{companyId}")
-    public CommonApiResponse quitCompany(@RequestParam Long companyId, HttpServletResponse response) {
+    public CommonApiResponse quitCompany(@PathVariable Long companyId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.quitCompany(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiApproveCompany
+    @ApiDefault
+    @PutMapping("/{companyId}/approval")
+    public CommonApiResponse approveCompany(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.approveCompany(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }

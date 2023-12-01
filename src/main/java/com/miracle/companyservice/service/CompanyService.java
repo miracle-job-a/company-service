@@ -166,8 +166,22 @@ public interface CompanyService {
      */
     CommonApiResponse getCompanyList(int strNum, int endNum, boolean today);
 
-
+    /**
+     * @author kade
+     * @param companyId
+     * @return boolean
+     * 기업 회원 탈퇴 처리 API
+     */
     CommonApiResponse quitCompany(Long companyId);
+
+    /**
+     * @author kade
+     * @param companyId
+     * @return boolean
+     * 기업 회원 승인 처리 API
+     */
+    CommonApiResponse approveCompany(Long companyId);
+
     /**
      * @author wjdals3936
      * @param companyId the company id
