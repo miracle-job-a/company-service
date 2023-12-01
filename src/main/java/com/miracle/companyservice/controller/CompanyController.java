@@ -168,6 +168,14 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiGetCompanyList
+    @ApiDefault
+    @GetMapping("/list")
+    public CommonApiResponse getCompanyList(@RequestParam int strNum, @RequestParam int endNum, @RequestParam boolean today, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCompanyList(strNum, endNum, today);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 
     @ApiFindCompanyInfo
     @ApiDefault

@@ -1,5 +1,6 @@
 package com.miracle.companyservice.repository;
 
+import com.miracle.companyservice.dto.response.CompanyListForAdminResponseDto;
 import com.miracle.companyservice.dto.response.CompanyListResponseDto;
 import com.miracle.companyservice.entity.Company;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,13 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
      */
     @Query("SELECT c.photo FROM Company c WHERE c.id = :companyId")
     String findPhotoById(Long companyId);
+
+
+    @Query("SELECT c " +
+            "FROM Company c " +
+            "WHERE c.createdAt >= :date")
+    Page<Company> findAllByCreatedAt(LocalDateTime date, Pageable pageable);
+
 
     /**
      * @author wjdals3936
