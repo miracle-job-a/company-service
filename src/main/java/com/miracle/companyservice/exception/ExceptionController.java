@@ -43,7 +43,10 @@ public class ExceptionController {
      * 400_22 유효성검사 - mainTask
      * 400_23 유효성검사 - workCondition
      * 400_24 유효성검사 - process
-     *
+     * 400_25 유효성검사 - includeEnded
+     * 400_26 유효성검사 - stackIdSet
+     * 400_27 유효성검사 - jobIdSet
+     * 400_28 유효성검사 - addressSet
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public CommonApiResponse notValidHandle(MethodArgumentNotValidException e) {
@@ -89,6 +92,56 @@ public class ExceptionController {
                 .exception("RuntimeException")
                 .build();
     }
+
+    @ExceptionHandler(value = DecodeSecretKeyException.class)
+    public CommonApiResponse decodePrivateKeyHandle(DecodeSecretKeyException e, HttpRequest request) {
+        log.info("[DecodeSecretKeyException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("SecretKey 디코딩에 실패하였습니다.")
+                .exception("DecodeSecretKeyException")
+                .build();
+    }
+
+    @ExceptionHandler(value = DecryptDataException.class)
+    public CommonApiResponse decrypteDataHandle(DecryptDataException e, HttpRequest request) {
+        log.info("[DecryptDataException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("데이터 복호화에 실패하였습니다.")
+                .exception("DecryptDataException")
+                .build();
+    }
+
+    @ExceptionHandler(value = EncryptDataException.class)
+    public CommonApiResponse decrypteDataHandle(EncryptDataException e, HttpRequest request) {
+        log.info("[EncryptDataException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("데이터 암호화에 실패하였습니다.")
+                .exception("EncryptDataException")
+                .build();
+    }
+
+    //당장 사용하지 않지만 미리 구현
+    @ExceptionHandler(value = GenerateSecretKeyException.class)
+    public CommonApiResponse generateSecretKeyHandle(GenerateSecretKeyException e, HttpRequest request) {
+        log.info("[GenerateSecretKeyException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("SecretKey 생성에 실패하였습니다.")
+                .exception("GenerateSecretKeyException")
+                .build();
+    }
+
+
+
+
+
 
     /**
      * 400 클라이언트 에러
