@@ -495,6 +495,25 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CommonApiResponse approveCompany(Long companyId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 companyId 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        Company company1 = company.get();
+        company1.setApproveStatus(true);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("기업 회원 가입이 승인되었습니다.")
+                .data(Boolean.TRUE)
+                .build();
+    }
+
+    @Override
     public CommonApiResponse getCompanyInfoAndFaqs(Long companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
