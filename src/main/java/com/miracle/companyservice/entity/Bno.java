@@ -28,4 +28,10 @@ public class Bno extends BaseEntity{
         this.bno = bno;
         this.status = status;
     }
+
+    public Bno() {
+        this.id = null;
+        this.bno = null;
+        this.status = null;
+    }
 }

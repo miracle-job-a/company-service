@@ -78,11 +78,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고관리를 들어갔을 때, 최신순으로 정렬하여 반환하는 메서드 (디폴트)
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.createdAt DESC")
-    List<ManagePostsResponseDto> findAllByCompanyIdOrderByLatest(Long companyId);
+    List<Post> findAllByCompanyIdOrderByLatest(Long companyId);
 
     /**
      * @author kade
@@ -90,11 +90,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고 관리를 들어갔을 때, 마감임박 순으로 정렬하는 메서드
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.endDate ASC")
-    List<ManagePostsResponseDto> findAllByCompanyIdOrderByDeadline(Long companyId);
+    List<Post> findAllByCompanyIdOrderByDeadline(Long companyId);
 
     /**
      * @author kade
@@ -103,11 +103,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * 기업이 공고 관리를 들어갔을 때, 종료된 공고만 정렬하여 보여주는 메서드
      * 진행중 공고는 보이지 않습니다.
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = true " +
             "ORDER BY p.createdAt DESC")
-    List<ManagePostsResponseDto> findAllByCompanyIdOrderByEnd(Long companyId);
+    List<Post> findAllByCompanyIdOrderByEnd(Long companyId);
 
     /**
      * @author kade
@@ -116,11 +116,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * 기업이 공고 관리를 들어갔을 떄, 진행 중 공고만 정렬하여 보여주는 메서드
      * 마감된 공고는 보이지 않습니다.
      */
-    @Query("SELECT new com.miracle.companyservice.dto.response.ManagePostsResponseDto(p.id, p.postType, p.title, p.jobIdSet, p.createdAt, p.endDate, p.closed) " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = false " +
             "ORDER BY p.createdAt DESC")
-    List<ManagePostsResponseDto> findAllByCompanyIdOrderByOpen(Long companyId);
+    List<Post> findAllByCompanyIdOrderByOpen(Long companyId);
 
 
     /**

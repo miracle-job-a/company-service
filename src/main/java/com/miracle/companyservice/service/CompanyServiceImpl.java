@@ -17,7 +17,7 @@ import com.miracle.companyservice.repository.CompanyRepository;
 import com.miracle.companyservice.repository.PostRepository;
 import com.miracle.companyservice.repository.*;
 import com.miracle.companyservice.util.specification.PostSpecifications;
-import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
+import com.miracle.companyservice.util.encryptor.Encryptors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,25 +38,27 @@ public class CompanyServiceImpl implements CompanyService {
     private final BnoRepository bnoRepository;
     private final PostRepository postRepository;
     private final QuestionRepository questionRepository;
+    private final Encryptors encryptors;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository, QuestionRepository questionRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository, QuestionRepository questionRepository, Encryptors encryptors ) {
         this.companyRepository = companyRepository;
         this.companyFaqRepository = companyFaqRepository;
         this.bnoRepository = bnoRepository;
         this.postRepository = postRepository;
         this.questionRepository = questionRepository;
+        this.encryptors = encryptors;
     }
 
     @Override
     public Boolean companyValidation(Long id, String email, String bno) {
-        return companyRepository.existsByIdAndEmailAndBno(id, email, bno);
+        return companyRepository.existsByIdAndEmailAndBno(id, encryptors.encryptAES(email, encryptors.getSecretKey()), bno);
     }
 
     @Override
     public CommonApiResponse checkEmailDuplicated(String email) {
         log.info("email : {}", email);
-        if (companyRepository.existsByEmail(email)) {
+        if (companyRepository.existsByEmail(encryptors.encryptAES(email, encryptors.getSecretKey()))) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("중복된 이메일입니다.")
@@ -73,15 +75,25 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse signUpCompany(CompanySignUpRequestDto companySignUpRequestDto) {
         log.info("companySignUpRequestDto : {}", companySignUpRequestDto);
-        if (companyRepository.existsByEmail(companySignUpRequestDto.getEmail())) {
+        if (companyRepository.existsByBno(companySignUpRequestDto.getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("이미 가입된 사업자번호 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        if (companyRepository.existsByEmail(encryptors.encryptAES(companySignUpRequestDto.getEmail(), encryptors.getSecretKey()))) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("중복된 이메일입니다.")
                     .data(Boolean.FALSE)
                     .build();
-
         }
-        companyRepository.save(new Company(companySignUpRequestDto));
+        Company company = new Company(companySignUpRequestDto);
+        company.setEmail(encryptors.encryptAES(companySignUpRequestDto.getEmail(), encryptors.getSecretKey()));
+        company.setPassword(encryptors.SHA3Algorithm(companySignUpRequestDto.getPassword()));
+        companyRepository.save(company);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("회원가입 성공")
@@ -92,14 +104,14 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse loginCompany(CompanyLoginRequestDto companyLoginRequestDto) {
         log.info("email : {}, password : {}", companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword());
-        if (!companyRepository.existsByEmail(companyLoginRequestDto.getEmail())) {
+        if (!companyRepository.existsByEmail(encryptors.encryptAES(companyLoginRequestDto.getEmail(), encryptors.getSecretKey()))) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("이메일 또는 비밀번호가 일치하지 않습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
-        Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), PasswordEncryptor.SHA3Algorithm(companyLoginRequestDto.getPassword()));
+        Optional<Company> company = companyRepository.findByEmailAndPassword(encryptors.encryptAES(companyLoginRequestDto.getEmail(), encryptors.getSecretKey()), encryptors.SHA3Algorithm(companyLoginRequestDto.getPassword()));
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -122,7 +134,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-        CompanyLoginResponseDto responseDto = new CompanyLoginResponseDto(company.get().getId(), company.get().getEmail(), company.get().getBno());
+        CompanyLoginResponseDto responseDto = new CompanyLoginResponseDto(company.get().getId(), encryptors.decryptAES(company.get().getEmail(), encryptors.getSecretKey()), company.get().getBno());
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("로그인 성공")
@@ -336,7 +348,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse getLatestPosts(Long companyId) {
-        List<ManagePostsResponseDto> latest = postRepository.findAllByCompanyIdOrderByLatest(companyId);
+        List<Post> getLatest = postRepository.findAllByCompanyIdOrderByLatest(companyId);
+        List<ManagePostsResponseDto> latest = new ArrayList<>();
+        getLatest.iterator().forEachRemaining((Post p) -> latest.add(new ManagePostsResponseDto(p)));
+
+
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("최신 공고 정렬")
@@ -346,7 +362,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse getDeadlinePosts(Long companyId) {
-        List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
+        List<ManagePostsResponseDto> deadline = new ArrayList<>();
+        List<Post> postList = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
+        postList.iterator().forEachRemaining((Post p) -> deadline.add(new ManagePostsResponseDto(p)));
+
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("마감 임박 공고 정렬")
@@ -356,7 +375,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse getEndPosts(Long companyId) {
-        List<ManagePostsResponseDto> end = postRepository.findAllByCompanyIdOrderByEnd(companyId);
+        List<ManagePostsResponseDto> end = new ArrayList<>();
+        List<Post> postList = postRepository.findAllByCompanyIdOrderByEnd(companyId);
+        postList.iterator().forEachRemaining((Post p) -> new ManagePostsResponseDto(p));
+
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("마감 공고만 보기")
@@ -366,7 +388,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse getOpenPosts(Long companyId) {
-        List<ManagePostsResponseDto> open = postRepository.findAllByCompanyIdOrderByOpen(companyId);
+        List<ManagePostsResponseDto> open = new ArrayList<>();
+        List<Post> postList = postRepository.findAllByCompanyIdOrderByOpen(companyId);
+        postList.iterator().forEachRemaining((Post p) -> open.add(new ManagePostsResponseDto(p)));
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("진행 중 공고만 보기")

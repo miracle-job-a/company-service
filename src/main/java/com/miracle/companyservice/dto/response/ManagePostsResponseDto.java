@@ -1,6 +1,8 @@
 package com.miracle.companyservice.dto.response;
 
+import com.miracle.companyservice.entity.Post;
 import com.miracle.companyservice.entity.PostType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,6 +12,7 @@ import java.util.Set;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 public class ManagePostsResponseDto {
 
     private final Long id;
@@ -27,6 +30,16 @@ public class ManagePostsResponseDto {
         this.createdAt = formatDate(createdAt);
         this.endDate = formatDate(endDate);
         this. closed = closed;
+    }
+
+    public ManagePostsResponseDto(Post post) {
+        this.id = post.getId();
+        this.postType = post.getPostType();
+        this.title = post.getTitle();
+        this.jobIdSet = post.getJobIdSet();
+        this.createdAt = formatDate(post.getCreatedAt());
+        this.endDate = formatDate(post.getEndDate());
+        this. closed = post.isClosed();
     }
 
     private String formatDate(LocalDateTime date) {

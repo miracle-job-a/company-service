@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import javax.persistence.EntityManager;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -60,7 +61,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post1.setCreatedAt(LocalDateTime.of(2023,11,01,00,00));
+        post1.setCreatedAt(LocalDateTime.of(2023, 11, 01, 00, 00));
         postRepository.save(post1);
 
         Post post2 = Post.builder()
@@ -83,7 +84,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post2.setCreatedAt(LocalDateTime.of(2023,11,02,00,00));
+        post2.setCreatedAt(LocalDateTime.of(2023, 11, 02, 00, 00));
         postRepository.save(post2);
 
         Post post3 = Post.builder()
@@ -106,7 +107,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post3.setCreatedAt(LocalDateTime.of(2023,11,03,00,00));
+        post3.setCreatedAt(LocalDateTime.of(2023, 11, 03, 00, 00));
         postRepository.save(post3);
 
         Post post4 = Post.builder()
@@ -129,7 +130,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post4.setCreatedAt(LocalDateTime.of(2023,10,3,00,00));
+        post4.setCreatedAt(LocalDateTime.of(2023, 10, 3, 00, 00));
         postRepository.save(post4);
 
         Post post5 = Post.builder()
@@ -152,7 +153,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post5.setCreatedAt(LocalDateTime.of(2023,10,13,00,00));
+        post5.setCreatedAt(LocalDateTime.of(2023, 10, 13, 00, 00));
         postRepository.save(post5);
 
         Post post6 = Post.builder()
@@ -175,7 +176,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post6.setCreatedAt(LocalDateTime.of(2023,10,15,00,00));
+        post6.setCreatedAt(LocalDateTime.of(2023, 10, 15, 00, 00));
         postRepository.save(post6);
 
         Post post7 = Post.builder()
@@ -220,7 +221,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post8.setCreatedAt(LocalDateTime.of(2023,11,8,00,00));
+        post8.setCreatedAt(LocalDateTime.of(2023, 11, 8, 00, 00));
         postRepository.save(post8);
 
         Post post9 = Post.builder()
@@ -243,7 +244,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post9.setCreatedAt(LocalDateTime.of(2023,11,12,00,00));
+        post9.setCreatedAt(LocalDateTime.of(2023, 11, 12, 00, 00));
         postRepository.save(post9);
 
         Post post10 = Post.builder()
@@ -266,7 +267,7 @@ class PostRepositoryTest {
                 .jobIdSet(new HashSet<>())
                 .stackIdSet(new HashSet<>())
                 .build();
-        post10.setCreatedAt(LocalDateTime.of(2023,11,15,00,00));
+        post10.setCreatedAt(LocalDateTime.of(2023, 11, 15, 00, 00));
         postRepository.save(post10);
     }
 
@@ -339,7 +340,9 @@ class PostRepositoryTest {
     void findAllByCompanyIdOrderByLatest() {
         long companyId = 1L;
 
-        List<ManagePostsResponseDto> allByCompanyIdOrderByLatest = postRepository.findAllByCompanyIdOrderByLatest(companyId);
+        List<Post> allByCompanyIdOrderByLatestPost = postRepository.findAllByCompanyIdOrderByLatest(companyId);
+        List<ManagePostsResponseDto> allByCompanyIdOrderByLatest = new ArrayList<>();
+        allByCompanyIdOrderByLatestPost.iterator().forEachRemaining((Post p) -> allByCompanyIdOrderByLatest.add(new ManagePostsResponseDto(p)));
 
         Assertions.assertThat(allByCompanyIdOrderByLatest.size()).isEqualTo(9);
         Assertions.assertThat(allByCompanyIdOrderByLatest.get(0).getTitle()).isEqualTo("공고10 - 마감임박");
@@ -354,7 +357,9 @@ class PostRepositoryTest {
     void findAllByCompanyIdOrderByDeadline() {
         long companyId = 1L;
 
-        List<ManagePostsResponseDto> deadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
+        List<ManagePostsResponseDto> deadline = new ArrayList<>();
+        List<Post> postList = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
+        postList.iterator().forEachRemaining( (Post p) -> deadline.add(new ManagePostsResponseDto(p)));
 
         Assertions.assertThat(deadline.size()).isEqualTo(9);
         Assertions.assertThat(deadline.get(0).getTitle()).isEqualTo("공고10 - 마감임박");
@@ -368,7 +373,9 @@ class PostRepositoryTest {
     @DisplayName("마감된 공고만 보기")
     void findAllByCompanyIdOrderByEnd() {
         long companyId = 1L;
-        List<ManagePostsResponseDto> end = postRepository.findAllByCompanyIdOrderByEnd(companyId);
+        List<ManagePostsResponseDto> end = new ArrayList<>();
+        List<Post> postList = postRepository.findAllByCompanyIdOrderByEnd(companyId);
+        postList.iterator().forEachRemaining( (Post p) -> end.add(new ManagePostsResponseDto(p)));
 
         Assertions.assertThat(end.size()).isEqualTo(3);
         Assertions.assertThat(end.get(0).getTitle()).isEqualTo("공고6 - 마감");
@@ -381,7 +388,9 @@ class PostRepositoryTest {
     void findAllByCompanyIdOrderByOpen() {
         long companyId = 1L;
 
-        List<ManagePostsResponseDto> open = postRepository.findAllByCompanyIdOrderByOpen(companyId);
+        List<ManagePostsResponseDto> open = new ArrayList<>();
+        List<Post> postList = postRepository.findAllByCompanyIdOrderByOpen(companyId);
+        postList.iterator().forEachRemaining( (Post p) -> open.add(new ManagePostsResponseDto(p)));
 
         Assertions.assertThat(open.size()).isEqualTo(6);
         Assertions.assertThat(open.get(0).getTitle()).isEqualTo("공고10 - 마감임박");
