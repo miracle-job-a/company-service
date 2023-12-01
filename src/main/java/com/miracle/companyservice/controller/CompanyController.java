@@ -186,6 +186,7 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    // dto에서 공고 id 없애기
     @ApiModifyPost
     @ApiInterceptor
     @PutMapping("{companyId}/posts/{postId}")
@@ -209,6 +210,15 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     public CommonApiResponse getCompany(@PathVariable Long companyId, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.findCompanyById(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiSearchPostAndCompany
+    @ApiDefault
+    @GetMapping("")
+    public CommonApiResponse searchPostAndCompany(@RequestParam String keyword, @RequestParam int strNum, @RequestParam int endNum, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findPostAndCompanyByKeyword(keyword,strNum, endNum);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
