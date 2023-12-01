@@ -1,10 +1,15 @@
 package com.miracle.companyservice.repository;
 
+import com.miracle.companyservice.dto.response.CompanyListResponseDto;
 import com.miracle.companyservice.entity.Company;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -43,4 +48,15 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT c.photo FROM Company c WHERE c.id = :companyId")
     String findPhotoById(Long companyId);
 
+    /**
+     * @author wjdals3936
+     * @param keyword
+     * @param pageable
+     * @return Page<CompanyListResponseDto>
+     * 사용자가 키워드를 검색하면 해당 키워드가 포함된 기업명 조회 후, 데이터를 반환하는 메서드
+     */
+    @Query("SELECT c FROM Company c WHERE " +
+            "c.name LIKE :keyword " +
+            "ORDER BY c.createdAt DESC")
+    Page<CompanyListResponseDto> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }
