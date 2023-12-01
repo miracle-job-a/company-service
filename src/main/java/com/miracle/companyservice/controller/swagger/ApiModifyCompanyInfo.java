@@ -38,20 +38,63 @@ import java.lang.annotation.Target;
                                                 value = "{\"httpStatus\": 400, \"message\": \"해당 공고 정보가 없습니다.\", \"data\": false }"),
                                         @ExampleObject(
                                                 name = "실패 / 자소서 문항 없음",
-                                                value = "{\"httpStatus\": 400, \"message\": \"해당 공고에 대한 자기소개서 문항이 존재하지 않습니다.\", \"data\": false }")/*,
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 길이 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 길이가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                                value = "{\"httpStatus\": 400, \"message\": \"해당 공고에 대한 자기소개서 문항이 존재하지 않습니다.\", \"data\": false }"),
 
                                         @ExampleObject(
-                                                name = "유효성 / 비밀번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),*/
+                                                name = "유효성 /기업명 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_2\", \"message\": \"기업명 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /기업명 길이 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_2\", \"message\": \"기업명 길이가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 /사진 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_3\", \"message\": \"사진이 업로드 되지 않았습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /사진 경로 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_3\", \"message\": \"사진 경로가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 /비밀번호 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /비밀번호 형식 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 형식이 맞지 않습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /비밀번호 길이 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호가 너무 짧습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 /대표자명 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_6\", \"message\": \"대표자명 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /대표자명 길이 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_6\", \"message\": \"대표자명이 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 /업종 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_7\", \"message\": \"업종 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /업종 길이 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_7\", \"message\": \"업종 값이 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 /주소 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_6\", \"message\": \"주소 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /주소 길이 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_7\", \"message\": \"주소 값이 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 /기업소개 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_7\", \"message\": \"기업소개 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 /기업소개 길이 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_7\", \"message\": \"기업소개 값이 너무 짧습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 /재직인원 값 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_7\", \"message\": \"재직인원이 0이하 입니다.\", \"exception\": \"MethodArgumentNotValidException\" }")
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
