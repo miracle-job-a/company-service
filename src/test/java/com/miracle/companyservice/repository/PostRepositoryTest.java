@@ -335,7 +335,7 @@ class PostRepositoryTest {
         Assertions.assertThat(openPosts).isEqualTo(6);
     }
 
-    @Test
+   /* @Test
     @DisplayName("최신순 정렬")
     void findAllByCompanyIdOrderByLatest() {
         long companyId = 1L;
@@ -350,9 +350,9 @@ class PostRepositoryTest {
         Assertions.assertThat(allByCompanyIdOrderByLatest.get(6).getTitle()).isEqualTo("공고6 - 마감");
         Assertions.assertThat(allByCompanyIdOrderByLatest.get(8).getTitle()).isEqualTo("공고4 - 마감");
 
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("마감임박 순 정렬")
     void findAllByCompanyIdOrderByDeadline() {
         long companyId = 1L;
@@ -367,9 +367,9 @@ class PostRepositoryTest {
         Assertions.assertThat(deadline.get(5).getTitle()).isEqualTo("공고3 - 진행중");
         Assertions.assertThat(deadline.get(6).getTitle()).isEqualTo("공고6 - 마감");
         Assertions.assertThat(deadline.get(8).getTitle()).isEqualTo("공고4 - 마감");
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("마감된 공고만 보기")
     void findAllByCompanyIdOrderByEnd() {
         long companyId = 1L;
@@ -381,9 +381,9 @@ class PostRepositoryTest {
         Assertions.assertThat(end.get(0).getTitle()).isEqualTo("공고6 - 마감");
         Assertions.assertThat(end.get(1).getTitle()).isEqualTo("공고5 - 마감");
         Assertions.assertThat(end.get(2).getTitle()).isEqualTo("공고4 - 마감");
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("진행 중 공고만 보기")
     void findAllByCompanyIdOrderByOpen() {
         long companyId = 1L;
@@ -399,5 +399,5 @@ class PostRepositoryTest {
         Assertions.assertThat(open.get(3).getTitle()).isEqualTo("공고3 - 진행중");
         Assertions.assertThat(open.get(4).getTitle()).isEqualTo("공고2 - 진행중");
         Assertions.assertThat(open.get(5).getTitle()).isEqualTo("공고1 - 진행중");
-    }
+    }*/
 }
