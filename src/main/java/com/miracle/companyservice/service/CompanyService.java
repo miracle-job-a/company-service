@@ -166,6 +166,8 @@ public interface CompanyService {
      */
     CommonApiResponse getCompanyList(int strNum, int endNum, boolean today);
 
+
+    CommonApiResponse quitCompany(Long companyId);
     /**
      * @author wjdals3936
      * @param companyId the company id

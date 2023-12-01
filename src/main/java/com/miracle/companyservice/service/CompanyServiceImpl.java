@@ -485,6 +485,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CommonApiResponse quitCompany(Long companyId) {
+        companyRepository.deleteById(companyId);
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("탈퇴 성공")
+                .data(Boolean.TRUE)
+                .build();
+    }
+
+    @Override
     public CommonApiResponse getCompanyInfoAndFaqs(Long companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
