@@ -145,12 +145,13 @@ public interface CompanyService {
 
     /**
      * @author kade
-     * @param page //페이징 정보
+     * @param strNum 시작페이지
+     * @param endNum 종료페이지
      * @param conditionalSearchPostRequestDto
      * @return List<ConditionalSearchPostResponseDto>
      * 공고의 조건검색을 처리하는 메서드
      */
-    CommonApiResponse conditionalSearch(int page, ConditionalSearchPostRequestDto conditionalSearchPostRequestDto);
+    CommonApiResponse conditionalSearch(int strNum, int endNum, ConditionalSearchPostRequestDto conditionalSearchPostRequestDto);
 
 
     /**
