@@ -14,7 +14,4 @@ public interface PostListResponseDto {
     String getTitle();
     Integer getCareer();
     Set<Long> getJobIdSet();
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime getCreatedAt();
 }
