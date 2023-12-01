@@ -205,5 +205,5 @@ public interface CompanyService {
      * @return the common api response
      * 검색 키워드에 대해 해당되는 공고/기업 데이터 반환 메서드
      */
-    public CommonApiResponse findPostAndCompanyByKeyword(String keyword, int startPageNum, int endPageNum);
+    public CommonApiResponse findPostAndCompanyByKeyword(String keyword, int strNum, int endNum);
 }
