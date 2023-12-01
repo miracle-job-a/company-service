@@ -648,18 +648,33 @@ public class CompanyServiceImpl implements CompanyService {
 
         while (page < endNum) {
             Page<PostListResponseDto> postPageResult = postRepository.findByKeyword(likeKeyword, PageRequest.of(page, 9));
+            if (postPageResult.isEmpty()) {
+                break;
+            }
             postList.add(postPageResult);
 
             Page<CompanyListResponseDto> companyPageResult = companyRepository.findByKeyword(likeKeyword, PageRequest.of(page, 9));
+            if (companyPageResult.isEmpty()) {
+                break;
+            }
             companyList.add(companyPageResult);
 
             page++;
         }
 
+
         Map<String, Object> data = new HashMap<>();
 
         data.put("postList", postList);
         data.put("companyList", companyList);
+
+        if (data == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고/기업 검색 조회에 실패하였습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
