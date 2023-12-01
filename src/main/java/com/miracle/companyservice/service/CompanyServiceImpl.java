@@ -442,7 +442,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
-    public CommonApiResponse getCompanyInfoAndFaqsByCompanyId(Long companyId) {
+    public CommonApiResponse getCompanyInfoAndFaqs(Long companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
@@ -535,7 +535,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse findPostById(Long postId) {
+    public CommonApiResponse findPost(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()
@@ -569,7 +569,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse modifyPostById(Long companyId, Long postId, PostRequestDto postRequestDto) {
+    public CommonApiResponse modifyPost(Long companyId, Long postId, PostRequestDto postRequestDto) {
 
         Post post = Post.builder()
                 .id(postId)
@@ -642,7 +642,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse deletePostById(Long postId) {
+    public CommonApiResponse deletePost(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isPresent()) {
             post.get().setDeleted(true);
@@ -662,7 +662,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse findCompanyById(Long companyId) {
+    public CommonApiResponse findCompany(Long companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
@@ -701,7 +701,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse findPostAndCompanyByKeyword(String keyword, int strNum, int endNum) {
+    public CommonApiResponse findPostAndCompany(String keyword, int strNum, int endNum) {
         String likeKeyword = "%" + keyword + "%";
         int page = strNum;
         List<Page<PostListResponseDto>> postList = new ArrayList<>();
