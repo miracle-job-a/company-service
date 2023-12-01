@@ -32,7 +32,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final Encryptors encryptors;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository, QuestionRepository questionRepository, Encryptors encryptors ) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository, QuestionRepository questionRepository, Encryptors encryptors) {
         this.companyRepository = companyRepository;
         this.companyFaqRepository = companyFaqRepository;
         this.bnoRepository = bnoRepository;
@@ -301,7 +301,7 @@ public class CompanyServiceImpl implements CompanyService {
         Map<String, Long> map = new HashMap<>();
         map.put("countAllPosts", countAllPosts);
         map.put("countEndedPosts", countEndedPosts);
-        map.put("countOpen",countOpen);
+        map.put("countOpen", countOpen);
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
@@ -338,12 +338,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getLatestPosts(Long companyId) {
-        List<Post> getLatest = postRepository.findAllByCompanyIdOrderByLatest(companyId);
-        List<ManagePostsResponseDto> latest = new ArrayList<>();
-        getLatest.iterator().forEachRemaining((Post p) -> latest.add(new ManagePostsResponseDto(p)));
+    public CommonApiResponse getLatestPosts(Long companyId, int strNum, int endNum) {
+        List<Page<ManagePostsResponseDto>> latest = new ArrayList<>();
 
-
+        for (int i = strNum - 1; i < endNum; i++) {
+            Page<ManagePostsResponseDto> getLatest = postRepository.findAllByCompanyIdOrderByLatest(companyId, PageRequest.of(i, 9))
+                    .map(ManagePostsResponseDto::new);
+            latest.add(getLatest);
+        }
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("최신 공고 정렬")
@@ -352,11 +354,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getDeadlinePosts(Long companyId) {
-        List<ManagePostsResponseDto> deadline = new ArrayList<>();
-        List<Post> postList = postRepository.findAllByCompanyIdOrderByDeadline(companyId);
-        postList.iterator().forEachRemaining((Post p) -> deadline.add(new ManagePostsResponseDto(p)));
+    public CommonApiResponse getDeadlinePosts(Long companyId, int strNum, int endNum) {
+        List<Page<ManagePostsResponseDto>> deadline = new ArrayList<>();
 
+        for (int i = strNum - 1; i < endNum; i++) {
+            Page<ManagePostsResponseDto> getDeadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId, PageRequest.of(i, 9))
+                    .map(ManagePostsResponseDto::new);
+            deadline.add(getDeadline);
+        }
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("마감 임박 공고 정렬")
@@ -365,11 +370,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getEndPosts(Long companyId) {
-        List<ManagePostsResponseDto> end = new ArrayList<>();
-        List<Post> postList = postRepository.findAllByCompanyIdOrderByEnd(companyId);
-        postList.iterator().forEachRemaining((Post p) -> new ManagePostsResponseDto(p));
-
+    public CommonApiResponse getEndPosts(Long companyId, int strNum, int endNum) {
+        List<Page<ManagePostsResponseDto>> end = new ArrayList<>();
+        for (int i = strNum - 1; i < endNum; i++) {
+            Page<ManagePostsResponseDto> getEnd = postRepository.findAllByCompanyIdOrderByEnd(companyId, PageRequest.of(i,9))
+                    .map(ManagePostsResponseDto::new);
+            end.add(getEnd);
+        }
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("마감 공고만 보기")
@@ -378,10 +385,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getOpenPosts(Long companyId) {
-        List<ManagePostsResponseDto> open = new ArrayList<>();
-        List<Post> postList = postRepository.findAllByCompanyIdOrderByOpen(companyId);
-        postList.iterator().forEachRemaining((Post p) -> open.add(new ManagePostsResponseDto(p)));
+    public CommonApiResponse getOpenPosts(Long companyId, int strNum, int endNum) {
+        List<Page<ManagePostsResponseDto>> open = new ArrayList<>();
+        for (int i = strNum - 1; i < endNum; i++) {
+            Page<ManagePostsResponseDto> getOpen = postRepository.findAllByCompanyIdOrderByOpen(companyId, PageRequest.of(i, 9))
+                    .map(ManagePostsResponseDto::new);
+            open.add(getOpen);
+        }
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("진행 중 공고만 보기")
@@ -408,7 +418,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .and(PostSpecifications.stackIdIn(conditionalSearchRequestDto.getStackIdSet()))
                     .and(PostSpecifications.orderByCreatedAtDesc());
             for (int i = strNum - 1; i < endNum; i++) {
-                Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(strNum - 1, 10))
+                Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(i, 9))
                         .map(ConditionalSearchPostResponseDto::new);
                 searchList.add(postPage);
             }
@@ -429,7 +439,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .and(PostSpecifications.orderByCreatedAtDesc());
 
         for (int i = strNum - 1; i < endNum; i++) {
-            Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(strNum - 1, 10))
+            Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(i, 9))
                     .map(ConditionalSearchPostResponseDto::new);
             searchList.add(postPage);
         }

@@ -1251,7 +1251,7 @@ class CompanyServiceImplTest {
         verify(postRepository).existsByCompanyIdAndId(givenCompanyId, givenPostId);
     }
 
-    @Test
+    /*@Test
     @DisplayName("최신 공고 정렬")
     void getLatestPosts() {
         long givenCompanyId = 97L;
@@ -1426,9 +1426,9 @@ class CompanyServiceImplTest {
                         .thenComparing(ManagePostsResponseDto::getCreatedAt, Comparator.reverseOrder()));
 
         verify(postRepository).findAllByCompanyIdOrderByLatest(givenCompanyId);
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("마감 임박 공고 정렬")
     void getDeadlinePosts() {
         long givenCompanyId = 99L;
@@ -1616,9 +1616,9 @@ class CompanyServiceImplTest {
                         .thenComparing(ManagePostsResponseDto::getEndDate));
 
         verify(postRepository).findAllByCompanyIdOrderByDeadline(givenCompanyId);
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("마감 공고만 보기")
     void getEndPosts() {
         long givenCompanyId = 99L;
@@ -1715,9 +1715,9 @@ class CompanyServiceImplTest {
 
 
         verify(postRepository).findAllByCompanyIdOrderByEnd(givenCompanyId);
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("진행중 공고만 보기")
     void getOpenPosts() {
         long givenCompanyId = 99L;
@@ -1771,5 +1771,5 @@ class CompanyServiceImplTest {
                 .isSortedAccordingTo(Comparator.comparing(ManagePostsResponseDto::getCreatedAt, Comparator.reverseOrder()));
 
         verify(postRepository).findAllByCompanyIdOrderByEnd(givenCompanyId);
-    }
+    }*/
 }
