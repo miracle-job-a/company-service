@@ -162,9 +162,8 @@ public class CompanyController {
     @ApiConditionalSearch
     @ApiDefault
     @PostMapping("/posts/search")
-    public CommonApiResponse conditionalSearch(@RequestParam int page, @Valid @RequestBody ConditionalSearchPostRequestDto conditionalSearchRequestDto, HttpServletResponse response) {
-        System.out.println(conditionalSearchRequestDto.toString());
-        CommonApiResponse commonApiResponse = companyService.conditionalSearch(page, conditionalSearchRequestDto);
+    public CommonApiResponse conditionalSearch(@RequestParam int strNum, @RequestParam int endNum, @Valid @RequestBody ConditionalSearchPostRequestDto conditionalSearchRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.conditionalSearch(strNum, endNum, conditionalSearchRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }

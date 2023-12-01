@@ -27,7 +27,6 @@ public class ConditionalSearchPostRequestDto {
             example = "3"
     )
     @PositiveOrZero(message = "400_21:경력값은 0이상의 양수입니다.")
-    @NotBlank(message = "400_21:경력 값이 없습니다.")
     private final Integer career;
 
     @Schema(
