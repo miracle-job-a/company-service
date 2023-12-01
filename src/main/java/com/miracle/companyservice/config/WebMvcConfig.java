@@ -2,16 +2,11 @@ package com.miracle.companyservice.config;
 
 import com.miracle.companyservice.util.interceptor.AuthorizationInterceptor;
 import com.miracle.companyservice.util.interceptor.GetMethodInterceptor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EnableWebMvc
 @Configuration
@@ -53,6 +48,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/open")
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}")
                 .excludePathPatterns(baseUrl + "/posts/search")
+                .excludePathPatterns(baseUrl + "/list")
 
 
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}")
