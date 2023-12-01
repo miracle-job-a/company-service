@@ -507,10 +507,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse modifyPostById(Long companyId, PostRequestDto postRequestDto) {
+    public CommonApiResponse modifyPostById(Long companyId, Long postId, PostRequestDto postRequestDto) {
 
         Post post = Post.builder()
-                .id(postRequestDto.getPostId())
+                .id(postId)
                 .companyId(companyId)
                 .postType(postRequestDto.getPostType())
                 .title(postRequestDto.getTitle())

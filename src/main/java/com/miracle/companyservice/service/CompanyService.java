@@ -181,7 +181,7 @@ public interface CompanyService {
      * @return the common api response
      * 공고 수정 메서드
      */
-    public CommonApiResponse modifyPostById(Long companyId, PostRequestDto postRequestDto);
+    public CommonApiResponse modifyPostById(Long companyId, Long postId, PostRequestDto postRequestDto);
 
     /**
      * @author wjdals3936
