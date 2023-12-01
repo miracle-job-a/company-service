@@ -3,6 +3,7 @@ package com.miracle.companyservice.controller;
 import com.miracle.companyservice.controller.swagger.*;
 import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
+import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -173,6 +174,15 @@ public class CompanyController {
     @GetMapping("/list")
     public CommonApiResponse getCompanyList(@RequestParam int strNum, @RequestParam int endNum, @RequestParam boolean today, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.getCompanyList(strNum, endNum, today);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiQuitCompany
+    @ApiInterceptor
+    @DeleteMapping("/{companyId}")
+    public CommonApiResponse quitCompany(@RequestParam Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.quitCompany(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
