@@ -9,6 +9,7 @@ import com.miracle.companyservice.entity.Question;
 import com.miracle.companyservice.repository.*;
 import com.miracle.companyservice.util.encryptor.Encryptors;
 import com.miracle.companyservice.util.specification.PostSpecifications;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -742,6 +743,104 @@ public class CompanyServiceImpl implements CompanyService {
                 .httpStatus(HttpStatus.OK.value())
                 .message("검색 키워드를 기반으로 한 데이터 조회 성공")
                 .data(data)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse modifyCompanyInfo(Long companyId, CompanyInfoRequestDto requestDto) {
+        String encryptedPwd = encryptors.SHA3Algorithm(requestDto.getPwd());
+
+        Optional<Company> company = companyRepository.findById(companyId);
+        if(company.isEmpty()){
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("해당 회사를 찾을 수 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        Company existingCompany = company.get();
+
+        existingCompany.setName(requestDto.getName());
+        existingCompany.setCeoName(requestDto.getCeoName());
+        existingCompany.setEmployeeNum(requestDto.getEmployeeNum());
+        existingCompany.setSector(requestDto.getSector());
+        existingCompany.setPhoto(requestDto.getPhoto());
+        existingCompany.setIntroduction(requestDto.getIntroduction());
+        existingCompany.setAddress(requestDto.getAddress());
+
+        if (encryptedPwd.equals(existingCompany.getPassword())) {
+            return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("현재 비밀번호와 동일하게 변경할 수 없습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+        } else{
+            existingCompany.setPassword(encryptedPwd);
+        }
+
+        Company modifiedCompanyInfo = companyRepository.save(existingCompany);
+        if(!requestDto.getName().equals(modifiedCompanyInfo.getName())){
+            return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("기업 회원 정보 수정에 실패하였습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+
+        }else if(!requestDto.getCeoName().equals(modifiedCompanyInfo.getCeoName())){
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("기업 회원 정보 수정에 실패하였습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+
+        }else if(requestDto.getEmployeeNum() != modifiedCompanyInfo.getEmployeeNum()){
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("기업 회원 정보 수정에 실패하였습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+
+        }else if(!requestDto.getSector().equals(modifiedCompanyInfo.getSector())){
+            return SuccessApiResponse.builder()
+                 .httpStatus(HttpStatus.BAD_REQUEST.value())
+                 .message("업종 수정에 실패하였습니다.")
+                 .data(Boolean.FALSE)
+                 .build();
+
+        }else if(!requestDto.getPhoto().equals(modifiedCompanyInfo.getPhoto())){
+            return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .message("사진 변경에 실패하였습니다.")
+                .data(Boolean.FALSE)
+                .build();
+
+        }else if(!requestDto.getIntroduction().equals(modifiedCompanyInfo.getIntroduction())){
+            return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .message("기업 소개 수정에 실패하였습니다.")
+                .data(Boolean.FALSE)
+                .build();
+
+        }else if(!requestDto.getAddress().equals(modifiedCompanyInfo.getAddress())){
+            return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .message("주소 변경에 실패하였습니다.")
+                .data(Boolean.FALSE)
+                .build();
+
+        }else if(!encryptedPwd.equals(modifiedCompanyInfo.getPassword())){
+            return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .message("비밀번호 변경에 실패하였습니다.")
+                .data(Boolean.FALSE)
+                .build();
+               }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("기업 회원 정보가 성공적으로 수정되었습니다.")
+                .data(Boolean.TRUE)
                 .build();
     }
 }

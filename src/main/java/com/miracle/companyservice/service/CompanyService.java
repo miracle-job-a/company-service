@@ -211,4 +211,13 @@ public interface CompanyService {
      * 검색 키워드에 대해 해당되는 공고/기업 데이터 반환 메서드
      */
     public CommonApiResponse findPostAndCompany(String keyword, int strNum, int endNum);
+
+    /**
+     * @author wjdals3936
+     * @param companyId
+     * @param requestDto
+     * @return the common api response
+     * 회원 기업 정보 수정 메서드
+     */
+    public CommonApiResponse modifyCompanyInfo(Long companyId, CompanyInfoRequestDto requestDto);
 }
