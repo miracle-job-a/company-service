@@ -1,14 +1,18 @@
 package com.miracle.companyservice.repository;
 
 import com.miracle.companyservice.dto.response.ManagePostsResponseDto;
+import com.miracle.companyservice.dto.response.PostListResponseDto;
 import com.miracle.companyservice.entity.Post;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -116,4 +120,22 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = false " +
             "ORDER BY p.createdAt DESC")
     List<ManagePostsResponseDto> findAllByCompanyIdOrderByOpen(Long companyId);
+
+    /**
+     * @author wjdals3936
+     * @param keyword
+     * @return Page<Post>
+     * 사용자가 키워드를 검색하면 해당 키워드가 포함된 공고 관련 데이터를 조회 후, 최신순으로 반환하는 메서드
+     */
+
+    @Query("SELECT p FROM Post p WHERE " +
+            "p.title LIKE :keyword OR " +
+            "p.mainTask LIKE :keyword OR " +
+            "p.workCondition LIKE :keyword OR " +
+            "p.qualification LIKE :keyword OR " +
+            "p.benefit LIKE :keyword OR " +
+            "p.specialSkill LIKE :keyword OR " +
+            "p.tool LIKE :keyword " +
+            "ORDER BY p.createdAt DESC")
+    Page<PostListResponseDto> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }
