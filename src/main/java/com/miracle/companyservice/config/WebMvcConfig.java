@@ -25,24 +25,24 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         String baseUrl = "/v1/company";
-        List<String> excludePath = new ArrayList<>();
-        excludePath.add("/swagger-ui/index");
-        excludePath.add(baseUrl + "/email");
-        excludePath.add(baseUrl + "/bno");
-        excludePath.add(baseUrl + "/signup");
-        excludePath.add(baseUrl + "/login");
-        excludePath.add(baseUrl + "/main");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/questions");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/faqs");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/info");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/latest");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/deadline");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/end");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/open");
-        excludePath.add(baseUrl + "/{companyId:\\d+}");
-        excludePath.add(baseUrl + "/posts/search?strNum={\\d+}&endNum={\\d+}");
+
         registry.addInterceptor(authorizationInterceptor)
-                .excludePathPatterns(excludePath)
-                .addPathPatterns(HttpMethod.GET.name(), baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/");
+                .excludePathPatterns("/swagger-ui/index")
+                .excludePathPatterns(baseUrl + "/email")
+                .excludePathPatterns(baseUrl + "/bno")
+                .excludePathPatterns(baseUrl + "/signup")
+                .excludePathPatterns(baseUrl + "/login")
+                .excludePathPatterns(baseUrl + "/main")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/questions")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/faqs")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/info")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/latest")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/deadline")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/end")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/open")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}")
+                .excludePathPatterns(baseUrl + "/posts/search?strNum={\\d+}&endNum={\\d+}")
+                .excludePathPatterns(HttpMethod.GET.name(), baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}")
+                ;
     }
 }
