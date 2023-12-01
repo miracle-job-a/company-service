@@ -124,7 +124,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     /**
      * @author wjdals3936
      * @param keyword
-     * @return Page<Post>
+     * @param pageable
+     * @return Page<PostListResponseDto>
      * 사용자가 키워드를 검색하면 해당 키워드가 포함된 공고 관련 데이터를 조회 후, 최신순으로 반환하는 메서드
      */
 
