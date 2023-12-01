@@ -9,9 +9,11 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -138,8 +140,27 @@ public class ExceptionController {
                 .build();
     }
 
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public CommonApiResponse httpMethodNotSupportedHandle(HttpRequestMethodNotSupportedException e, HttpRequest request) {
+        log.info("[HttpRequestMethodNotSupportedException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.METHOD_NOT_ALLOWED.value())
+                .code("405")
+                .message("지원하지 않는 httpMethod 형식입니다.")
+                .exception("HttpRequestMethodNotSupportedException")
+                .build();
+    }
 
-
+    @ExceptionHandler(value = NoHandlerFoundException.class)
+    public CommonApiResponse noHandlerFoundHandle(NoHandlerFoundException e, HttpRequest request) {
+        log.info("[NoHandlerFoundException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.NOT_FOUND.value())
+                .code("404")
+                .message("요청한 페이지를 찾을 수 없습니다.")
+                .exception("NoHandlerFoundException")
+                .build();
+    }
 
 
 
