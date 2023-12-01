@@ -205,7 +205,7 @@ public class CompanyController {
     }
 
     @ApiGetCompany
-    @ApiInterceptor
+    @ApiDefault
     @GetMapping("/{companyId}")
     public CommonApiResponse getCompany(@PathVariable Long companyId, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.findCompanyById(companyId);
