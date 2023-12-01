@@ -2,11 +2,15 @@ package com.miracle.companyservice.dto.response;
 
 import com.miracle.companyservice.entity.Post;
 import com.miracle.companyservice.entity.PostType;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Getter
+@ToString
 public class ConditionalSearchPostResponseDto {
 
     private final Long id;

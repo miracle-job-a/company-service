@@ -398,7 +398,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-    public CommonApiResponse conditionalSearch(int page, ConditionalSearchPostRequestDto conditionalSearchRequestDto) {
+    public CommonApiResponse conditionalSearch(int strNum, int endNum, ConditionalSearchPostRequestDto conditionalSearchRequestDto) {
+        List<Page<ConditionalSearchPostResponseDto>> searchList = new ArrayList<>();
         // 주소 값이 빈 경우 검색이 될 수 있도록 빈 값을(" ") 넣어줍니다.
         if (conditionalSearchRequestDto.getAddressSet().isEmpty()) {
             conditionalSearchRequestDto.getAddressSet().add(" ");
@@ -415,16 +416,15 @@ public class CompanyServiceImpl implements CompanyService {
                     .and(PostSpecifications.jobIdIn(conditionalSearchRequestDto.getJobIdSet()))
                     .and(PostSpecifications.stackIdIn(conditionalSearchRequestDto.getStackIdSet()))
                     .and(PostSpecifications.orderByCreatedAtDesc());
-
-            Page<Post> postPage = postRepository.findAll(finalSpec, PageRequest.of(page - 1, 10));
-            List<Post> content = postPage.getContent();
-            List<ConditionalSearchPostResponseDto> result = new ArrayList<>();
-            content.stream().iterator().forEachRemaining((Post p) -> result.add(new ConditionalSearchPostResponseDto(p)));
-
+            for (int i = strNum - 1; i < endNum; i++) {
+                Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(strNum - 1, 10))
+                        .map(ConditionalSearchPostResponseDto::new);
+                searchList.add(postPage);
+            }
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.OK.value())
-                    .message("공고 상세 검색 완료 - " + page + "페이지")
-                    .data(content)
+                    .message("공고 상세 검색 완료")
+                    .data(searchList)
                     .build();
         }
         // 마감된 공고 포함
@@ -437,16 +437,15 @@ public class CompanyServiceImpl implements CompanyService {
                 .and(PostSpecifications.stackIdIn(conditionalSearchRequestDto.getStackIdSet()))
                 .and(PostSpecifications.orderByCreatedAtDesc());
 
-        Page<Post> postPage = postRepository.findAll(finalSpec, PageRequest.of(page - 1, 10));
-        List<Post> content = postPage.getContent();
-
-        List<ConditionalSearchPostResponseDto> result = new ArrayList<>();
-        content.stream().iterator().forEachRemaining((Post p) -> result.add(new ConditionalSearchPostResponseDto(p)));
-
+        for (int i = strNum - 1; i < endNum; i++) {
+            Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(strNum - 1, 10))
+                    .map(ConditionalSearchPostResponseDto::new);
+            searchList.add(postPage);
+        }
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
-                .message("공고 상세 검색 완료 - " + page + "페이지")
-                .data(content)
+                .message("공고 상세 검색 완료")
+                .data(searchList)
                 .build();
     }
 
