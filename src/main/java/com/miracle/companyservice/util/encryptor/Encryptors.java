@@ -50,6 +50,8 @@ public class Encryptors {
         } catch (InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException |
                  BadPaddingException e) {
             throw new EncryptDataException("데이터 암호화 실패");
+        }catch (IllegalArgumentException | IllegalStateException e) {
+            throw new DecryptDataException("데이터 암호화 실패");
         }
     }
 
@@ -62,6 +64,8 @@ public class Encryptors {
             return new String(decrypted);
         } catch (IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | NoSuchAlgorithmException |
                  InvalidKeyException e) {
+            throw new DecryptDataException("데이터 복호화 실패");
+        } catch (IllegalArgumentException | IllegalStateException e) {
             throw new DecryptDataException("데이터 복호화 실패");
         }
     }
