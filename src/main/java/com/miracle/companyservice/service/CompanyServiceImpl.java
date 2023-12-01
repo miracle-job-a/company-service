@@ -23,10 +23,14 @@ import com.miracle.companyservice.repository.*;
 import com.miracle.companyservice.util.encryptor.PasswordEncryptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -503,7 +507,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse modifyPostById(Long companyId,PostRequestDto postRequestDto) {
+    public CommonApiResponse modifyPostById(Long companyId, PostRequestDto postRequestDto) {
 
         Post post = Post.builder()
                 .id(postRequestDto.getPostId())
@@ -633,5 +637,34 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(responseDto)
                 .build();
     }
-}
 
+    @Override
+    public CommonApiResponse findPostAndCompanyByKeyword(String keyword, int strNum, int endNum) {
+        String likeKeyword = "%" + keyword + "%";
+        int page = strNum;
+        List<Page<PostListResponseDto>> postList = new ArrayList<>();
+        List<Page<CompanyListResponseDto>> companyList = new ArrayList<>();
+
+
+        while (page < endNum) {
+            Page<PostListResponseDto> postPageResult = postRepository.findByKeyword(likeKeyword, PageRequest.of(page, 9));
+            postList.add(postPageResult);
+
+            Page<CompanyListResponseDto> companyPageResult = companyRepository.findByKeyword(likeKeyword, PageRequest.of(page, 9));
+            companyList.add(companyPageResult);
+
+            page++;
+        }
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("postList", postList);
+        data.put("companyList", companyList);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("검색 키워드를 기반으로 한 데이터 조회 성공")
+                .data(data)
+                .build();
+    }
+}

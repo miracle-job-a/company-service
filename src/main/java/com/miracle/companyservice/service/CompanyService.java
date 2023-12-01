@@ -5,6 +5,7 @@ import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.dto.request.PostRequestDto;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * The interface Company service.
@@ -180,7 +181,7 @@ public interface CompanyService {
      * @return the common api response
      * 공고 수정 메서드
      */
-    public CommonApiResponse modifyPostById(Long companyId,PostRequestDto postRequestDto);
+    public CommonApiResponse modifyPostById(Long companyId, PostRequestDto postRequestDto);
 
     /**
      * @author wjdals3936
@@ -197,4 +198,12 @@ public interface CompanyService {
      * 기업 상세페이지 정보 반환 메서드
      */
     public CommonApiResponse findCompanyById(Long companyId);
+
+    /**
+     * @author wjdals3936
+     * @param keyword the keyword
+     * @return the common api response
+     * 검색 키워드에 대해 해당되는 공고/기업 데이터 반환 메서드
+     */
+    public CommonApiResponse findPostAndCompanyByKeyword(String keyword, int startPageNum, int endPageNum);
 }
