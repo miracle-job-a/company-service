@@ -247,4 +247,12 @@ public interface CompanyService {
      * 회원 기업 정보 수정 메서드
      */
     public CommonApiResponse modifyCompanyInfo(Long companyId, CompanyInfoRequestDto requestDto);
+
+    /**
+     * @author wjdals3936
+     * @param companyLoginRequestDto
+     * @return Boolean
+     * 기업회원 정보 수정을 위한 이메일/비밀번호 확인 처리 메서드
+     */
+    CommonApiResponse userCheck(Long companyId, CompanyLoginRequestDto companyLoginRequestDto);
 }
