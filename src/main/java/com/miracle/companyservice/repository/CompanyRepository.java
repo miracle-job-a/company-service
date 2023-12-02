@@ -68,4 +68,12 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
             "c.name LIKE :keyword " +
             "ORDER BY c.createdAt DESC")
     Page<CompanyListResponseDto> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    /**
+     * @author wjdals3936
+     * @param companyId
+     * @return Optional<Company>
+     * 기업회원 정보 수정을 위한 계정 (이메일/비밀번호) 확인 메서드
+     */
+    Optional<Company> findEmailAndPasswordById(Long companyId);
 }
