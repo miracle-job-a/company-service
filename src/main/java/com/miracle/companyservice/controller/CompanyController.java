@@ -268,4 +268,13 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiUserCheck
+    @ApiDefault
+    @PostMapping("/{companyId}")
+    public CommonApiResponse userCheck(@PathVariable Long companyId, @Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.userCheck(companyId, companyLoginRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }

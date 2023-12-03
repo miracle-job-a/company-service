@@ -342,7 +342,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-    @Override
     public CommonApiResponse getLatestPosts(Long companyId, int strNum, int endNum) {
         List<Page<ManagePostsResponseDto>> latest = new ArrayList<>();
 
@@ -911,6 +910,28 @@ public class CompanyServiceImpl implements CompanyService {
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("기업 회원 정보가 성공적으로 수정되었습니다.")
+                .data(Boolean.TRUE)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse userCheck(Long companyId, CompanyLoginRequestDto companyLoginRequestDto) {
+        String email = encryptors.encryptAES(companyLoginRequestDto.getEmail(), encryptors.getSecretKey());
+        String pwd = encryptors.SHA3Algorithm(companyLoginRequestDto.getPassword());
+
+        Optional<Company> company = companyRepository.findEmailAndPasswordById(companyId);
+
+        if (company.isEmpty() || !email.equals(company.get().getEmail()) || !pwd.equals(company.get().getPassword())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("이메일 또는 비밀번호가 일치하지 않습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("계정 확인 성공")
                 .data(Boolean.TRUE)
                 .build();
     }
