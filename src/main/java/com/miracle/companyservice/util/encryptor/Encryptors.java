@@ -51,7 +51,7 @@ public class Encryptors {
                  BadPaddingException e) {
             throw new EncryptDataException("데이터 암호화 실패");
         }catch (IllegalArgumentException | IllegalStateException e) {
-            throw new DecryptDataException("데이터 암호화 실패");
+            throw new EncryptDataException("데이터 암호화 실패");
         }
     }
 
