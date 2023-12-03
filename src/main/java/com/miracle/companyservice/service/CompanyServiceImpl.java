@@ -505,6 +505,13 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
         Company company1 = company.get();
+        if (!bnoRepository.findStatusByBnoIsTrue(company1.getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("만료된 사업자 번호 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
         company1.setApproveStatus(true);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
