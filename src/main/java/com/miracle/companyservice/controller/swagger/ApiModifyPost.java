@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "성공",
-                                                value = "{\"httpStatus\": 200, \"message\": \"\"해당 공고 데이터 조회 성공\"\", \"data\": PostResponseDto }")
+                                                value = "{\"httpStatus\": 200, \"message\": \"공고가 성공적으로 수정되었습니다.\", \"data\": true }")
                                 },
                                 schema = @Schema(implementation = SuccessApiResponse.class)
                         )),
@@ -36,23 +36,10 @@ import java.lang.annotation.Target;
                                 examples = {
                                         @ExampleObject(
                                                 name = "실패 / 해당 공고에 대한 정보가 없음",
-                                                value = "{\"httpStatus\": 400, \"message\": \"해당 공고 정보가 없습니다.\", \"data\": false }"),
+                                                value = "{\"httpStatus\": 400, \"message\": \"공고 수정에 실패하였습니다.\", \"data\": false }"),
                                         @ExampleObject(
                                                 name = "실패 / 자소서 문항 없음",
-                                                value = "{\"httpStatus\": 400, \"message\": \"해당 공고에 대한 자기소개서 문항이 존재하지 않습니다.\", \"data\": false }")/*,
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 길이 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 길이가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-
-                                        @ExampleObject(
-                                                name = "유효성 / 비밀번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),*/
+                                                value = "{\"httpStatus\": 400, \"message\": \"자소서 문항 수정에 실패하였습니다.\", \"data\": false }")
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
