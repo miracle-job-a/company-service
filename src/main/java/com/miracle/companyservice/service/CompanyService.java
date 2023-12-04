@@ -218,11 +218,12 @@ public interface CompanyService {
 
     /**
      * @author wjdals3936
+     * @param companyId the company id
      * @param postId the post id
      * @return the common api response
      * 공고 삭제 메서드
      */
-    public CommonApiResponse deletePost(Long postId);
+    public CommonApiResponse deletePost(Long companyId, Long postId);
 
     /**
      * @author wjdals3936

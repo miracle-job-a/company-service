@@ -720,9 +720,24 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse deletePost(Long postId) {
+    public CommonApiResponse deletePost(Long companyId, Long postId) {
         Optional<Post> post = postRepository.findById(postId);
-        if (post.isPresent()) {
+
+        if (post.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("해당 공고 정보가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+
+        } else if (!companyId.equals(post.get().getCompanyId())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("companyId가 공고의 companyId 값과 다릅니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+
+        } else if (post.isPresent()) {
             post.get().setDeleted(true);
             postRepository.save(post.get());
             return SuccessApiResponse.builder()
@@ -730,6 +745,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .message("공고가 성공적으로 삭제되었습니다.")
                     .data(Boolean.TRUE)
                     .build();
+
         } else {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
