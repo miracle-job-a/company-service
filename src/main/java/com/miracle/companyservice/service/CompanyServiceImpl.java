@@ -413,7 +413,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .and(PostSpecifications.orderByCreatedAtDesc());
             for (int i = strNum - 1; i < endNum; i++) {
                 Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(i, 9))
-                        .map(ConditionalSearchPostResponseDto::new);
+                        .map((Post p)-> new ConditionalSearchPostResponseDto(p, companyRepository.findNameById(p.getCompanyId())));
                 searchList.add(postPage);
             }
             return SuccessApiResponse.builder()
@@ -434,7 +434,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         for (int i = strNum - 1; i < endNum; i++) {
             Page<ConditionalSearchPostResponseDto> postPage = postRepository.findAll(finalSpec, PageRequest.of(i, 9))
-                    .map(ConditionalSearchPostResponseDto::new);
+                    .map((Post p)-> new ConditionalSearchPostResponseDto(p, companyRepository.findNameById(p.getCompanyId())));
             searchList.add(postPage);
         }
         return SuccessApiResponse.builder()
