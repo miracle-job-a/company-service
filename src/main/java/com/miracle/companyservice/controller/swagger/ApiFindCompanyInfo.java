@@ -39,20 +39,7 @@ import java.lang.annotation.Target;
                                                 value = "{\"httpStatus\": 400, \"message\": \"해당 기업에 대한 정보가 없습니다.\", \"data\": false }"),
                                         @ExampleObject(
                                                 name = "실패 / 해당 기업의 자주 묻는 질문 정보가 없음",
-                                                value = "{\"httpStatus\": 400, \"message\": \"해당 기업의 자주 묻는 질문 정보가 없습니다.\", \"data\": false }")/*,
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 / 이메일 길이 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 길이가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-
-                                        @ExampleObject(
-                                                name = "유효성 / 비밀번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),*/
+                                                value = "{\"httpStatus\": 400, \"message\": \"해당 기업의 자주 묻는 질문 정보가 없습니다.\", \"data\": false }")
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
