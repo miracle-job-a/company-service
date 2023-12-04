@@ -22,8 +22,8 @@ public class ConditionalSearchPostResponseDto {
     private final String workAddress;
     private final Integer career;
     private final Set<Long> jobIdSet;
-
-    public ConditionalSearchPostResponseDto(Post post, String companyName) {
+    private final String photo;
+    public ConditionalSearchPostResponseDto(Post post, String companyName, String photo) {
         this.id = post.getId();
         this.name = companyName;
         this.title = post.getTitle();
@@ -33,6 +33,7 @@ public class ConditionalSearchPostResponseDto {
         this.workAddress = post.getWorkAddress();
         this.career = post.getCareer();
         this.jobIdSet = post.getJobIdSet();
+        this.photo = photo;
     }
 
     public ConditionalSearchPostResponseDto() {
@@ -45,6 +46,7 @@ public class ConditionalSearchPostResponseDto {
         this.workAddress = null;
         this.career = null;
         this.jobIdSet = null;
+        this.photo = null;
     }
 
     private String formatDate(LocalDateTime date) {
