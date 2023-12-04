@@ -236,8 +236,8 @@ public class CompanyController {
     @ApiDeletePost
     @ApiInterceptor
     @DeleteMapping("{companyId}/posts/{postId}")
-    public CommonApiResponse deletePost(@PathVariable Long postId, HttpServletResponse response){
-        CommonApiResponse commonApiResponse = companyService.deletePost(postId);
+    public CommonApiResponse deletePost(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.deletePost(companyId, postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
