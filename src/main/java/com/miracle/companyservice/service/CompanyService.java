@@ -115,34 +115,18 @@ public interface CompanyService {
 
     /**
      * @author kade
-     * @return List<ManagePostsResponseDto>
-     * 기업의 공고관리 페이지에 보이는 공고 리스트를 최신순 정렬합니다. (디폴트)
-     */
-    CommonApiResponse getLatestPosts(Long companyId, int strNum, int endNum);
-
-    /**
-     * @author kade
      * @param companyId
-     * @return List<ManagePostsResponseDto>
-     * 기업의 공고관리 페이지에 보이는 공고 리스트를 마감임박순으로 정렬합니다.
+     * @param strNum
+     * @param endNum
+     * @param sort
+     * @return List<Page<ManagePostsResponseDto>>
+     * sort = latest   : 기업의 공고관리 페이지에 보이는 공고 리스트를 최신순 정렬합니다. (디폴트)
+     * sort = deadline : 기업의 공고관리 페이지에 보이는 공고 리스트를 마감임박순으로 정렬합니다.
+     * sort = deadline : 기업의 공고관리 페이지에서 마감된 공고만 정렬하여 보여줍니다. (마감된 공고만 보기)
+     * sort = deadline : 기업의 공고관리 페이지에서 진행중 공고만 정렬하여 보여줍니다. (진행중 공고만 보기)
      */
-    CommonApiResponse getDeadlinePosts(Long companyId, int strNum, int endNum);
+    CommonApiResponse managePost(Long companyId, int strNum, int endNum, String sort);
 
-    /**
-     * @author kade
-     * @param companyId
-     * @return List<ManagePostsResponseDto>
-     * 기업의 공고관리 페이지에서 마감된 공고만 정렬하여 보여줍니다. (마감된 공고만 보기)
-     */
-    CommonApiResponse getEndPosts(Long companyId, int strNum, int endNum);
-
-    /**
-     * @author kade
-     * @param companyId
-     * @return List<ManagePostsResponseDto>
-     * 기업의 공고관리 페이지에서 진행중 공고만 정렬하여 보여줍니다. (진행중 공고만 보기)
-     */
-    CommonApiResponse getOpenPosts(Long companyId, int strNum, int endNum);
 
     /**
      * @author kade
@@ -249,4 +233,12 @@ public interface CompanyService {
      * 회원 기업 정보 수정 메서드
      */
     public CommonApiResponse modifyCompanyInfo(Long companyId, CompanyInfoRequestDto requestDto);
+
+    /**
+     * @author wjdals3936
+     * @param companyLoginRequestDto
+     * @return Boolean
+     * 기업회원 정보 수정을 위한 이메일/비밀번호 확인 처리 메서드
+     */
+    CommonApiResponse userCheck(Long companyId, CompanyLoginRequestDto companyLoginRequestDto);
 }

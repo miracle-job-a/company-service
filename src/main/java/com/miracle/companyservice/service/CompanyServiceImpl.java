@@ -9,7 +9,6 @@ import com.miracle.companyservice.entity.Question;
 import com.miracle.companyservice.repository.*;
 import com.miracle.companyservice.util.encryptor.Encryptors;
 import com.miracle.companyservice.util.specification.PostSpecifications;
-import jdk.swing.interop.SwingInterOpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -342,65 +341,55 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-    @Override
-    public CommonApiResponse getLatestPosts(Long companyId, int strNum, int endNum) {
-        List<Page<ManagePostsResponseDto>> latest = new ArrayList<>();
+    public CommonApiResponse managePost(Long companyId, int strNum, int endNum, String sort) {
+        List<Page<ManagePostsResponseDto>> result = new ArrayList<>();
+        if (sort.equals("deadline")) {
+            for (int i = strNum - 1; i < endNum; i++) {
+                Page<ManagePostsResponseDto> getDeadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId, PageRequest.of(i, 9))
+                        .map(ManagePostsResponseDto::new);
+                result.add(getDeadline);
+            }
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("마감 임박 공고 정렬")
+                    .data(result)
+                    .build();
+        }
 
+        if (sort.equals("close")) {
+            for (int i = strNum - 1; i < endNum; i++) {
+                Page<ManagePostsResponseDto> getClose = postRepository.findAllByCompanyIdOrderByClose(companyId, PageRequest.of(i, 9))
+                        .map(ManagePostsResponseDto::new);
+                result.add(getClose);
+            }
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("마감 공고만 보기")
+                    .data(result)
+                    .build();
+        }
+        if (sort.equals("open")) {
+            for (int i = strNum - 1; i < endNum; i++) {
+                Page<ManagePostsResponseDto> getOpen = postRepository.findAllByCompanyIdOrderByClose(companyId, PageRequest.of(i, 9))
+                        .map(ManagePostsResponseDto::new);
+                result.add(getOpen);
+            }
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("진행 중 공고만 보기")
+                    .data(result)
+                    .build();
+        }
+        // sort = lastest 디폴트 최신순 정렬
         for (int i = strNum - 1; i < endNum; i++) {
-            Page<ManagePostsResponseDto> getLatest = postRepository.findAllByCompanyIdOrderByLatest(companyId, PageRequest.of(i, 9))
+            Page<ManagePostsResponseDto> getLatest = postRepository.findAllByCompanyIdOrderByDeadline(companyId, PageRequest.of(i, 9))
                     .map(ManagePostsResponseDto::new);
-            latest.add(getLatest);
+            result.add(getLatest);
         }
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("최신 공고 정렬")
-                .data(latest)
-                .build();
-    }
-
-    @Override
-    public CommonApiResponse getDeadlinePosts(Long companyId, int strNum, int endNum) {
-        List<Page<ManagePostsResponseDto>> deadline = new ArrayList<>();
-
-        for (int i = strNum - 1; i < endNum; i++) {
-            Page<ManagePostsResponseDto> getDeadline = postRepository.findAllByCompanyIdOrderByDeadline(companyId, PageRequest.of(i, 9))
-                    .map(ManagePostsResponseDto::new);
-            deadline.add(getDeadline);
-        }
-        return SuccessApiResponse.builder()
-                .httpStatus(HttpStatus.OK.value())
-                .message("마감 임박 공고 정렬")
-                .data(deadline)
-                .build();
-    }
-
-    @Override
-    public CommonApiResponse getEndPosts(Long companyId, int strNum, int endNum) {
-        List<Page<ManagePostsResponseDto>> end = new ArrayList<>();
-        for (int i = strNum - 1; i < endNum; i++) {
-            Page<ManagePostsResponseDto> getEnd = postRepository.findAllByCompanyIdOrderByEnd(companyId, PageRequest.of(i,9))
-                    .map(ManagePostsResponseDto::new);
-            end.add(getEnd);
-        }
-        return SuccessApiResponse.builder()
-                .httpStatus(HttpStatus.OK.value())
-                .message("마감 공고만 보기")
-                .data(end)
-                .build();
-    }
-
-    @Override
-    public CommonApiResponse getOpenPosts(Long companyId, int strNum, int endNum) {
-        List<Page<ManagePostsResponseDto>> open = new ArrayList<>();
-        for (int i = strNum - 1; i < endNum; i++) {
-            Page<ManagePostsResponseDto> getOpen = postRepository.findAllByCompanyIdOrderByOpen(companyId, PageRequest.of(i, 9))
-                    .map(ManagePostsResponseDto::new);
-            open.add(getOpen);
-        }
-        return SuccessApiResponse.builder()
-                .httpStatus(HttpStatus.OK.value())
-                .message("진행 중 공고만 보기")
-                .data(open)
+                .data(result)
                 .build();
     }
 
@@ -505,6 +494,13 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
         Company company1 = company.get();
+        if (!bnoRepository.findStatusByBnoIsTrue(company1.getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("만료된 사업자 번호 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
         company1.setApproveStatus(true);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
@@ -933,6 +929,28 @@ public class CompanyServiceImpl implements CompanyService {
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("기업 회원 정보가 성공적으로 수정되었습니다.")
+                .data(Boolean.TRUE)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse userCheck(Long companyId, CompanyLoginRequestDto companyLoginRequestDto) {
+        String email = encryptors.encryptAES(companyLoginRequestDto.getEmail(), encryptors.getSecretKey());
+        String pwd = encryptors.SHA3Algorithm(companyLoginRequestDto.getPassword());
+
+        Optional<Company> company = companyRepository.findEmailAndPasswordById(companyId);
+
+        if (company.isEmpty() || !email.equals(company.get().getEmail()) || !pwd.equals(company.get().getPassword())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("이메일 또는 비밀번호가 일치하지 않습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("계정 확인 성공")
                 .data(Boolean.TRUE)
                 .build();
     }

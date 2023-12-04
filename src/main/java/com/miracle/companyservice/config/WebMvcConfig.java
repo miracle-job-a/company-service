@@ -25,14 +25,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         String baseUrl = "/v1/company";
 
-
         registry.addInterceptor(getMethodInterceptor).order(1)
                 .addPathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}")
-                .excludePathPatterns("/errors/token")
         ;
 
         registry.addInterceptor(authorizationInterceptor).order(2)
-                .excludePathPatterns("/swagger-ui/index")
+                .excludePathPatterns("/swagger-ui/**")
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/v3/api-docs")
+                .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/errors/token")
                 .excludePathPatterns(baseUrl + "/email")
                 .excludePathPatterns(baseUrl + "/bno")
@@ -42,16 +43,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/questions")
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/faqs")
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/info")
-                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/latest")
-                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/deadline")
-                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/end")
-                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/open")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts")
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}")
                 .excludePathPatterns(baseUrl + "/posts/search")
                 .excludePathPatterns(baseUrl + "/list")
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/approval")
-
-
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}")
         ;
     }
