@@ -76,11 +76,13 @@ public class CompanyInfoRequestDto {
     private final String address;
 
     @Schema(
-            description = "새로운 비밀번호. 반드시 값을 전송해야함",
+            description = "기업회원 새로운 비밀번호. 최소 6글자이며 특수문자가 최소 1개 포함되어야함",
             required = true,
-            example = "akdrhaodrh555!"
+            example = "austin123!"
     )
     @NotBlank(message = "400_4:비밀번호 값이 없습니다.")
+    @Pattern(regexp = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{6,}$", message = "400_4:비밀번호 형식이 맞지 않습니다.")
+    @Size(min = 6, message = "400_4:비밀번호가 너무 짧습니다.")
     private final String pwd;
 
     public CompanyInfoRequestDto(String name, String ceoName, int employeeNum, String sector, String photo, String introduction, String address, String pwd) {

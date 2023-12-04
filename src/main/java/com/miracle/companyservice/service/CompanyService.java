@@ -185,11 +185,12 @@ public interface CompanyService {
 
     /**
      * @author wjdals3936
+     * @param companyId the company id
      * @param postId the post id
      * @return the common api response
      * 공고 상세보기 및 공고 수정 페이지에 해당 공고 데이터 반환 메서드
      */
-    public CommonApiResponse findPost(Long postId);
+    public CommonApiResponse findPost(Long companyId, Long postId);
 
     /**
      * @author wjdals3936
@@ -201,11 +202,12 @@ public interface CompanyService {
 
     /**
      * @author wjdals3936
+     * @param companyId the company id
      * @param postId the post id
      * @return the common api response
      * 공고 삭제 메서드
      */
-    public CommonApiResponse deletePost(Long postId);
+    public CommonApiResponse deletePost(Long companyId, Long postId);
 
     /**
      * @author wjdals3936
