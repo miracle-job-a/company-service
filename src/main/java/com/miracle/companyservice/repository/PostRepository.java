@@ -76,7 +76,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고관리를 들어갔을 때, 최신순으로 정렬하여 반환하는 메서드 (디폴트)
      */
-    @Query("SELECT DISTINCT p " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.createdAt DESC")
@@ -88,7 +88,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return List<CompanyManagePostsResponseDto>
      * 기업이 공고 관리를 들어갔을 때, 마감임박 순으로 정렬하는 메서드
      */
-    @Query("SELECT DISTINCT p " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false " +
             "ORDER BY p.closed ASC, p.endDate ASC")
@@ -105,7 +105,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
             "FROM Post p " +
             "WHERE p.companyId = :companyId AND p.deleted = false AND p.closed = true " +
             "ORDER BY p.createdAt DESC")
-    Page<Post> findAllByCompanyIdOrderByEnd(Long companyId, Pageable pageable);
+    Page<Post> findAllByCompanyIdOrderByClose(Long companyId, Pageable pageable);
 
     /**
      * @author kade
@@ -127,7 +127,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return Page<PostListResponseDto>
      * 사용자가 키워드를 검색하면 해당 키워드가 포함된 공고 관련 데이터를 조회 후, 최신순으로 반환하는 메서드
      */
-
     @Query("SELECT p FROM Post p WHERE " +
             "p.title LIKE :keyword OR " +
             "p.mainTask LIKE :keyword OR " +
