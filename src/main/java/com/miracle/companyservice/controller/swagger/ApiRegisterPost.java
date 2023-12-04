@@ -41,12 +41,6 @@ import java.lang.annotation.Target;
                                                 name = "실패 / 자소서 문항 등록 실패",
                                                 value = "{\"httpStatus\": 400, \"message\": \"자기소개서 문항 등록에 실패하였습니다.\", \"data\": false }"),
                                         @ExampleObject(
-                                                name = "유효성 / 공고아이디 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\": \"공고아이디 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
-                                                name = "유효성 / 공고아이디 값 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\": \"아이디 값은 양수여야 합니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
                                                 name = "유효성 / 기업아이디 값 없음",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\": \"기업아이디 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
