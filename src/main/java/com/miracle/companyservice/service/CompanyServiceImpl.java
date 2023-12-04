@@ -876,28 +876,28 @@ public class CompanyServiceImpl implements CompanyService {
         if(!requestDto.getName().equals(modifiedCompanyInfo.getName())){
             return SuccessApiResponse.builder()
                         .httpStatus(HttpStatus.BAD_REQUEST.value())
-                        .message("기업 회원 정보 수정에 실패하였습니다.")
+                        .message("기업명 변경에 실패하였습니다.")
                         .data(Boolean.FALSE)
                         .build();
 
         }else if(!requestDto.getCeoName().equals(modifiedCompanyInfo.getCeoName())){
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("기업 회원 정보 수정에 실패하였습니다.")
+                    .message("대표자명 변경에 실패하였습니다.")
                     .data(Boolean.FALSE)
                     .build();
 
         }else if(requestDto.getEmployeeNum() != modifiedCompanyInfo.getEmployeeNum()){
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("기업 회원 정보 수정에 실패하였습니다.")
+                    .message("재직 인원수 변경에 실패하였습니다.")
                     .data(Boolean.FALSE)
                     .build();
 
         }else if(!requestDto.getSector().equals(modifiedCompanyInfo.getSector())){
             return SuccessApiResponse.builder()
                  .httpStatus(HttpStatus.BAD_REQUEST.value())
-                 .message("업종 수정에 실패하였습니다.")
+                 .message("업종 변경에 실패하였습니다.")
                  .data(Boolean.FALSE)
                  .build();
 
