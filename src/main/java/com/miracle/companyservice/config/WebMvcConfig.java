@@ -49,6 +49,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(baseUrl + "/list")
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/approval")
                 .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}")
+                .excludePathPatterns(baseUrl)
         ;
     }
 }
