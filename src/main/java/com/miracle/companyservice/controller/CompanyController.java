@@ -125,17 +125,6 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
-   /* @ApiGetLatestPosts
-
-
-    @ApiGetDeadlinePosts
-
-    @ApiGetEndPosts
-
-    @ApiGetOpenPosts
-
-    */
-
 
     @ApiManagePost
     @ApiDefault
@@ -146,12 +135,6 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
-
-
-
-
-
-
 
     @ApiConditionalSearch
     @ApiDefault
