@@ -137,6 +137,7 @@ public class CompanyController {
     */
 
 
+    @ApiManagePost
     @ApiDefault
     @GetMapping("/{companyId}/posts")
     public CommonApiResponse managePosts(@PathVariable Long companyId, @RequestParam int strNum, @RequestParam int endNum,
