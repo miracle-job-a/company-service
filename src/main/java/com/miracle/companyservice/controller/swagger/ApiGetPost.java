@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "등록된 해당 공고 데이터 반환", description = "공고 상세보기 및 수정 페이지에서 CompanyInfo와 FAQ를 제외한 보여주어야 하는 데이터 반환 API",
+@Operation(summary = "등록된 해당 공고 데이터 반환", description = "공고 상세보기 및 수정 페이지에서 CompanyInfo와 FAQ를 제외하고 노출되야 하는 데이터 반환 API",
         responses = {
                 @ApiResponse(responseCode = "200",
                         description = "정상 요청",
