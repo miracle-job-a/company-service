@@ -227,7 +227,7 @@ public class CompanyController {
     @ApiModifyPost
     @ApiInterceptor
     @PutMapping("{companyId}/posts/{postId}")
-    public CommonApiResponse modifyPost(@PathVariable Long companyId, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+    public CommonApiResponse modifyPost(@PathVariable Long companyId, @PathVariable Long postId, @Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
         CommonApiResponse commonApiResponse = companyService.modifyPost(companyId, postId, postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
