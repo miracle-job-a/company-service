@@ -218,8 +218,8 @@ public class CompanyController {
     @ApiGetPost
     @ApiDefault
     @GetMapping("{companyId}/posts/{postId}")
-    public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response){
-        CommonApiResponse commonApiResponse = companyService.findPost(postId);
+    public CommonApiResponse getPost(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findPost(companyId, postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
