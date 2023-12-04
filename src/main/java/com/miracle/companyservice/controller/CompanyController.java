@@ -209,7 +209,7 @@ public class CompanyController {
     @ApiRegisterPost
     @ApiInterceptor
     @PostMapping("{companyId}/post")
-    public CommonApiResponse registerPost(@PathVariable Long companyId, @RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
+    public CommonApiResponse registerPost(@PathVariable Long companyId, @Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.savePost(companyId, postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
