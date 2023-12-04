@@ -51,10 +51,28 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     String findPhotoById(Long companyId);
 
 
+    /**
+     * @author kade
+     * @param date
+     * @param pageable
+     * @return
+     * 기업 목록 반환
+     */
     @Query("SELECT c " +
             "FROM Company c " +
             "WHERE c.createdAt >= :date")
     Page<Company> findAllByCreatedAt(LocalDateTime date, Pageable pageable);
+
+
+    /**
+     * @author kade
+     * @param companyId
+     * @return String
+     * companyId에 매칭되는 기업명 반환
+     */
+    @Query("SELECT c.name FROM Company c " +
+            "WHERE c.id = :companyId ")
+    String findNameById(Long companyId);
 
 
     /**
@@ -76,4 +94,5 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
      * 기업회원 정보 수정을 위한 계정 (이메일/비밀번호) 확인 메서드
      */
     Optional<Company> findEmailAndPasswordById(Long companyId);
+
 }
