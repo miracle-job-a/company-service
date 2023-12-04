@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @ToString
@@ -19,7 +20,7 @@ public class CompanyListForAdminResponseDto {
     private final String bno;
     private final Boolean status;
     private final Boolean approveStatus;
-    private final LocalDateTime createdAt;
+    private final String createdAt;
 
     public CompanyListForAdminResponseDto() {
         this.id = null;
@@ -40,6 +41,11 @@ public class CompanyListForAdminResponseDto {
         this.bno = company.getBno();
         this.status = status;
         this.approveStatus = company.isApproveStatus();
-        this.createdAt = company.getCreatedAt();
+        this.createdAt = formatLocalDateTime(company.getCreatedAt());
+    }
+
+    private String formatLocalDateTime(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        return localDateTime.format(formatter);
     }
 }

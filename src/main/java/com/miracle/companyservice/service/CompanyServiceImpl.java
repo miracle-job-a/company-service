@@ -793,7 +793,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse findPostAndCompany(String keyword, int strNum, int endNum) {
         String likeKeyword = "%" + keyword + "%";
-        int page = strNum;
+        int page = strNum - 1;
         List<Page<PostListResponseDto>> postList = new ArrayList<>();
         List<Page<CompanyListResponseDto>> companyList = new ArrayList<>();
 
