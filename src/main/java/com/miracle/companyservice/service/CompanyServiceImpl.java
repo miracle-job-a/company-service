@@ -607,12 +607,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse findPost(Long postId) {
+    public CommonApiResponse findPost(Long companyId, Long postId) {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
                     .message("해당 공고 정보가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        } else if (!companyId.equals(post.get().getCompanyId())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("해당 기업에 대한 공고가 아닙니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
