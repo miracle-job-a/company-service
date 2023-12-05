@@ -25,7 +25,7 @@ public class PostRequestDto {
     )
     @NotBlank(message = "400_19:공고 타입 값이 없습니다.")
     @Pattern(regexp = "NORMAL|MZ", message = "400_19:공고 타입은 NORMAL 또는 MZ 중 하나여야 합니다.")
-    private final PostType postType;
+    private final String postType;
 
     @Schema(
             description = "공고 제목 오류. 반드시 제목이 입력되어야 함",
@@ -48,7 +48,6 @@ public class PostRequestDto {
             required = true,
             example = "2023-12-21T00:00:00"
     )
-    @NotBlank(message = "400_16:마감일 값이 없습니다.")
     @Future(message = "400_16:현재 날짜보다 미래의 날짜를 설정해야 합니다.")
     private final LocalDateTime endDate;
 
@@ -117,7 +116,7 @@ public class PostRequestDto {
     private final LocalDateTime testEndDate;
 
     @Builder
-    public PostRequestDto(PostType postType, String title, int career, LocalDateTime endDate, String mainTask, String workCondition, String qualification, String tool, String benefit, String process, String notice, String specialSkill, String workAddress, List<QuestionRequestDto> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet, LocalDateTime testStartDate, LocalDateTime testEndDate) {
+    public PostRequestDto(String postType, String title, int career, LocalDateTime endDate, String mainTask, String workCondition, String qualification, String tool, String benefit, String process, String notice, String specialSkill, String workAddress, List<QuestionRequestDto> questionList, Set<Long> jobIdSet, Set<Long> stackIdSet, LocalDateTime testStartDate, LocalDateTime testEndDate) {
         this.postType = postType;
         this.title = title;
         this.career = career;

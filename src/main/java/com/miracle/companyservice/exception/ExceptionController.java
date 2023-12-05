@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @RestControllerAdvice
 public class ExceptionController {
@@ -85,7 +87,7 @@ public class ExceptionController {
      * 500 서버에러
      */
     @ExceptionHandler(value = RuntimeException.class)
-    public CommonApiResponse runtimeHandle(RuntimeException e, HttpRequest request) {
+    public CommonApiResponse runtimeHandle(RuntimeException e, HttpServletRequest request) {
         log.info("[runtimeHandle] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -96,7 +98,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = DecodeSecretKeyException.class)
-    public CommonApiResponse decodePrivateKeyHandle(DecodeSecretKeyException e, HttpRequest request) {
+    public CommonApiResponse decodePrivateKeyHandle(DecodeSecretKeyException e, HttpServletRequest request) {
         log.info("[DecodeSecretKeyException] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -107,7 +109,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = DecryptDataException.class)
-    public CommonApiResponse decrypteDataHandle(DecryptDataException e, HttpRequest request) {
+    public CommonApiResponse decrypteDataHandle(DecryptDataException e, HttpServletRequest request) {
         log.info("[DecryptDataException] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -118,7 +120,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = EncryptDataException.class)
-    public CommonApiResponse decrypteDataHandle(EncryptDataException e, HttpRequest request) {
+    public CommonApiResponse decrypteDataHandle(EncryptDataException e, HttpServletRequest request) {
         log.info("[EncryptDataException] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -130,7 +132,7 @@ public class ExceptionController {
 
     //당장 사용하지 않지만 미리 구현
     @ExceptionHandler(value = GenerateSecretKeyException.class)
-    public CommonApiResponse generateSecretKeyHandle(GenerateSecretKeyException e, HttpRequest request) {
+    public CommonApiResponse generateSecretKeyHandle(GenerateSecretKeyException e, HttpServletRequest request) {
         log.info("[GenerateSecretKeyException] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -141,7 +143,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public CommonApiResponse httpMethodNotSupportedHandle(HttpRequestMethodNotSupportedException e, HttpRequest request) {
+    public CommonApiResponse httpMethodNotSupportedHandle(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
         log.info("[HttpRequestMethodNotSupportedException] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.METHOD_NOT_ALLOWED.value())
@@ -152,7 +154,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = NoHandlerFoundException.class)
-    public CommonApiResponse noHandlerFoundHandle(NoHandlerFoundException e, HttpRequest request) {
+    public CommonApiResponse noHandlerFoundHandle(NoHandlerFoundException e, HttpServletRequest request) {
         log.info("[NoHandlerFoundException] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.NOT_FOUND.value())
@@ -168,7 +170,7 @@ public class ExceptionController {
      * 400 클라이언트 에러
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpRequest request) {
+    public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpServletRequest request) {
         log.info("[illegalArgumentExceptionHandle] : " + e.getMessage());
 
         return ErrorApiResponse.builder()
