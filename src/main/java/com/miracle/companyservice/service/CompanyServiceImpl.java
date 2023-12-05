@@ -2,10 +2,7 @@ package com.miracle.companyservice.service;
 
 import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.*;
-import com.miracle.companyservice.entity.Company;
-import com.miracle.companyservice.entity.CompanyFaq;
-import com.miracle.companyservice.entity.Post;
-import com.miracle.companyservice.entity.Question;
+import com.miracle.companyservice.entity.*;
 import com.miracle.companyservice.repository.*;
 import com.miracle.companyservice.util.encryptor.Encryptors;
 import com.miracle.companyservice.util.specification.PostSpecifications;
@@ -551,7 +548,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         Post post = Post.builder()
                 .companyId(companyId)
-                .postType(postRequestDto.getPostType())
+                .postType(PostType.valueOf(postRequestDto.getPostType()))
                 .title(postRequestDto.getTitle())
                 .endDate(postRequestDto.getEndDate())
                 .tool(postRequestDto.getTool())
@@ -648,7 +645,7 @@ public class CompanyServiceImpl implements CompanyService {
         Post post = Post.builder()
                 .id(postId)
                 .companyId(companyId)
-                .postType(postRequestDto.getPostType())
+                .postType(PostType.valueOf(postRequestDto.getPostType()))
                 .title(postRequestDto.getTitle())
                 .endDate(postRequestDto.getEndDate())
                 .tool(postRequestDto.getTool())
