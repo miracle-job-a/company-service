@@ -14,6 +14,7 @@ import java.util.Set;
 public class ConditionalSearchPostResponseDto {
 
     private final Long id;
+    private final Long companyId;
     private final String name;
     private final String title;
     private final PostType postType;
@@ -25,6 +26,7 @@ public class ConditionalSearchPostResponseDto {
     private final String photo;
     public ConditionalSearchPostResponseDto(Post post, String companyName, String photo) {
         this.id = post.getId();
+        this.companyId = post.getCompanyId();
         this.name = companyName;
         this.title = post.getTitle();
         this.postType = post.getPostType();
@@ -38,6 +40,7 @@ public class ConditionalSearchPostResponseDto {
 
     public ConditionalSearchPostResponseDto() {
         this.id = null;
+        this.companyId = null;
         this.name = null;
         this.title = null;
         this.postType = null;
