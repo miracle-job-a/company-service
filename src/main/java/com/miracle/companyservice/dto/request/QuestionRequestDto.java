@@ -17,7 +17,6 @@ public class QuestionRequestDto {
             required = true,
             example = "4L"
     )
-    @NotBlank(message = "400_11:Question 아이디 값이 없습니다.")
     @Positive(message = "400_11:아이디 값은 양수여야 합니다.")
     private final Long id;
     @Schema(
