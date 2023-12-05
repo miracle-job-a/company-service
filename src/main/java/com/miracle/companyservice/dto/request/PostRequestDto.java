@@ -41,7 +41,6 @@ public class PostRequestDto {
             example = "3"
     )
     @PositiveOrZero(message = "400_21:경력 값은 0을 포함한 양수를 허용합니다.")
-    @NotBlank(message = "400_21:경력 값이 없습니다.")
     private final int career;
 
     @Schema(
