@@ -367,7 +367,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         if (sort.equals("open")) {
             for (int i = strNum - 1; i < endNum; i++) {
-                Page<ManagePostsResponseDto> getOpen = postRepository.findAllByCompanyIdOrderByClose(companyId, PageRequest.of(i, 9))
+                Page<ManagePostsResponseDto> getOpen = postRepository.findAllByCompanyIdOrderByOpen(companyId, PageRequest.of(i, 9))
                         .map(ManagePostsResponseDto::new);
                 result.add(getOpen);
             }
@@ -379,7 +379,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         // sort = lastest 디폴트 최신순 정렬
         for (int i = strNum - 1; i < endNum; i++) {
-            Page<ManagePostsResponseDto> getLatest = postRepository.findAllByCompanyIdOrderByDeadline(companyId, PageRequest.of(i, 9))
+            Page<ManagePostsResponseDto> getLatest = postRepository.findAllByCompanyIdOrderByLatest(companyId, PageRequest.of(i, 9))
                     .map(ManagePostsResponseDto::new);
             result.add(getLatest);
         }
