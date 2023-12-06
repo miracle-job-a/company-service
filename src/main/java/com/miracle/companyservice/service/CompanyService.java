@@ -237,8 +237,16 @@ public interface CompanyService {
     /**
      * @author wjdals3936
      * @param companyLoginRequestDto
-     * @return Boolean
+     * @return the common api response
      * 기업회원 정보 수정을 위한 이메일/비밀번호 확인 처리 메서드
      */
     CommonApiResponse userCheck(Long companyId, CompanyLoginRequestDto companyLoginRequestDto);
+
+    /**
+     * @author wjdals3936
+     * @param postId
+     * @return the common api response
+     * 기업 정보 (id/name) 반환 메서드
+     */
+    CommonApiResponse getCompanyName(Long postId);
 }

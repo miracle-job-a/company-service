@@ -951,4 +951,35 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(Boolean.TRUE)
                 .build();
     }
+
+    @Override
+    public CommonApiResponse getCompanyName(Long postId) {
+        Optional<Post> post = postRepository.findCompanyIdById(postId);
+        if (post == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("공고 아이디에 해당 공고가 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        String companyName = companyRepository.findNameById(post.get().getCompanyId());
+        if (companyName == null) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("기업 아이디에 해당하는 기업이 없습니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("companyId", post.get().getCompanyId());
+        data.put("companyName", companyName);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("기업명 조회 성공")
+                .data(data)
+                .build();
+    }
 }

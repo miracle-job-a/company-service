@@ -252,4 +252,13 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiGetCompanyName
+    @ApiDefault
+    @GetMapping("/post/{postId}")
+    public CommonApiResponse getCompanyName(@PathVariable Long postId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCompanyName(postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }
