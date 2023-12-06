@@ -4,11 +4,4 @@ spring:
   profiles:
     active: dev
   config:
-    import: optional:configserver:http://miracle:1234@localhost:60010
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://miracle:1234@localhost:8761/eureka
-    register-with-eureka: true
-    fetch-registry: true
+    import: optional:configserver:http://miracle:1234@3.36.100.180:60010
