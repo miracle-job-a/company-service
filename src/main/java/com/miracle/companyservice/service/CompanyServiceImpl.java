@@ -958,7 +958,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (post == null) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("해당 공고에 대한 기업 정보가 없습니다.")
+                    .message("공고 아이디에 해당 공고가 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -967,7 +967,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (companyName == null) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("기업명을 조회할 수 없습니다.")
+                    .message("기업 아이디에 해당하는 기업이 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
