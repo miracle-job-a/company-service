@@ -955,28 +955,41 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getCompanyName(Long postId) {
-        Optional<Post> post = postRepository.findCompanyIdById(postId);
-        if (post == null) {
+    public CommonApiResponse getCompanyName(Set<Long> postIdSet) {
+        if (postIdSet.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("공고 아이디에 해당 공고가 없습니다.")
+                    .message("공고 id Set에 값이 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
 
-        String companyName = companyRepository.findNameById(post.get().getCompanyId());
-        if (companyName == null) {
-            return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("기업 아이디에 해당하는 기업이 없습니다.")
-                    .data(Boolean.FALSE)
-                    .build();
-        }
+        List<CompanyNameResponseDto> data = new ArrayList<>();
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("companyId", post.get().getCompanyId());
-        data.put("companyName", companyName);
+        for (Long postId : postIdSet) {
+            Optional<Post> post = postRepository.findPostById(postId);
+            if (post.isEmpty()){
+                return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("공고 정보가 없습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+            }
+            Long companyId = post.get().getCompanyId();
+
+            Optional<Company> company = companyRepository.findCompanyById(companyId);
+            if (company.isEmpty()){
+                return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("기업 정보가 없습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+            }
+            String companyName = company.get().getName();
+
+            CompanyNameResponseDto responseDto = new CompanyNameResponseDto(postId, companyId, companyName);
+            data.add(responseDto);
+        }
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())

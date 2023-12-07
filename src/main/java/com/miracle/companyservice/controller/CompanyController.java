@@ -3,11 +3,9 @@ package com.miracle.companyservice.controller;
 import com.miracle.companyservice.controller.swagger.*;
 import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
-import com.miracle.companyservice.entity.Company;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.bridge.ICommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -255,9 +253,9 @@ public class CompanyController {
 
     @ApiGetCompanyName
     @ApiDefault
-    @GetMapping("/post/{postId}")
-    public CommonApiResponse getCompanyName(@PathVariable Long postId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getCompanyName(postId);
+    @PostMapping("/posts")
+    public CommonApiResponse getCompanyName(@RequestBody PostIdRequestDto dto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCompanyName(dto.getPostId());
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
