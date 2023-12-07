@@ -255,9 +255,9 @@ public class CompanyController {
 
     @ApiGetCompanyName
     @ApiDefault
-    @GetMapping("/post/{postId}")
-    public CommonApiResponse getCompanyName(@PathVariable Long postId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getCompanyName(postId);
+    @PostMapping("/posts")
+    public CommonApiResponse getCompanyName(@RequestBody IdRequestDto dto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCompanyName(dto.getPostId());
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
