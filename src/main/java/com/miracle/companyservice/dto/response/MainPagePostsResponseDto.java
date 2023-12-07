@@ -17,30 +17,24 @@ public class MainPagePostsResponseDto {
 
     //postId
     private final Long id;
-
     private final Long companyId;
-
     private final PostType postType;
-
     private final String title;
-
+    private final String name;
     //기업정보에서 가져와야함
     private final String photo;
-
     private final String endDate;
-
     private final String workAddress;
-
     private final Set<Long> jobIdSet;
-
     private final int career;
 
 
-    public MainPagePostsResponseDto(Post post, String photo) {
+    public MainPagePostsResponseDto(Post post, String photo, String name) {
         this.id = post.getId();
         this.companyId = post.getCompanyId();
         this.postType = post.getPostType();
         this.title = post.getTitle();
+        this.name = name;
         this.photo = photo;
         this.endDate = formatDate(post.getEndDate());
         this.workAddress = post.getWorkAddress();

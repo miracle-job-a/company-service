@@ -602,13 +602,15 @@ class CompanyServiceImplTest {
         List<MainPagePostsResponseDto> newest = new ArrayList<>();
         newestResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
-            newest.add(new MainPagePostsResponseDto(p, photo));
+            String name = companyRepository.findNameById(p.getCompanyId());
+            newest.add(new MainPagePostsResponseDto(p, photo, name));
         });
 
         List<MainPagePostsResponseDto> deadline = new ArrayList<>();
         deadlineResult.iterator().forEachRemaining((Post p) -> {
             String photo = companyRepository.findPhotoById(p.getCompanyId());
-            deadline.add(new MainPagePostsResponseDto(p, photo));
+            String name = companyRepository.findNameById(p.getCompanyId());
+            deadline.add(new MainPagePostsResponseDto(p, photo, name));
         });
 
         Map<String, Object> data = new HashMap<>();
