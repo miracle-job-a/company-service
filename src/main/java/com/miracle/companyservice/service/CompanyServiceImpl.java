@@ -965,12 +965,12 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyNameResponseDto> data = new ArrayList<>();
 
         for (Long postId : postIdSet) {
-            Post post = postRepository.findPostById(postId);
-            Long companyId = post.getCompanyId();
+            Optional<Post> post = postRepository.findPostById(postId);
+            Long companyId = post.get().getCompanyId();
 
-            Company company = companyRepository.findCompanyById(companyId);
+            Optional<Company> company = companyRepository.findCompanyById(companyId);
             // 수정된 부분: Company 객체에서 원하는 정보 가져오기 (예시로 getName() 사용)
-            String companyName = company.getName();
+            String companyName = company.get().getName();
 
             CompanyNameResponseDto responseDto = new CompanyNameResponseDto(postId, companyId, companyName);
             data.add(responseDto);
