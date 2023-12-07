@@ -95,4 +95,11 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
      */
     Optional<Company> findEmailAndPasswordById(Long companyId);
 
+    /**
+     * @author wjdals3936
+     * @param companyId
+     * @return Optional<Company>
+     * 기업명 조회를 위한 메서드
+     */
+    Optional<Company> findCompanyById(Long companyId);
 }

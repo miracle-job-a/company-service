@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * The interface Post repository.
@@ -165,9 +166,10 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 
     /**
      * @author wjdals3936
-     * @param postId the post id
-     * @return the long
-     * 공고아이디를 통해 해당 기업아이디를 리턴합니다.
+     * @param postId
+     * @return Optional<Post>
+     * postId를 통한 companyId 조회
      */
-    Optional<Post> findCompanyIdById(Long postId);
+//    List<Post> findCompanyIdByIn(Set<Long> postIdSet);
+    Optional<Post> findPostById(Long postId);
 }
