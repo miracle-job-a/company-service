@@ -4,6 +4,8 @@ import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Set;
+
 /**
  * The interface Company service.
  */
@@ -244,9 +246,9 @@ public interface CompanyService {
 
     /**
      * @author wjdals3936
-     * @param postId
+     * @param idSet
      * @return the common api response
      * 기업 정보 (id/name) 반환 메서드
      */
-    CommonApiResponse getCompanyName(Long postId);
+    CommonApiResponse getCompanyName(Set<Long> idSet);
 }

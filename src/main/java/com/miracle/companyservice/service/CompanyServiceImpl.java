@@ -953,29 +953,28 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getCompanyName(Long postId) {
-        Optional<Post> post = postRepository.findCompanyIdById(postId);
-        if (post == null) {
+    public CommonApiResponse getCompanyName(Set<Long> postIdSet) {
+        if (postIdSet.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("공고 아이디에 해당 공고가 없습니다.")
+                    .message("공고 id Set에 값이 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
 
-        String companyName = companyRepository.findNameById(post.get().getCompanyId());
-        if (companyName == null) {
-            return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("기업 아이디에 해당하는 기업이 없습니다.")
-                    .data(Boolean.FALSE)
-                    .build();
+        List<CompanyNameResponseDto> data = new ArrayList<>();
+
+        for (Long postId : postIdSet) {
+            Post post = postRepository.findPostById(postId);
+            Long companyId = post.getCompanyId();
+
+            Company company = companyRepository.findCompanyById(companyId);
+            // 수정된 부분: Company 객체에서 원하는 정보 가져오기 (예시로 getName() 사용)
+            String companyName = company.getName();
+
+            CompanyNameResponseDto responseDto = new CompanyNameResponseDto(postId, companyId, companyName);
+            data.add(responseDto);
         }
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("companyId", post.get().getCompanyId());
-        data.put("companyName", companyName);
-
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("기업명 조회 성공")
