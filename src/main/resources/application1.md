@@ -19,3 +19,5 @@ spring:
 server:
   port: 60002
 
+miracle:
+  key: tzEKhH3D61VHdXXiJMP9WA==

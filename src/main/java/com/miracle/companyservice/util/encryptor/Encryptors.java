@@ -3,6 +3,7 @@ package com.miracle.companyservice.util.encryptor;
 import com.miracle.companyservice.exception.*;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.*;
@@ -14,7 +15,8 @@ import java.util.Base64;
 @Component
 public class Encryptors {
 
-    public static final String encodedSecretKey = "tzEKhH3D61VHdXXiJMP9WA==";
+    @Value("${miracle.key}")
+    public String encodedSecretKey;
 
     public String SHA3Algorithm(String input) {
         SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest512(); // SHA-3-512 사용
