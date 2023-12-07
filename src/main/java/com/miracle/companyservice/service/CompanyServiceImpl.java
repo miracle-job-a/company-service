@@ -966,15 +966,29 @@ public class CompanyServiceImpl implements CompanyService {
 
         for (Long postId : postIdSet) {
             Optional<Post> post = postRepository.findPostById(postId);
+            if (post.isEmpty()){
+                return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("공고 정보가 없습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+            }
             Long companyId = post.get().getCompanyId();
 
             Optional<Company> company = companyRepository.findCompanyById(companyId);
-            // 수정된 부분: Company 객체에서 원하는 정보 가져오기 (예시로 getName() 사용)
+            if (company.isEmpty()){
+                return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("기업 정보가 없습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+            }
             String companyName = company.get().getName();
 
             CompanyNameResponseDto responseDto = new CompanyNameResponseDto(postId, companyId, companyName);
             data.add(responseDto);
         }
+
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("기업명 조회 성공")
