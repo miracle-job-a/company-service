@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -165,11 +166,19 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     Page<Post> findAll(Specification<Post> spec, Pageable pageable);
 
     /**
-     * @author wjdals3936
-     * @param postId
-     * @return Optional<Post>
-     * postId를 통한 companyId 조회
+     * @author Kade
+     * @return List<Post>
+     * endDate(공고마감일)에 해당하는 모든 공고 반환
      */
-//    List<Post> findCompanyIdByIn(Set<Long> postIdSet);
-    Optional<Post> findPostById(Long postId);
+    @Query("SELECT p FROM Post p " +
+            "WHERE p.endDate < :now")
+    List<Post>findAllByEndDate(LocalDateTime now);
+
+    /**
+     * @author kade
+     * @param postIdSet
+     * @return Optional<Post>
+     * Set에 담긴 postId를 통해 post를 가져옵니다.
+     */
+    List<Post> findAllByIdIn(Set<Long> postIdSet);
 }
