@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -542,6 +543,18 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(responseDto)
                 .build();
     }
+    @Scheduled (cron = " 0 0 0 * * ?")
+    @Override
+    public void closePostBySchedule() {
+        LocalDateTime now = LocalDateTime.now();
+        int count = 0;
+        for (Post post : postRepository.findAllByEndDate(now)) {
+            post.setClosed(true);
+            postRepository.save(post);
+            count += 1;
+        }
+        log.info("{} 이전의 공고가 자동으로 마감처리되었습니다. / 총 {} 개", now.toString(),count);
+    }
 
     @Override
     public CommonApiResponse savePost(Long companyId, PostRequestDto postRequestDto) {
@@ -966,30 +979,12 @@ public class CompanyServiceImpl implements CompanyService {
 
         List<CompanyNameResponseDto> data = new ArrayList<>();
 
-        for (Long postId : postIdSet) {
-            Optional<Post> post = postRepository.findPostById(postId);
-            if (post.isEmpty()){
-                return SuccessApiResponse.builder()
-                        .httpStatus(HttpStatus.BAD_REQUEST.value())
-                        .message("공고 정보가 없습니다.")
-                        .data(Boolean.FALSE)
-                        .build();
+        postRepository.findAllByIdIn(postIdSet).iterator().forEachRemaining((Post p) -> {
+            Optional<Company> byId = companyRepository.findById(p.getCompanyId());
+            if (byId.isPresent()) {
+                data.add(new CompanyNameResponseDto(p.getId(), byId.get().getId(), byId.get().getName()));
             }
-            Long companyId = post.get().getCompanyId();
-
-            Optional<Company> company = companyRepository.findCompanyById(companyId);
-            if (company.isEmpty()){
-                return SuccessApiResponse.builder()
-                        .httpStatus(HttpStatus.BAD_REQUEST.value())
-                        .message("기업 정보가 없습니다.")
-                        .data(Boolean.FALSE)
-                        .build();
-            }
-            String companyName = company.get().getName();
-
-            CompanyNameResponseDto responseDto = new CompanyNameResponseDto(postId, companyId, companyName);
-            data.add(responseDto);
-        }
+        });
 
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
