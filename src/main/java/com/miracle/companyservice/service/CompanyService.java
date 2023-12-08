@@ -169,6 +169,12 @@ public interface CompanyService {
     CommonApiResponse approveCompany(Long companyId);
 
     /**
+     * @author kade
+     * endDate(공고마감일)이 지나면 자동으로 마감처리하는 메서드
+     */
+    void closePostBySchedule();
+
+    /**
      * @author wjdals3936
      * @param companyId the company id
      * @return the company faqs by company id
