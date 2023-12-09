@@ -556,6 +556,31 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("{} 이전의 공고가 자동으로 마감처리되었습니다. / 총 {} 개", now.toString(),count);
     }
 
+    public CommonApiResponse postsInfoForTestAlert() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tomorrow1 = now.plusDays(1)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
+
+        LocalDateTime tomorrow2 = now.plusDays(1)
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59)
+                .withNano(999999999);
+
+        List<AlertResponseDto> result = new ArrayList<>();
+        postRepository.findAllByTestStartDate(tomorrow1, tomorrow2).iterator().forEachRemaining( (Post p) -> {
+            result.add(new AlertResponseDto(p, companyRepository.findNameById(p.getCompanyId())));
+        });
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("내일 테스트 예정 공고 조회완료")
+                .data(result)
+                .build();
+    }
+
     @Override
     public CommonApiResponse savePost(Long companyId, PostRequestDto postRequestDto) {
 

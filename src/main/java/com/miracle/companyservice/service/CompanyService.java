@@ -175,6 +175,13 @@ public interface CompanyService {
     void closePostBySchedule();
 
     /**
+     * @author kade
+     * @return List<AlertResponseDto>
+     * 테스트 시작전 알림을 위한 정보 반환해주는 API
+     */
+    CommonApiResponse postsInfoForTestAlert();
+
+    /**
      * @author wjdals3936
      * @param companyId the company id
      * @return the company faqs by company id
