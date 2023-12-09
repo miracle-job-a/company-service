@@ -110,10 +110,7 @@ import java.lang.annotation.Target;
                                                 name = "유효성 /주소 길이 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_7\", \"message\": \"주소 값이 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
 
-                                        @ExampleObject(
-                                                name = "유효성 /비밀번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-                                        @ExampleObject(
+                                       @ExampleObject(
                                                 name = "유효성 /비밀번호 형식 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 형식이 맞지 않습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
