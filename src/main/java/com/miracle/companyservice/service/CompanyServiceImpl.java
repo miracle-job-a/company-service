@@ -876,7 +876,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse modifyCompanyInfo(Long companyId, CompanyInfoRequestDto requestDto) {
-        String encryptedPwd = encryptors.SHA3Algorithm(requestDto.getPwd());
 
         Optional<Company> company = companyRepository.findById(companyId);
         if(company.isEmpty()){
@@ -889,6 +888,20 @@ public class CompanyServiceImpl implements CompanyService {
 
         Company existingCompany = company.get();
 
+        String encryptedPwd = null;
+        if (requestDto.getPwd() == null) {
+            encryptedPwd = existingCompany.getPassword();
+        } else{
+            encryptedPwd = encryptors.SHA3Algorithm(requestDto.getPwd());
+            if (encryptedPwd.equals(existingCompany.getPassword())) {
+                return SuccessApiResponse.builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST.value())
+                        .message("현재 비밀번호와 동일하게 변경할 수 없습니다.")
+                        .data(Boolean.FALSE)
+                        .build();
+            }
+        }
+
         existingCompany.setName(requestDto.getName());
         existingCompany.setCeoName(requestDto.getCeoName());
         existingCompany.setEmployeeNum(requestDto.getEmployeeNum());
@@ -896,16 +909,8 @@ public class CompanyServiceImpl implements CompanyService {
         existingCompany.setPhoto(requestDto.getPhoto());
         existingCompany.setIntroduction(requestDto.getIntroduction());
         existingCompany.setAddress(requestDto.getAddress());
+        existingCompany.setPassword(encryptedPwd);
 
-        if (encryptedPwd.equals(existingCompany.getPassword())) {
-            return SuccessApiResponse.builder()
-                        .httpStatus(HttpStatus.BAD_REQUEST.value())
-                        .message("현재 비밀번호와 동일하게 변경할 수 없습니다.")
-                        .data(Boolean.FALSE)
-                        .build();
-        } else{
-            existingCompany.setPassword(encryptedPwd);
-        }
 
         Company modifiedCompanyInfo = companyRepository.save(existingCompany);
         if(!requestDto.getName().equals(modifiedCompanyInfo.getName())){
@@ -957,7 +962,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(Boolean.FALSE)
                 .build();
 
-        }else if(!encryptedPwd.equals(modifiedCompanyInfo.getPassword())){
+        }else if(requestDto.getPwd() != null && !encryptedPwd.equals(modifiedCompanyInfo.getPassword())){
             return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .message("비밀번호 변경에 실패하였습니다.")

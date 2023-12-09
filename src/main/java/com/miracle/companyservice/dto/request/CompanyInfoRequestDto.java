@@ -80,7 +80,7 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "austin123!"
     )
-    @NotBlank(message = "400_4:비밀번호 값이 없습니다.")
+
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{6,}$", message = "400_4:비밀번호 형식이 맞지 않습니다.")
     @Size(min = 6, message = "400_4:비밀번호가 너무 짧습니다.")
     private final String pwd;
@@ -94,7 +94,6 @@ public class CompanyInfoRequestDto {
         this.introduction = introduction;
         this.address = address;
         this.pwd = pwd;
-
     }
 
     public CompanyInfoRequestDto() {
