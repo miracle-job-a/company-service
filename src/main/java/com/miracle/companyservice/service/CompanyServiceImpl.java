@@ -104,6 +104,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
+
         Optional<Company> company = companyRepository.findByEmailAndPassword(encryptors.encryptAES(companyLoginRequestDto.getEmail(), encryptors.getSecretKey()), encryptors.SHA3Algorithm(companyLoginRequestDto.getPassword()));
         if (company.isEmpty()) {
             return SuccessApiResponse.builder()
@@ -502,6 +503,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
         company1.setApproveStatus(true);
+        companyRepository.save(company1);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("기업 회원 가입이 승인되었습니다.")
