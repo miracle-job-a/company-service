@@ -121,13 +121,6 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
 
-        if (!bnoRepository.findStatusByBnoIsTrue(company.get().getBno())) {
-            return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("만료된 사업자 번호입니다.")
-                    .data(Boolean.FALSE)
-                    .build();
-        }
         CompanyLoginResponseDto responseDto = new CompanyLoginResponseDto(company.get().getId(), encryptors.decryptAES(company.get().getEmail(), encryptors.getSecretKey()), company.get().getBno());
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
@@ -585,6 +578,23 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse savePost(Long companyId, PostRequestDto postRequestDto) {
+
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (!bnoRepository.findStatusByBnoIsTrue(company.get().getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("만료된 사업자 번호입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        if (company.get().isApproveStatus() == false) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("가입 승인 처리가 되지 않은 기업회원입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
 
         List<QuestionRequestDto> questions = postRequestDto.getQuestionList();
 

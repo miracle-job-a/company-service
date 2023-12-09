@@ -38,9 +38,6 @@ import java.lang.annotation.Target;
                                                 name = "실패 / 이메일 또는 비밀번호 불일치",
                                                 value = "{\"httpStatus\": 400, \"message\": \"이메일 또는 비밀번호가 일치하지 않습니다.\", \"data\": false }"),
                                         @ExampleObject(
-                                                name = "실패 / 사업자 번호 만료",
-                                                value = "{\"httpStatus\": 400, \"message\": \"사업자 번호가 만료되었습니다.\", \"data\": false }"),
-                                        @ExampleObject(
                                                 name = "유효성 / 이메일 값 없음",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
