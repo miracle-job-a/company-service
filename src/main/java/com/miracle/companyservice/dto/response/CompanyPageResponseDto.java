@@ -27,7 +27,7 @@ public class CompanyPageResponseDto {
         this.companyId = company.getId();
         this.approveStatus = company.isApproveStatus();
         this.name = company.getName();
-        this.ceoName = company.getName();
+        this.ceoName = company.getCeoName();
         this.photo = company.getPhoto();
         this.employeeNum = company.getEmployeeNum();
         this.address = company.getAddress();
