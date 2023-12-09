@@ -38,6 +38,12 @@ import java.lang.annotation.Target;
                                                 name = "실패 / 공고 등록 실패",
                                                 value = "{\"httpStatus\": 400, \"message\": \"공고 등록에 실패하였습니다.\", \"data\": false }"),
                                         @ExampleObject(
+                                                name = "실패 / 사업자 번호 만료",
+                                                value = "{\"httpStatus\": 400, \"message\": \"사업자 번호가 만료되었습니다.\", \"data\": false }"),
+                                        @ExampleObject(
+                                                name = "실패 / 가입 미승인 회원",
+                                                value = "{\"httpStatus\": 400, \"message\": \"가입 승인 처리가 되지 않은 기업회원입니다.\", \"data\": false }"),
+                                        @ExampleObject(
                                                 name = "실패 / 자소서 문항 등록 실패",
                                                 value = "{\"httpStatus\": 400, \"message\": \"자기소개서 문항 등록에 실패하였습니다.\", \"data\": false }"),
                                         @ExampleObject(
