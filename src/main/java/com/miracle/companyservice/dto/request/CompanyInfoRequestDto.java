@@ -17,7 +17,6 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "미라클"
     )
-    @NotBlank(message = "400_2:기업명 값이 없습니다.")
     @Size(min = 1, max = 50, message = "400_2:기업명이 너무 짧거나, 깁니다.")
     private final String name;
 
@@ -26,7 +25,6 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "이병건"
     )
-    @NotBlank(message = "400_6:대표자명 값이 없습니다.")
     @Size(min = 1, max = 50, message = "400_6:대표자명이 너무 짧거나, 깁니다.")
     @Pattern(regexp = "^[가-힣]{2,}$", message = "400_6:대표자명이 형식에 맞지 않습니다.")
     private final String ceoName;
@@ -44,7 +42,6 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "소프트웨어 개발업"
     )
-    @NotBlank(message = "400_7:업종 값이 없습니다.")
     @Size(min = 1, max = 50, message = "400_7:업종 값이 너무 짧거나, 깁니다.")
     private final String sector;
 
@@ -53,7 +50,6 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "기업로고.jpg"
     )
-    @NotBlank(message = "400_3:사진이 업로드 되지 않았습니다.")
     @Size(min = 1, max = 50, message = "400_3:사진 경로가 너무 짧거나, 깁니다.")
     private final String photo;
 
@@ -62,7 +58,6 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "시리즈A 투자를 받은 유망한 기업입니다."
     )
-    @NotBlank(message = "400_9:기업소개 값이 없습니다.")
     @Size(min = 20,  message = "400_0:기업소개 값이 너무 짧습니다.")
     private final String introduction;
 
@@ -71,7 +66,6 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "서울특별시 서초구 효령로 113"
     )
-    @NotBlank(message = "400_8:주소 값이 없습니다.")
     @Size(min = 1, max = 255, message = "400_8:주소 값이 너무 짧거나, 깁니다.")
     private final String address;
 
@@ -80,7 +74,6 @@ public class CompanyInfoRequestDto {
             required = true,
             example = "austin123!"
     )
-    @NotBlank(message = "400_4:비밀번호 값이 없습니다.")
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{6,}$", message = "400_4:비밀번호 형식이 맞지 않습니다.")
     @Size(min = 6, message = "400_4:비밀번호가 너무 짧습니다.")
     private final String pwd;
