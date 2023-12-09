@@ -5,6 +5,7 @@ import com.miracle.companyservice.dto.request.*;
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.service.CompanyService;
 import com.miracle.companyservice.service.CompanyServiceImpl;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -166,6 +167,14 @@ public class CompanyController {
     @PutMapping("/{companyId}/approval")
     public CommonApiResponse approveCompany(@PathVariable Long companyId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.approveCompany(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiDefault
+    @GetMapping("/posts") //알림용
+    public CommonApiResponse postsInfoForTestAlert(HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.postsInfoForTestAlert();
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }

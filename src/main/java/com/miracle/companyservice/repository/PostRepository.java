@@ -181,4 +181,18 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * Set에 담긴 postId를 통해 post를 가져옵니다.
      */
     List<Post> findAllByIdIn(Set<Long> postIdSet);
+
+    /**
+     * @author kade
+     * @param tomorrow1
+     * @param tomorrow2
+     * @return List<Post>
+     * 오늘 날짜 기준으로 내일 있을 코딩테스트(MZ공고)있는 공고목록 반환
+     */
+    @Query("SELECT p " +
+            "FROM Post p " +
+            "WHERE p.testStartDate BETWEEN :tomorrow1 AND :tomorrow2 " +
+            "AND p.postType = 'MZ' " +
+            "AND p.deleted = false")
+    List<Post> findAllByTestStartDate(LocalDateTime tomorrow1, LocalDateTime tomorrow2);
 }
