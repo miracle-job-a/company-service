@@ -38,6 +38,12 @@ import java.lang.annotation.Target;
                                         @ExampleObject(
                                                 name = "실패 / 중복된 이메일",
                                                 value = "{\"httpStatus\": 400, \"message\": \"중복된 이메일입니다.\", \"data\": false }"),
+                                        @ExampleObject(
+                                                name = "실패 / 미존재 사업자번호",
+                                                value = "{\"httpStatus\": 400, \"message\": \"존재하지 않는 사업자 번호입니다.\", \"data\": false }"),
+                                        @ExampleObject(
+                                                name = "실패 / 가입된 사업자번호",
+                                                value = "{\"httpStatus\": 400, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }"),
 
                                         @ExampleObject(
                                         name = "유효성 / 이메일 값 없음",
