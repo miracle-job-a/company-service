@@ -8,6 +8,7 @@ import com.miracle.companyservice.util.encryptor.Encryptors;
 import com.miracle.companyservice.util.specification.PostSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,6 +33,8 @@ public class CompanyServiceImpl implements CompanyService {
     private final PostRepository postRepository;
     private final QuestionRepository questionRepository;
     private final Encryptors encryptors;
+    @Value("${miracle.passwordChecker}")
+    private String passwordChecker;
 
     @Autowired
     public CompanyServiceImpl(CompanyRepository companyRepository, CompanyFaqRepository companyFaqRepository, BnoRepository bnoRepository, PostRepository postRepository, QuestionRepository questionRepository, Encryptors encryptors) {
@@ -899,7 +902,7 @@ public class CompanyServiceImpl implements CompanyService {
         Company existingCompany = company.get();
 
         String encryptedPwd = null;
-        if (requestDto.getPwd() == null) {
+        if (requestDto.getPwd().equals(passwordChecker)) {
             encryptedPwd = existingCompany.getPassword();
         } else{
             encryptedPwd = encryptors.SHA3Algorithm(requestDto.getPwd());
