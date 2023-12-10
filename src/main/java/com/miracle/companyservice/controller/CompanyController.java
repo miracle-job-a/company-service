@@ -178,6 +178,15 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiCheckPostAuthority
+    @ApiInterceptor
+    @GetMapping("/{companyId}/status")
+    public CommonApiResponse checkPostAuthority(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkPostAuthority(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
     @ApiFindCompanyInfo
     @ApiDefault
     @GetMapping("/{companyId}/info")
