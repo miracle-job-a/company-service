@@ -170,6 +170,7 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiPostsInfoForTestAlert
     @ApiDefault
     @GetMapping("/posts") //알림용
     public CommonApiResponse postsInfoForTestAlert(HttpServletResponse response) {
