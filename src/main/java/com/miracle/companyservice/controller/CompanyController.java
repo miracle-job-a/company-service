@@ -170,10 +170,20 @@ public class CompanyController {
         return commonApiResponse;
     }
 
+    @ApiPostsInfoForTestAlert
     @ApiDefault
     @GetMapping("/posts") //알림용
     public CommonApiResponse postsInfoForTestAlert(HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.postsInfoForTestAlert();
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiCheckPostAuthority
+    @ApiInterceptor
+    @GetMapping("/{companyId}/status")
+    public CommonApiResponse checkPostAuthority(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkPostAuthority(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }

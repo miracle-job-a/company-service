@@ -78,7 +78,6 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-
         if (companyRepository.existsByEmail(encryptors.encryptAES(companySignUpRequestDto.getEmail(), encryptors.getSecretKey()))) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -87,6 +86,13 @@ public class CompanyServiceImpl implements CompanyService {
                     .build();
         }
         Company company = new Company(companySignUpRequestDto);
+        if (!bnoRepository.existsByBno(company.getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 사업자 번호 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
         company.setEmail(encryptors.encryptAES(companySignUpRequestDto.getEmail(), encryptors.getSecretKey()));
         company.setPassword(encryptors.SHA3Algorithm(companySignUpRequestDto.getPassword()));
         companyRepository.save(company);
@@ -576,6 +582,44 @@ public class CompanyServiceImpl implements CompanyService {
                 .httpStatus(HttpStatus.OK.value())
                 .message("내일 테스트 예정 공고 조회완료")
                 .data(result)
+                .build();
+    }
+
+
+    public CommonApiResponse checkPostAuthority(Long companyId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 companyId 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (!company.get().isApproveStatus()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("미승인 기업 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (!bnoRepository.existsByBno(company.get().getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 사업자 번호 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if(!bnoRepository.findStatusByBnoIsTrue(company.get().getBno())){
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("만료된 사업자 번호입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("정상 기업 회원 입니다.")
+                .data(Boolean.TRUE)
                 .build();
     }
 

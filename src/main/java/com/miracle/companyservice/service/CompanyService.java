@@ -182,6 +182,15 @@ public interface CompanyService {
     CommonApiResponse postsInfoForTestAlert();
 
     /**
+     * @author kade
+     * @param companyId
+     * @return Boolean
+     * 기업이 정상적으로 공고 등록이 가능한 상태인지 반환하는 API
+     * 사업자번호 만료여부와 가입승인여부를 확인한 후 리턴한다.
+     */
+    CommonApiResponse checkPostAuthority(Long companyId);
+
+    /**
      * @author wjdals3936
      * @param companyId the company id
      * @return the company faqs by company id
