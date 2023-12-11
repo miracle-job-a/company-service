@@ -562,15 +562,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     public CommonApiResponse postsInfoForTestAlert() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime tomorrow1 = now.plusDays(1)
-                .withHour(0)
-                .withMinute(0)
+        LocalDateTime tomorrow1 = now
+                .withMinute(50)
                 .withSecond(0)
                 .withNano(0);
 
-        LocalDateTime tomorrow2 = now.plusDays(1)
-                .withHour(23)
-                .withMinute(59)
+        LocalDateTime tomorrow2 = now
+                .plusHours(1)
+                .withMinute(0)
                 .withSecond(59)
                 .withNano(999999999);
 
