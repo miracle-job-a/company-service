@@ -277,4 +277,13 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiCountWholePosts
+    @ApiDefault
+    @GetMapping("/posts/count")
+    public CommonApiResponse countWholePosts(HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCountWholePosts();
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }
