@@ -1081,4 +1081,20 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(data)
                 .build();
     }
+
+    @Override
+    public CommonApiResponse getCountWholePosts() {
+        Long countNormalPosts = postRepository.countActiveNormalPosts();
+        Long countMZPosts = postRepository.countActiveMzPosts();
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("countNormalPosts", countNormalPosts);
+        map.put("countMZPosts", countMZPosts);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고 수 조회 완료")
+                .data(map)
+                .build();
+    }
 }

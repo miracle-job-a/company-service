@@ -273,4 +273,13 @@ public interface CompanyService {
      * 기업 정보 (id/name) 반환 메서드
      */
     CommonApiResponse getCompanyName(Set<Long> idSet);
+
+    /**
+     * @author wjdals3936
+     * @return Map<String, Long>
+     * 관리자 인사이트에 노출될 공고 수를 반환하는 api
+     * countNormalPosts -> 진행 중인 일반 공고 수
+     * countMZPosts -> 진행 중인 MZ 공고 수
+     */
+    CommonApiResponse getCountWholePosts();
 }
