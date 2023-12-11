@@ -277,9 +277,17 @@ public interface CompanyService {
     /**
      * @author wjdals3936
      * @return Map<String, Long>
-     * 관리자 인사이트에 노출될 공고 수를 반환하는 api
      * countNormalPosts -> 진행 중인 일반 공고 수
      * countMZPosts -> 진행 중인 MZ 공고 수
+     * 관리자 인사이트에 노출될 공고 수를 반환하는 메서드
      */
     CommonApiResponse getCountWholePosts();
+
+    /**
+     * @author wjdals3936
+     * @param postId
+     * @return Boolean
+     * 마감된 공고 지원을 막기 위한 공고 마감 여부를 반환하는 메서드 
+     */
+    CommonApiResponse checkClosedPost(Long postId);
 }
