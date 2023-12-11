@@ -286,4 +286,13 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiCheckClosedPost
+    @ApiDefault
+    @GetMapping("/posts/{postId}")
+    public CommonApiResponse checkClosedPost(@PathVariable Long postId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkClosedPost(postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }
