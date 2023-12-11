@@ -1085,7 +1085,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse getCountWholePosts() {
         Long countNormalPosts = postRepository.countActiveNormalPosts();
+        System.out.println(countNormalPosts);
         Long countMZPosts = postRepository.countActiveMzPosts();
+        System.out.println(countMZPosts);
 
         Map<String, Long> map = new HashMap<>();
         map.put("countNormalPosts", countNormalPosts);
