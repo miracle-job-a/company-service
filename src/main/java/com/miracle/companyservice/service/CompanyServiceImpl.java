@@ -1099,7 +1099,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse checkClosedPost(Long postId) {
+    public CommonApiResponse checkPostStatus(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isEmpty()) {
             return SuccessApiResponse.builder()

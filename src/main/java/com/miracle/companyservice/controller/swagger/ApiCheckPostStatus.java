@@ -46,5 +46,5 @@ import java.lang.annotation.Target;
                                 schema = @Schema(implementation = CommonApiResponse.class)
                         )),
         })
-public @interface ApiCheckClosedPost {
+public @interface ApiCheckPostStatus {
 }

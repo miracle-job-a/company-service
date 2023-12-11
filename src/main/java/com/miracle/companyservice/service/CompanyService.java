@@ -287,7 +287,7 @@ public interface CompanyService {
      * @author wjdals3936
      * @param postId
      * @return Boolean
-     * 마감된 공고 지원을 막기 위한 공고 마감 여부를 반환하는 메서드 
+     * 마감/삭제된 공고 지원을 막기 위한 공고 마감/삭제 여부를 반환하는 메서드 
      */
-    CommonApiResponse checkClosedPost(Long postId);
+    CommonApiResponse checkPostStatus(Long postId);
 }
