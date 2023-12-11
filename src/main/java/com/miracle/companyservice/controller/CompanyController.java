@@ -291,7 +291,7 @@ public class CompanyController {
     @ApiDefault
     @GetMapping("/posts/{postId}")
     public CommonApiResponse checkPostStatus(@PathVariable Long postId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.checkClosedPost(postId);
+        CommonApiResponse commonApiResponse = companyService.checkPostStatus(postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
