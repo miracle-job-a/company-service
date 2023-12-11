@@ -1081,4 +1081,52 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(data)
                 .build();
     }
+
+    @Override
+    public CommonApiResponse getCountWholePosts() {
+        Long countNormalPosts = postRepository.countActiveNormalPosts();
+        Long countMZPosts = postRepository.countActiveMzPosts();
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("countNormalPosts", countNormalPosts);
+        map.put("countMZPosts", countMZPosts);
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("공고 수 조회 완료")
+                .data(map)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse checkPostStatus(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+        if (post.isEmpty()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("존재하지 않는 postId 입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (post.get().isClosed()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("마감된 공고입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (post.get().isDeleted()) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("삭제된 공고입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("지원 가능한 공고입니다.")
+                .data(Boolean.TRUE)
+                .build();
+    }
 }

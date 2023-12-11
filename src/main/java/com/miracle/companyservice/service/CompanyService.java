@@ -273,4 +273,21 @@ public interface CompanyService {
      * 기업 정보 (id/name) 반환 메서드
      */
     CommonApiResponse getCompanyName(Set<Long> idSet);
+
+    /**
+     * @author wjdals3936
+     * @return Map<String, Long>
+     * countNormalPosts -> 진행 중인 일반 공고 수
+     * countMZPosts -> 진행 중인 MZ 공고 수
+     * 관리자 인사이트에 노출될 공고 수를 반환하는 메서드
+     */
+    CommonApiResponse getCountWholePosts();
+
+    /**
+     * @author wjdals3936
+     * @param postId
+     * @return Boolean
+     * 마감/삭제된 공고 지원을 막기 위한 공고 마감/삭제 여부를 반환하는 메서드 
+     */
+    CommonApiResponse checkPostStatus(Long postId);
 }

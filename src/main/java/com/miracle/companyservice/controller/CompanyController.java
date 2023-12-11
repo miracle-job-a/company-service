@@ -277,4 +277,22 @@ public class CompanyController {
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
+
+    @ApiCountWholePosts
+    @ApiDefault
+    @GetMapping("/posts/count")
+    public CommonApiResponse countWholePosts(HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCountWholePosts();
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiCheckPostStatus
+    @ApiDefault
+    @GetMapping("/posts/{postId}")
+    public CommonApiResponse checkPostStatus(@PathVariable Long postId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkClosedPost(postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
 }
