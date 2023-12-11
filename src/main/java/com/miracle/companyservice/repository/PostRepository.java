@@ -209,6 +209,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return Long
      * 진행 중인 전체 Mz 공고 수 반환하는 메서드
      */
-    @Query("SELECT COUNT(p) FROM Post p WHERE p.deleted = false AND p.closed = false AND p.postType = 'NORMAL'")
+    @Query("SELECT COUNT(p) FROM Post p WHERE p.deleted = false AND p.closed = false AND p.postType = 'MZ'")
     long countActiveMzPosts();
 }
