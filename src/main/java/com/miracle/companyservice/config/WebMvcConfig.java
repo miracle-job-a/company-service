@@ -52,8 +52,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(baseUrl)
                 .excludePathPatterns(baseUrl + "/posts")
                 .excludePathPatterns(baseUrl + "/posts/count")
-                .excludePathPatterns(baseUrl + "/posts/{postId}")
-                .excludePathPatterns(baseUrl + "/posts/today")
+                .excludePathPatterns(baseUrl + "/posts/{postId:\\d+}")
+                .excludePathPatterns(baseUrl + "/posts/{year:\\d+}/today")
         ;
     }
 }
