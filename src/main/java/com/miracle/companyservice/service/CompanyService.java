@@ -290,4 +290,13 @@ public interface CompanyService {
      * 마감/삭제된 공고 지원을 막기 위한 공고 마감/삭제 여부를 반환하는 메서드 
      */
     CommonApiResponse checkPostStatus(Long postId);
+
+    /**
+     * @author wjdals3936
+     * @return Map<String, Long>
+     * countNormalPosts -> 진행 중인 일반 공고 수
+     * countMZPosts -> 진행 중인 MZ 공고 수
+     * 관리자 인사이트에 노출될 금일 등록된 공고 리스트를 반환하는 메서드
+     */
+    CommonApiResponse getTodayPosts();
 }

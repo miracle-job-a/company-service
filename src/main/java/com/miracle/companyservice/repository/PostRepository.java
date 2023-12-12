@@ -211,4 +211,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      */
     @Query("SELECT COUNT(p) FROM Post p WHERE p.deleted = false AND p.closed = false AND p.postType = 'MZ'")
     long countActiveMzPosts();
+
+    /**
+     * @author wjdals3936
+     * @return List<Post>
+     * 전체 공고의 타입과 등록일 반환하는 메서드
+     */
+    List<Post> findByOrderByCreatedAtDescPostType();
 }
