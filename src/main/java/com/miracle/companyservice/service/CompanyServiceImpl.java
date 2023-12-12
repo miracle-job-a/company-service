@@ -1131,15 +1131,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getTodayPosts() {
-        List<Post> posts = postRepository.findByOrderByCreatedAtDescPostType();
-        if(posts == null){
+    public CommonApiResponse getTodayPosts(int year) {
+        List<Post> posts = postRepository.findByCreatedAtYear(year);
+        if (posts == null || posts.isEmpty()) {
             return SuccessApiResponse.builder()
-                    .httpStatus(HttpStatus.OK.value())
-                    .message("전체 공고 데이터 조회 완료")
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("전체 공고 데이터 조회 실패")
                     .data(Boolean.FALSE)
                     .build();
         }
+
         List<PostInsightResponseDto> postList = posts.stream()
                 .map(PostInsightResponseDto::new)
                 .collect(Collectors.toList());
