@@ -81,6 +81,7 @@ public class PostRequestDto {
     private final String workAddress;
 
     @Valid
+    @NotEmpty(message = "400_14:자소서 문항/깃허브 주소가 비어 있습니다.")
     private final List<QuestionRequestDto> questionList;
 
     @Schema(
