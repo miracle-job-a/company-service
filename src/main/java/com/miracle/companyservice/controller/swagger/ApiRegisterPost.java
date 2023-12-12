@@ -62,6 +62,9 @@ import java.lang.annotation.Target;
                                                 name = "유효성 / 경력 값 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_21\", \"message\": \"경력 값은 0을 포함한 양수를 허용합니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
+                                                name = "유효성 / 자소서 문항/깃허브 주소 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_14\", \"message\": \"자소서 문항/깃허브 주소가 비어 있습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
                                                 name = "유효성 / 마감일 값 없음",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_16\", \"message\": \"마감일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
