@@ -547,6 +547,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .data(responseDto)
                 .build();
     }
+
     @Scheduled (cron = " 0 0 0 * * ?")
     @Override
     public void closePostBySchedule() {
@@ -1126,6 +1127,27 @@ public class CompanyServiceImpl implements CompanyService {
                 .httpStatus(HttpStatus.OK.value())
                 .message("지원 가능한 공고입니다.")
                 .data(Boolean.TRUE)
+                .build();
+    }
+
+    @Override
+    public CommonApiResponse getTodayPosts() {
+        List<Post> posts = postRepository.findByOrderByCreatedAtDescPostType();
+        if(posts == null){
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("전체 공고 데이터 조회 완료")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        List<PostInsightResponseDto> postList = posts.stream()
+                .map(PostInsightResponseDto::new)
+                .collect(Collectors.toList());
+
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("전체 공고 데이터 조회 완료")
+                .data(postList)
                 .build();
     }
 }
