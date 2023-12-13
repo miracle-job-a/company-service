@@ -1132,9 +1132,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CommonApiResponse getTodayPosts(int year, int month) {
-        System.out.println("service");
         List<Post> posts = postRepository.findByCreatedAtYearAndMonth(year, month);
-        System.out.println(posts);
         if (posts == null || posts.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -1142,12 +1140,10 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-        System.out.println(123);
         List<PostInsightResponseDto> postList = posts.stream()
                 .map(PostInsightResponseDto::new)
                 .collect(Collectors.toList());
 
-        System.out.println(postList);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("전체 공고 데이터 조회 완료")
