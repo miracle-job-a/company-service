@@ -296,5 +296,5 @@ public interface CompanyService {
      * @return List<PostInsightResponseDto>
      * 관리자 인사이트에 노출될 금일 등록된 공고 리스트를 반환하는 메서드
      */
-    CommonApiResponse getTodayPosts(int year);
+    CommonApiResponse getTodayPosts(int year, int month);
 }
