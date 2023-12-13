@@ -298,9 +298,9 @@ public class CompanyController {
 
     @ApiCountWholePosts
     @ApiDefault
-    @GetMapping("/posts/{year}/today")
-    public CommonApiResponse getTodayPosts(@PathVariable int year, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getTodayPosts(year);
+    @GetMapping("/posts/{year}/{month}/today")
+    public CommonApiResponse getTodayPosts(@PathVariable int year, @PathVariable int month, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getTodayPosts(year, month);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
