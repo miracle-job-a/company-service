@@ -217,6 +217,5 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * @return List<Post>
      * 전체 공고의 타입과 등록일 반환하는 메서드
      */
-    @Query("SELECT p FROM Post p WHERE YEAR(p.createdAt) = :year")
-    List<Post> findByCreatedAtYear(@Param("year") int year);
-}
+    @Query("SELECT p FROM Post p WHERE YEAR(p.createdAt) = :year AND MONTH(p.createdAt) = :month")
+    List<Post> findByCreatedAtYearAndMonth(@Param("year") int year, @Param("month") int month);}
