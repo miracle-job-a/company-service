@@ -1131,8 +1131,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getTodayPosts(int year) {
-        List<Post> posts = postRepository.findByCreatedAtYear(year);
+    public CommonApiResponse getTodayPosts(int year, int month) {
+        List<Post> posts = postRepository.findByCreatedAtYearAndMonth(year, month);
         if (posts == null || posts.isEmpty()) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -1140,7 +1140,6 @@ public class CompanyServiceImpl implements CompanyService {
                     .data(Boolean.FALSE)
                     .build();
         }
-
         List<PostInsightResponseDto> postList = posts.stream()
                 .map(PostInsightResponseDto::new)
                 .collect(Collectors.toList());
