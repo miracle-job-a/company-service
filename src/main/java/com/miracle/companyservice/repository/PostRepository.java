@@ -218,4 +218,13 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
      * 전체 공고의 타입과 등록일 반환하는 메서드
      */
     @Query("SELECT p FROM Post p WHERE YEAR(p.createdAt) = :year AND MONTH(p.createdAt) = :month")
-    List<Post> findByCreatedAtYearAndMonth(@Param("year") int year, @Param("month") int month);}
+    List<Post> findByCreatedAtYearAndMonth(@Param("year") int year, @Param("month") int month);
+
+    /**
+     * @author wjdals3936
+     * @return List<Post>
+     * 진행 중인 전체 공고 반환하는 메서드
+     */
+    @Query("SELECT p FROM Post p WHERE p.closed = false AND p.deleted = false")
+    List<Post> findAllActivePostData();
+}
