@@ -299,10 +299,16 @@ public class CompanyController {
     @ApiCountWholePosts
     @ApiDefault
     @GetMapping("/posts/today")
-    public CommonApiResponse getTodayPostCount(@RequestParam(name = "year", required = false, defaultValue = "0") int year,
-                                    @RequestParam(name = "month", required = false, defaultValue = "0") int month,
-                                    HttpServletResponse response) {
+    public CommonApiResponse getTodayPostCount(@RequestParam int year, @RequestParam int month, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.getTodayPosts(year, month);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetJobStacks
+    @GetMapping("/posts/jobstacks")
+    public CommonApiResponse getAllJobsAndStacks(HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getAllJobsAndStacks();
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
