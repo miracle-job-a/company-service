@@ -1133,17 +1133,30 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CommonApiResponse getTodayPosts(int year, int month) {
         List<Post> posts = postRepository.findByCreatedAtYearAndMonth(year, month);
-        if (posts == null || posts.isEmpty()) {
+        if (posts.isEmpty() || posts == null) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("전체 공고 데이터 조회 실패")
+                    .message("진행 중인 공고 목록이 없습니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
         List<PostInsightResponseDto> postList = posts.stream()
                 .map(PostInsightResponseDto::new)
                 .collect(Collectors.toList());
+        return SuccessApiResponse.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .message("진행 중인 공고 목록 조회 완료")
+                .data(postList)
+                .build();
+    }
 
+    @Override
+    public CommonApiResponse getAllJobsAndStacks() {
+        List<Post> posts = postRepository.findAllActivePostData();
+        List<JobStackInsightResponseDto> postList = posts.stream()
+                .map(JobStackInsightResponseDto::new)
+                .collect(Collectors.toList());
+        System.out.println(postList);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("전체 공고 데이터 조회 완료")

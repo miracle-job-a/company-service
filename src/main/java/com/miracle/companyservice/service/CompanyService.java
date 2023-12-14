@@ -297,4 +297,11 @@ public interface CompanyService {
      * 관리자 인사이트에 노출될 금일 등록된 공고 리스트를 반환하는 메서드
      */
     CommonApiResponse getTodayPosts(int year, int month);
+
+    /**
+     * @author wjdals3936
+     * @return List<PostInsightResponseDto>
+     * 관리자 인사이트에 노출될 현재 모집중인 공고의 스택/직무 리스트를 반환하는 메서드
+     */
+    CommonApiResponse getAllJobsAndStacks();
 }
