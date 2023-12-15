@@ -223,8 +223,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     /**
      * @author wjdals3936
      * @return List<Post>
-     * 진행 중인 전체 공고 반환하는 메서드
+     * 해당하는 기업의 진행 중인 공고 반환하는 메서드
      */
-    @Query("SELECT p FROM Post p WHERE p.closed = false AND p.deleted = false")
-    List<Post> findAllActivePostData();
+    @Query("SELECT p FROM Post p WHERE p.closed = false AND p.deleted = false And p.companyId = :companyId")
+    List<Post> findAllActivePostData(@Param("companyId") Long companyId);
 }
