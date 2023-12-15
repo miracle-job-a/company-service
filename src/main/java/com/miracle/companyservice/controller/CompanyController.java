@@ -306,9 +306,9 @@ public class CompanyController {
     }
 
     @ApiGetJobStacks
-    @GetMapping("/posts/jobstacks")
-    public CommonApiResponse getAllJobsAndStacks(HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getAllJobsAndStacks();
+    @GetMapping("{companyId}/posts/jobstacks")
+    public CommonApiResponse getAllJobsAndStacks(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getAllJobsAndStacks(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }

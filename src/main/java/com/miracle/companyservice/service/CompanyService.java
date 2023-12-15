@@ -303,5 +303,5 @@ public interface CompanyService {
      * @return List<PostInsightResponseDto>
      * 관리자 인사이트에 노출될 현재 모집중인 공고의 스택/직무 리스트를 반환하는 메서드
      */
-    CommonApiResponse getAllJobsAndStacks();
+    CommonApiResponse getAllJobsAndStacks(Long companyId);
 }

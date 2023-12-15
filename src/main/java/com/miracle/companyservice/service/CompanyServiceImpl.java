@@ -1144,8 +1144,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CommonApiResponse getAllJobsAndStacks() {
-        List<Post> posts = postRepository.findAllActivePostData();
+    public CommonApiResponse getAllJobsAndStacks(Long companyId) {
+        List<Post> posts = postRepository.findAllActivePostData(companyId);
         if (posts.isEmpty() || posts == null) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
@@ -1156,7 +1156,6 @@ public class CompanyServiceImpl implements CompanyService {
         List<JobStackInsightResponseDto> postList = posts.stream()
                 .map(JobStackInsightResponseDto::new)
                 .collect(Collectors.toList());
-        System.out.println(postList);
         return SuccessApiResponse.builder()
                 .httpStatus(HttpStatus.OK.value())
                 .message("진행 중인 공고 목록 조회 완료")
