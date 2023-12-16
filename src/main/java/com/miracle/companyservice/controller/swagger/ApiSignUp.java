@@ -46,8 +46,12 @@ import java.lang.annotation.Target;
                                                 value = "{\"httpStatus\": 400, \"message\": \"이미 가입된 사업자 번호입니다.\", \"data\": false }"),
 
                                         @ExampleObject(
-                                        name = "유효성 / 이메일 값 없음",
-                                        value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                                name = "실패 / 만료된 사업자번호",
+                                                value = "{\"httpStatus\": 400, \"message\": \"만료된 사업자번호 입니다.\", \"data\": false }"),
+
+                                        @ExampleObject(
+                                                name = "유효성 / 이메일 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
                                                 name = "유효성 /이메일 형식 오류",
                                                 value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"),
