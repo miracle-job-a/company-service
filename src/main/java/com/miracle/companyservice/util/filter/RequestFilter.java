@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = "/v1/*")
-public class TokenCheckFilter implements Filter {
+public class RequestFilter implements Filter {
 
     private final String privateKey;
 
-    public TokenCheckFilter(Environment environment) {
+    public RequestFilter(Environment environment) {
         this.privateKey = environment.getProperty("miracle.privateKey");
     }
 
