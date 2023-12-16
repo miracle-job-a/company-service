@@ -74,7 +74,14 @@ public class CompanyServiceImpl implements CompanyService {
         if (companyRepository.existsByBno(companySignUpRequestDto.getBno())) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("이미 가입된 사업자번호 입니다.")
+                    .message("이미 가입된 사업자 번호입니다.")
+                    .data(Boolean.FALSE)
+                    .build();
+        }
+        if (!bnoRepository.findStatusByBnoIsTrue(companySignUpRequestDto.getBno())) {
+            return SuccessApiResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .message("만료 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
@@ -89,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (!bnoRepository.existsByBno(company.getBno())) {
             return SuccessApiResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message("존재하지 않는 사업자 번호 입니다.")
+                    .message("존재하지 않는 사업자 번호입니다.")
                     .data(Boolean.FALSE)
                     .build();
         }
