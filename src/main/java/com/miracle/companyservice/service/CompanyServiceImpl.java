@@ -568,6 +568,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("{} 이전의 공고가 자동으로 마감처리되었습니다. / 총 {} 개", now.toString(),count);
     }
 
+    //알림용
     public CommonApiResponse postsInfoForTestAlert() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime tomorrow1 = now
