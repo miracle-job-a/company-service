@@ -3,6 +3,7 @@ package com.miracle.companyservice.exception;
 
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
+import com.sun.jdi.request.InvalidRequestStateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @RestControllerAdvice
@@ -171,13 +175,26 @@ public class ExceptionController {
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
     public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpServletRequest request) {
-        log.info("[illegalArgumentExceptionHandle] : " + e.getMessage());
+        log.info("[IllegalArgumentException] : " + e.getMessage());
 
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .code("400")
                 .message("잘못된 요청입니다.")
-                .exception("illegalArgumentExceptionHandle")
+                .exception("IllegalArgumentException")
+                .build();
+    }
+
+    /* JWT 토큰 인증*/
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(InvalidRequestStateException.class)
+    public CommonApiResponse invalidToken(InvalidRequestStateException e) {
+        log.info("[InvalidRequestStateException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED.value())
+                .code("401")
+                .message("JWT 토큰 인증 실패")
+                .exception("InvalidRequestStateException")
                 .build();
     }
 }
