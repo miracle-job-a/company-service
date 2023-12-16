@@ -124,7 +124,8 @@ public class SwaggerConfig {
                 .description("인증 실패")
                 .isDefault(true)
                 .examples(
-                        List.of(getUnauthorizedBuild())
+                        List.of(getUnauthorizedBuild(),
+                                getJwtUnauthorizedBuild())
                 ).build();
 
         Response serverErrorResponse = new ResponseBuilder()
@@ -222,6 +223,17 @@ public class SwaggerConfig {
                         "UnauthorizedTokenException"))
                 .build();
     }
+    private static Example getJwtUnauthorizedBuild() {
+        return new ExampleBuilder()
+                .id("2")
+                .mediaType("application/json")
+                .summary("JWT 토큰 인증 실패")
+                .value(new SuccessApiResponse<>(
+                        HttpStatus.UNAUTHORIZED.value(),
+                        "JWT 토큰 인증 실패",
+                        Boolean.FALSE))
+                .build();
+    }
 
     private List<Response> interceptorResponse() {
         List<Response> interceptorResponseList = new ArrayList<>();
@@ -246,9 +258,9 @@ public class SwaggerConfig {
                 .description("인증 실패")
                 .isDefault(true)
                 .examples(
-                        List.of(getUnauthorizedBuild()
-                                , new ExampleBuilder()
-                                        .id("2")
+                        List.of(getUnauthorizedBuild(), getJwtUnauthorizedBuild(),
+                                new ExampleBuilder()
+                                        .id("3")
                                         .mediaType("application/json")
                                         .summary("회원 인증 실패")
                                         .value(new SuccessApiResponse<>(
@@ -257,7 +269,7 @@ public class SwaggerConfig {
                                                 Boolean.FALSE))
                                         .build(),
                                 new ExampleBuilder()
-                                        .id("3")
+                                        .id("4")
                                         .mediaType("application/json")
                                         .summary("회원 인증 값 없음")
                                         .value(new SuccessApiResponse<>(
