@@ -1,10 +1,17 @@
 package com.miracle.companyservice.repository;
 
+import com.miracle.companyservice.dto.response.CompanyListForAdminResponseDto;
+import com.miracle.companyservice.dto.response.CompanyListResponseDto;
 import com.miracle.companyservice.entity.Company;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,7 +33,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
      * @param password
      * 이메일과 비밀번호가 일치하는 기업 정보를 가져오는 메서드
      */
-    Optional<Company> findByEmailAndPassword(String email, int password);
+    Optional<Company> findByEmailAndPassword(String email, String password);
 
     /**
      * @author kade
@@ -42,5 +49,50 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
      */
     @Query("SELECT c.photo FROM Company c WHERE c.id = :companyId")
     String findPhotoById(Long companyId);
+
+
+    /**
+     * @author kade
+     * @param date
+     * @param pageable
+     * @return
+     * 기업 목록 반환
+     */
+    @Query("SELECT c " +
+            "FROM Company c " +
+            "WHERE c.createdAt >= :date")
+    Page<Company> findAllByCreatedAt(LocalDateTime date, Pageable pageable);
+
+
+    /**
+     * @author kade
+     * @param companyId
+     * @return String
+     * companyId에 매칭되는 기업명 반환
+     */
+    @Query("SELECT c.name FROM Company c " +
+            "WHERE c.id = :companyId ")
+    String findNameById(Long companyId);
+
+
+    /**
+     * @author wjdals3936
+     * @param keyword
+     * @param pageable
+     * @return Page<CompanyListResponseDto>
+     * 사용자가 키워드를 검색하면 해당 키워드가 포함된 기업명 조회 후, 데이터를 반환하는 메서드
+     */
+    @Query("SELECT c FROM Company c WHERE " +
+            "c.name LIKE :keyword " +
+            "ORDER BY c.createdAt DESC")
+    Page<CompanyListResponseDto> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    /**
+     * @author wjdals3936
+     * @param companyId
+     * @return Optional<Company>
+     * 기업회원 정보 수정을 위한 계정 (이메일/비밀번호) 확인 메서드
+     */
+    Optional<Company> findEmailAndPasswordById(Long companyId);
 
 }

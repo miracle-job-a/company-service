@@ -1,5 +1,6 @@
 package com.miracle.companyservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class CompanyFaq extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
+    @JsonIgnore
     private Company company;
 
     public CompanyFaq(String question, String answer) {

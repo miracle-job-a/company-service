@@ -27,6 +27,7 @@ public class CompanyController {
     }
 
     @ApiCheckEmail
+    @ApiDefault
     @PostMapping("/email")
     public CommonApiResponse checkEmail(@Valid @RequestBody CompanyCheckEmailRequestDto companyCheckEmailRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.checkEmailDuplicated(companyCheckEmailRequestDto.getEmail());
@@ -35,6 +36,7 @@ public class CompanyController {
     }
 
     @ApiCheckBno
+    @ApiDefault
     @PostMapping("/bno")
     public CommonApiResponse checkBno(@Valid @RequestBody CompanyCheckBnoRequestDto companyCheckBnoRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.checkBnoStatus(companyCheckBnoRequestDto.getBno());
@@ -43,6 +45,7 @@ public class CompanyController {
     }
 
     @ApiSignUp
+    @ApiDefault
     @PostMapping("/signup")
     public CommonApiResponse signUpCompany(@Valid @RequestBody CompanySignUpRequestDto companySignUpRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.signUpCompany(companySignUpRequestDto);
@@ -51,6 +54,7 @@ public class CompanyController {
     }
 
     @ApiLogin
+    @ApiDefault
     @PostMapping("/login")
     public CommonApiResponse loginCompany(@Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.loginCompany(companyLoginRequestDto);
@@ -59,6 +63,7 @@ public class CompanyController {
     }
 
     @ApiPostMain
+    @ApiDefault
     @GetMapping("/main")
     public CommonApiResponse postForMainPage(HttpServletResponse response) {
         response.setStatus(HttpStatus.OK.value());
@@ -66,14 +71,16 @@ public class CompanyController {
     }
 
     @ApiAddFaq
+    @ApiInterceptor
     @PostMapping("/{companyId}/faq")
-    public CommonApiResponse addFaq(@PathVariable Long companyId, @RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.addFaq(companyFaqRequestDto);
+    public CommonApiResponse addFaq(@PathVariable Long companyId, @Valid @RequestBody CompanyFaqRequestDto companyFaqRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.addFaq(companyId, companyFaqRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiDeleteFaq
+    @ApiInterceptor
     @DeleteMapping("/{companyId}/faqs/{faqId}")
     public CommonApiResponse deleteFaq(@PathVariable Long companyId, @PathVariable Long faqId, HttpServletRequest request, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.deleteFaq(companyId, faqId);
@@ -82,6 +89,7 @@ public class CompanyController {
     }
 
     @ApiGetFaq
+    @ApiDefault
     @GetMapping("/{companyId}/faqs")
     public CommonApiResponse getFaq(@PathVariable Long companyId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.getFaq(companyId);
@@ -90,6 +98,7 @@ public class CompanyController {
     }
 
     @ApiReturnQuestions
+    @ApiDefault
     @GetMapping("/{companyId}/posts/{postId}/questions")
     public CommonApiResponse returnQuestions(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.returnQuestions(companyId, postId);
@@ -98,7 +107,8 @@ public class CompanyController {
     }
 
     @ApiCountPosts
-    @GetMapping("/{companyId}/posts")
+    @ApiDefault
+    @GetMapping("/{companyId}/posts/count")
     public CommonApiResponse countPosts(@PathVariable Long companyId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.getCountPosts(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
@@ -106,80 +116,199 @@ public class CompanyController {
     }
 
     @ApiChangeToClose
+    @ApiInterceptor
     @GetMapping("/{companyId}/posts/{postId}/close")
     public CommonApiResponse changeToClose(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response) {
         CommonApiResponse commonApiResponse = companyService.changeToClose(companyId, postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
-    @ApiGetLatestPosts
-    @GetMapping("/{companyId}/posts/latest")
-    public CommonApiResponse getLatestPosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getLatestPosts(companyId);
+
+    @ApiManagePost
+    @ApiDefault
+    @GetMapping("/{companyId}/posts")
+    public CommonApiResponse managePosts(@PathVariable Long companyId, @RequestParam int strNum, @RequestParam int endNum,
+                                         @RequestParam(name = "sort", required = false) String sort, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.managePost(companyId, strNum, endNum, sort);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
-    @ApiGetDeadlinePosts
-    @GetMapping("/{companyId}/posts/deadline")
-    public CommonApiResponse getDeadlinePosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getDeadlinePosts(companyId);
+    @ApiConditionalSearch
+    @ApiDefault
+    @PostMapping("/posts/search")
+    public CommonApiResponse conditionalSearch(@RequestParam int strNum, @RequestParam int endNum, @Valid @RequestBody ConditionalSearchPostRequestDto conditionalSearchRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.conditionalSearch(strNum, endNum, conditionalSearchRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
-    @ApiGetEndPosts
-    @GetMapping("/{companyId}/posts/end")
-    public CommonApiResponse getEndPosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getEndPosts(companyId);
+    @ApiGetCompanyList
+    @ApiDefault
+    @GetMapping("/list")
+    public CommonApiResponse getCompanyList(@RequestParam int strNum, @RequestParam int endNum, @RequestParam boolean today, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCompanyList(strNum, endNum, today);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
-    @ApiGetOpenPosts
-    @GetMapping("/{companyId}/posts/open")
-    public CommonApiResponse getOpenPosts(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getOpenPosts(companyId);
+    @ApiQuitCompany
+    @ApiInterceptor
+    @DeleteMapping("/{companyId}")
+    public CommonApiResponse quitCompany(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.quitCompany(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiApproveCompany
+    @ApiDefault
+    @PutMapping("/{companyId}/approval")
+    public CommonApiResponse approveCompany(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.approveCompany(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiPostsInfoForTestAlert
+    @ApiDefault
+    @GetMapping("/posts") //알림용
+    public CommonApiResponse postsInfoForTestAlert(HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.postsInfoForTestAlert();
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiCheckPostAuthority
+    @ApiInterceptor
+    @GetMapping("/{companyId}/status")
+    public CommonApiResponse checkPostAuthority(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkPostAuthority(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiFindCompanyInfo
+    @ApiDefault
     @GetMapping("/{companyId}/info")
     public CommonApiResponse findCompanyInfo(@PathVariable Long companyId, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.getCompanyInfoAndFaqsByCompanyId(companyId);
+        CommonApiResponse commonApiResponse = companyService.getCompanyInfoAndFaqs(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiRegisterPost
+    @ApiInterceptor
     @PostMapping("{companyId}/post")
-    public CommonApiResponse registerPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
-        CommonApiResponse commonApiResponse = companyService.savePost(postRequestDto);
+    public CommonApiResponse registerPost(@PathVariable Long companyId, @Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.savePost(companyId, postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiGetPost
+    @ApiDefault
     @GetMapping("{companyId}/posts/{postId}")
-    public CommonApiResponse getPost(@PathVariable Long postId, HttpServletResponse response){
-        CommonApiResponse commonApiResponse = companyService.findPostById(postId);
+    public CommonApiResponse getPost(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findPost(companyId, postId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiModifyPost
+    @ApiInterceptor
     @PutMapping("{companyId}/posts/{postId}")
-    public CommonApiResponse modifyPost(@RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
-        CommonApiResponse commonApiResponse = companyService.modifyPostById(postRequestDto);
+    public CommonApiResponse modifyPost(@PathVariable Long companyId, @PathVariable Long postId, @Valid @RequestBody PostRequestDto postRequestDto, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.modifyPost(companyId, postId, postRequestDto);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }
 
     @ApiDeletePost
+    @ApiInterceptor
     @DeleteMapping("{companyId}/posts/{postId}")
-    public CommonApiResponse deletePost(@PathVariable Long postId, HttpServletResponse response){
-        CommonApiResponse commonApiResponse = companyService.deletePostById(postId);
+    public CommonApiResponse deletePost(@PathVariable Long companyId, @PathVariable Long postId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.deletePost(companyId, postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetCompany
+    @ApiDefault
+    @GetMapping("/{companyId}")
+    public CommonApiResponse getCompany(@PathVariable Long companyId, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findCompany(companyId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiSearchPostAndCompany
+    @ApiDefault
+    @GetMapping("")
+    public CommonApiResponse searchPostAndCompany(@RequestParam String keyword, @RequestParam int strNum, @RequestParam int endNum, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.findPostAndCompany(keyword,strNum, endNum);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiModifyCompanyInfo
+    @ApiInterceptor
+    @PutMapping("/{companyId}")
+    public CommonApiResponse modifyCompanyInfo(@PathVariable Long companyId, @Valid @RequestBody CompanyInfoRequestDto requestDto, HttpServletResponse response){
+        CommonApiResponse commonApiResponse = companyService.modifyCompanyInfo(companyId, requestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiUserCheck
+    @ApiDefault
+    @PostMapping("/{companyId}")
+    public CommonApiResponse userCheck(@PathVariable Long companyId, @Valid @RequestBody CompanyLoginRequestDto companyLoginRequestDto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.userCheck(companyId, companyLoginRequestDto);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetCompanyName
+    @ApiDefault
+    @PostMapping("/posts")
+    public CommonApiResponse getCompanyName(@RequestBody PostIdRequestDto dto, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCompanyName(dto.getPostId());
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiCountWholePosts
+    @ApiDefault
+    @GetMapping("/posts/count")
+    public CommonApiResponse countWholePosts(HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getCountWholePosts();
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiCheckPostStatus
+    @ApiDefault
+    @GetMapping("/posts/{postId}")
+    public CommonApiResponse checkPostStatus(@PathVariable Long postId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.checkPostStatus(postId);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiCountWholePosts
+    @ApiDefault
+    @GetMapping("/posts/today")
+    public CommonApiResponse getTodayPostCount(@RequestParam int year, @RequestParam int month, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getTodayPosts(year, month);
+        response.setStatus(commonApiResponse.getHttpStatus());
+        return commonApiResponse;
+    }
+
+    @ApiGetJobStacks
+    @GetMapping("{companyId}/posts/jobstacks")
+    public CommonApiResponse getAllJobsAndStacks(@PathVariable Long companyId, HttpServletResponse response) {
+        CommonApiResponse commonApiResponse = companyService.getAllJobsAndStacks(companyId);
         response.setStatus(commonApiResponse.getHttpStatus());
         return commonApiResponse;
     }

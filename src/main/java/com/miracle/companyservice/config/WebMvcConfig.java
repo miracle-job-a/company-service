@@ -1,47 +1,60 @@
 package com.miracle.companyservice.config;
 
 import com.miracle.companyservice.util.interceptor.AuthorizationInterceptor;
+import com.miracle.companyservice.util.interceptor.GetMethodInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EnableWebMvc
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthorizationInterceptor authorizationInterceptor;
+    private final GetMethodInterceptor getMethodInterceptor;
 
     @Autowired
-    public WebMvcConfig(AuthorizationInterceptor authorizationInterceptor) {
+    public WebMvcConfig(AuthorizationInterceptor authorizationInterceptor, GetMethodInterceptor getMethodInterceptor) {
         this.authorizationInterceptor = authorizationInterceptor;
+        this.getMethodInterceptor = getMethodInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         String baseUrl = "/v1/company";
-        List<String> excludePath = new ArrayList<>();
-        excludePath.add("/swagger-ui/index");
-        excludePath.add(baseUrl + "/email");
-        excludePath.add(baseUrl + "/bno");
-        excludePath.add(baseUrl + "/signup");
-        excludePath.add(baseUrl + "/login");
-        excludePath.add(baseUrl + "/main");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/questions");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/faqs");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/info");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/latest");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/deadline");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/end");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/open");
-        excludePath.add(baseUrl + "/{companyId:\\d+}/posts");
-        registry.addInterceptor(authorizationInterceptor)
-                .excludePathPatterns(excludePath)
-                .addPathPatterns(HttpMethod.GET.name(), baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/");
+
+        registry.addInterceptor(getMethodInterceptor).order(1)
+                .addPathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}")
+        ;
+
+        registry.addInterceptor(authorizationInterceptor).order(2)
+                .excludePathPatterns("/swagger-ui/**")
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/v3/api-docs")
+                .excludePathPatterns("/swagger-resources/**")
+                .excludePathPatterns("/errors/token")
+                .excludePathPatterns(baseUrl + "/email")
+                .excludePathPatterns(baseUrl + "/bno")
+                .excludePathPatterns(baseUrl + "/signup")
+                .excludePathPatterns(baseUrl + "/login")
+                .excludePathPatterns(baseUrl + "/main")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}/questions")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/faqs")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/info")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}")
+                .excludePathPatterns(baseUrl + "/posts/search")
+                .excludePathPatterns(baseUrl + "/list")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/approval")
+                .excludePathPatterns(baseUrl + "/{companyId:\\d+}/posts/{postId:\\d+}")
+                .excludePathPatterns(baseUrl)
+                .excludePathPatterns(baseUrl + "/posts")
+                .excludePathPatterns(baseUrl + "/posts/count")
+                .excludePathPatterns(baseUrl + "/posts/{postId:\\d+}")
+                .excludePathPatterns(baseUrl + "/posts/today")
+                .excludePathPatterns(baseUrl + "/{companyId}/posts/jobstacks")
+        ;
     }
 }

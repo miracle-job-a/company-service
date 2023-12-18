@@ -1,17 +1,15 @@
 package com.miracle.companyservice.entity;
 
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
-import com.miracle.companyservice.dto.response.PostCommonDataResponseDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.miracle.companyservice.util.encryptor.Encryptors;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @ToString
@@ -21,14 +19,14 @@ public class Company extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 512)
     private String email;
 
     @Column(nullable = false, unique = true, length = 50)
     private String bno;
 
-    @Column(nullable = false)
-    private int password;
+    @Column(nullable = false, length = 128)
+    private String password;
 
     @Column(nullable = false, length = 50)
     private String name;
@@ -45,14 +43,16 @@ public class Company extends BaseEntity {
     @Column(nullable = false)
     private String address;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
-    @OneToMany
-    @JoinColumn(name = "company_id")
+    @OneToMany(mappedBy = "company")
     private List<CompanyFaq> faqList = new ArrayList<>();
 
+    @Column(nullable = false)
     private int employeeNum;
+
+    @Column(nullable = false)
     private boolean approveStatus;
 
     @Builder
@@ -62,7 +62,7 @@ public class Company extends BaseEntity {
         this.id = id;
         this.email = email;
         this.bno = bno;
-        this.password = password.hashCode();
+        this.password = password;
         this.name = name;
         this.photo = photo;
         this.ceoName = ceoName;
@@ -77,7 +77,7 @@ public class Company extends BaseEntity {
     public Company(CompanySignUpRequestDto companySignUpRequestDto) {
         this.email = companySignUpRequestDto.getEmail();
         this.bno = companySignUpRequestDto.getBno();
-        this.password = companySignUpRequestDto.getPassword().hashCode();
+        this.password = companySignUpRequestDto.getPassword();
         this.name = companySignUpRequestDto.getName();
         this.photo = companySignUpRequestDto.getPhoto();
         this.ceoName = companySignUpRequestDto.getCeoName();
@@ -86,6 +86,4 @@ public class Company extends BaseEntity {
         this.introduction = companySignUpRequestDto.getIntroduction();
         this.employeeNum = companySignUpRequestDto.getEmployeeNum();
     }
-
-
 }

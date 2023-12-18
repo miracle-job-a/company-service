@@ -4,6 +4,7 @@ package com.miracle.companyservice.repository;
 import com.miracle.companyservice.dto.request.CompanyLoginRequestDto;
 import com.miracle.companyservice.dto.request.CompanySignUpRequestDto;
 import com.miracle.companyservice.entity.Company;
+import com.miracle.companyservice.util.encryptor.Encryptors;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +48,8 @@ class CompanyRepositoryTest {
                 .introduction("데이터 베이스 소프트웨어 개발 및 공급을 하고 있는 글로벌 기업, 오라클입니다.")
                 .build();
         Company givenCompany = new Company(companySignUpRequestDto);
+        givenCompany.setEmail(companySignUpRequestDto.getEmail());
+        givenCompany.setPassword(companySignUpRequestDto.getPassword());
         Company save = companyRepository.save(givenCompany);
         System.out.println(save.getId());
     }
@@ -89,7 +92,6 @@ class CompanyRepositoryTest {
                 .introduction("데이터 베이스 소프트웨어 개발 및 공급을 하고 있는 글로벌 기업, 오라클입니다.")
                 .build();
         Company company = new Company(companySignUpRequestDto);
-
         Company result = companyRepository.save(company);
 
         assertThat(result.getEmail()).isEqualTo(company.getEmail());
@@ -108,10 +110,10 @@ class CompanyRepositoryTest {
     @DisplayName("이메일 / 비밀번호 일치 확인")
     void findByEmailAndPassword() {
         CompanyLoginRequestDto companyLoginRequestDto = new CompanyLoginRequestDto("austinTEST@oracle.com", "123456!");
-        Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword().hashCode());
+        Optional<Company> company = companyRepository.findByEmailAndPassword(companyLoginRequestDto.getEmail(), companyLoginRequestDto.getPassword());
 
         Assertions.assertThat(company.get().getEmail()).isEqualTo(companyLoginRequestDto.getEmail());
-        Assertions.assertThat(company.get().getPassword()).isEqualTo(companyLoginRequestDto.getPassword().hashCode());
+        Assertions.assertThat(company.get().getPassword()).isEqualTo(companyLoginRequestDto.getPassword());
     }
 
     @Test

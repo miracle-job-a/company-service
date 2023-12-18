@@ -38,45 +38,55 @@ import java.lang.annotation.Target;
                                                 name = "실패 / 공고 등록 실패",
                                                 value = "{\"httpStatus\": 400, \"message\": \"공고 등록에 실패하였습니다.\", \"data\": false }"),
                                         @ExampleObject(
+                                                name = "실패 / 사업자 번호 만료",
+                                                value = "{\"httpStatus\": 400, \"message\": \"사업자 번호가 만료되었습니다.\", \"data\": false }"),
+                                        @ExampleObject(
+                                                name = "실패 / 가입 미승인 회원",
+                                                value = "{\"httpStatus\": 400, \"message\": \"가입 승인 처리가 되지 않은 기업회원입니다.\", \"data\": false }"),
+                                        @ExampleObject(
                                                 name = "실패 / 자소서 문항 등록 실패",
-                                                value = "{\"httpStatus\": 400, \"message\": \"자기소개서 문항 등록에 실패하였습니다.\", \"data\": false }")/*,
+                                                value = "{\"httpStatus\": 400, \"message\": \"자기소개서 문항 등록에 실패하였습니다.\", \"data\": false }"),
                                         @ExampleObject(
-                                                name = "유효성 / 이메일 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                                name = "유효성 / 기업아이디 값 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_11\", \"message\": \"아이디 값은 양수여야 합니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "유효성 / 이메일 형식 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 형식 오류.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                                name = "유효성 / 공고 타입 값 없음 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_19\", \"message\": \"공고 타입 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "유효성 / 이메일 길이 오류",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_1\", \"message\": \"이메일 길이가 너무 짧거나, 깁니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
-
+                                                name = "유효성 / 공고 타입 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_19\", \"message\": \"공고 타입은 NORMAL 또는 MZ 중 하나여야 합니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
                                         @ExampleObject(
-                                                name = "유효성 / 비밀번호 값 없음",
-                                                value = "{\"httpStatus\": 400, \"code\": \"400_4\", \"message\": \"비밀번호 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),*/
+                                                name = "유효성 / 기업아이디 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_15\", \"message\": \"공고 제목 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 경력 값 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_21\", \"message\": \"경력 값은 0을 포함한 양수를 허용합니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 자소서 문항/깃허브 주소 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_14\", \"message\": \"자소서 문항/깃허브 주소가 비어 있습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 마감일 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_16\", \"message\": \"마감일 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 마감일 값 오류",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_16\", \"message\": \"현재 날짜보다 미래의 날짜를 설정해야 합니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 개발툴 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_17\", \"message\": \"개발툴 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 근무지 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_18\", \"message\": \"근무지 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 주요 업무 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_22\", \"message\": \"주요 업무 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 근무 조건 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_23\", \"message\": \"근무 조건 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }"),
+                                        @ExampleObject(
+                                                name = "유효성 / 채용절차 값 없음",
+                                                value = "{\"httpStatus\": 400, \"code\": \"400_24\", \"message\": \"채용절차 값이 없습니다.\", \"exception\": \"MethodArgumentNotValidException\" }")
                                 },
                                 schema = @Schema(implementation = CommonApiResponse.class)
-                        )),
-
-                @ApiResponse(responseCode = "401",
-                        description = "비정상 요청",
-                        content = @Content(
-                                mediaType = "application/json",
-                                examples = @ExampleObject(
-                                        name = "토큰 인증 실패",
-                                        value = "{\"httpStatus\": 401, \"code\": \"401\", \"message\": \"토큰 값이 일치하지 않습니다.\", \"exception\": \"UnauthorizedTokenException\" }"
-                                ),
-                                schema = @Schema(implementation = ErrorApiResponse.class)
-                        )),
-
-                @ApiResponse(responseCode = "500",
-                        description = "서버 에러",
-                        content = @Content(
-                                mediaType = "application/json",
-                                examples = @ExampleObject(
-                                        name = "서버 에러",
-                                        value = "{\"httpStatus\": 500, \"code\": \"500\", \"message\": \"서버에 문제가 생겼습니다. 다시 시도해주세요.\", \"exception\": \"RuntimeException\" }"
-                                ),
-                                schema = @Schema(implementation = ErrorApiResponse.class)
                         )),
         })
 public @interface ApiRegisterPost {

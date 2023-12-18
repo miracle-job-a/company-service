@@ -3,15 +3,23 @@ package com.miracle.companyservice.exception;
 
 import com.miracle.companyservice.dto.response.CommonApiResponse;
 import com.miracle.companyservice.dto.response.ErrorApiResponse;
+import com.sun.jdi.request.InvalidRequestStateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @RestControllerAdvice
@@ -32,7 +40,21 @@ public class ExceptionController {
      * 400_11 유효성검사 - id
      * 400_12 유효성검사 - question(faq)
      * 400_13 유효성검사 - answer(faq)
-     *
+     * 400_14 유효성검사 - question(Question)
+     * 400_15 유효성검사 - title
+     * 400_16 유효성검사 - endDate
+     * 400_17 유효성검사 - tool
+     * 400_18 유효성검사 - workAddress
+     * 400_19 유효성검사 - postType
+     * 400_20 유효성검사 - testDate
+     * 400_21 유효성검사 - career
+     * 400_22 유효성검사 - mainTask
+     * 400_23 유효성검사 - workCondition
+     * 400_24 유효성검사 - process
+     * 400_25 유효성검사 - includeEnded
+     * 400_26 유효성검사 - stackIdSet
+     * 400_27 유효성검사 - jobIdSet
+     * 400_28 유효성검사 - addressSet
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public CommonApiResponse notValidHandle(MethodArgumentNotValidException e) {
@@ -69,7 +91,7 @@ public class ExceptionController {
      * 500 서버에러
      */
     @ExceptionHandler(value = RuntimeException.class)
-    public CommonApiResponse runtimeHandle(RuntimeException e, HttpRequest request) {
+    public CommonApiResponse runtimeHandle(RuntimeException e, HttpServletRequest request) {
         log.info("[runtimeHandle] : " + e.getMessage());
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -79,18 +101,100 @@ public class ExceptionController {
                 .build();
     }
 
+    @ExceptionHandler(value = DecodeSecretKeyException.class)
+    public CommonApiResponse decodePrivateKeyHandle(DecodeSecretKeyException e, HttpServletRequest request) {
+        log.info("[DecodeSecretKeyException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("SecretKey 디코딩에 실패하였습니다.")
+                .exception("DecodeSecretKeyException")
+                .build();
+    }
+
+    @ExceptionHandler(value = DecryptDataException.class)
+    public CommonApiResponse decrypteDataHandle(DecryptDataException e, HttpServletRequest request) {
+        log.info("[DecryptDataException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("데이터 복호화에 실패하였습니다.")
+                .exception("DecryptDataException")
+                .build();
+    }
+
+    @ExceptionHandler(value = EncryptDataException.class)
+    public CommonApiResponse decrypteDataHandle(EncryptDataException e, HttpServletRequest request) {
+        log.info("[EncryptDataException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("데이터 암호화에 실패하였습니다.")
+                .exception("EncryptDataException")
+                .build();
+    }
+
+    //당장 사용하지 않지만 미리 구현
+    @ExceptionHandler(value = GenerateSecretKeyException.class)
+    public CommonApiResponse generateSecretKeyHandle(GenerateSecretKeyException e, HttpServletRequest request) {
+        log.info("[GenerateSecretKeyException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .code("500")
+                .message("SecretKey 생성에 실패하였습니다.")
+                .exception("GenerateSecretKeyException")
+                .build();
+    }
+
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public CommonApiResponse httpMethodNotSupportedHandle(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+        log.info("[HttpRequestMethodNotSupportedException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.METHOD_NOT_ALLOWED.value())
+                .code("405")
+                .message("지원하지 않는 httpMethod 형식입니다.")
+                .exception("HttpRequestMethodNotSupportedException")
+                .build();
+    }
+
+    @ExceptionHandler(value = NoHandlerFoundException.class)
+    public CommonApiResponse noHandlerFoundHandle(NoHandlerFoundException e, HttpServletRequest request) {
+        log.info("[NoHandlerFoundException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.NOT_FOUND.value())
+                .code("404")
+                .message("요청한 페이지를 찾을 수 없습니다.")
+                .exception("NoHandlerFoundException")
+                .build();
+    }
+
+
+
     /**
      * 400 클라이언트 에러
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpRequest request) {
-        log.info("[illegalArgumentExceptionHandle] : " + e.getMessage());
+    public CommonApiResponse illegalArgumentExceptionHandle(IllegalArgumentException e, HttpServletRequest request) {
+        log.info("[IllegalArgumentException] : " + e.getMessage());
 
         return ErrorApiResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .code("400")
                 .message("잘못된 요청입니다.")
-                .exception("illegalArgumentExceptionHandle")
+                .exception("IllegalArgumentException")
+                .build();
+    }
+
+    /* JWT 토큰 인증*/
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(InvalidRequestStateException.class)
+    public CommonApiResponse invalidToken(InvalidRequestStateException e) {
+        log.info("[InvalidRequestStateException] : " + e.getMessage());
+        return ErrorApiResponse.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED.value())
+                .code("401")
+                .message("JWT 토큰 인증 실패")
+                .exception("InvalidRequestStateException")
                 .build();
     }
 }
